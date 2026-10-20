@@ -1,0 +1,45 @@
+# Sportowiada — tworzenie projektu
+
+Poniżej zapisuję kroki potrzebne do odtworzenia projektu od początku.
+
+## 1. Czysta instalacja Laravela
+
+Pracę rozpoczynam w katalogu nadrzędnym:
+
+```shell
+cd /home/sebastian/Development/Laravel
+mkdir sportowiada
+composer create-project laravel/laravel sportowiada
+cd sportowiada
+php artisan --version
+```
+
+Po instalacji polecenie sprawdzające zwróciło: `Laravel Framework 13.38.0`.
+
+## 2. Inicjalizacja Git
+
+Będąc w katalogu `sportowiada`, tworzę lokalne repozytorium z gałęzią `main`:
+
+```shell
+git init -b main
+```
+
+## 3. Pierwszy commit
+
+Dodaję pliki Laravela i zapisuję pierwszy stan projektu:
+
+```shell
+git add .
+git commit -m "Czysta instalacja Laravel"
+```
+
+W tym momencie katalog `docs` nie jest jeszcze częścią repozytorium.
+
+## 4. Utworzenie dokumentacji
+
+W katalogu głównym projektu tworzę folder dokumentacji i jego plik początkowy:
+
+```shell
+mkdir docs
+touch docs/README.md
+```
