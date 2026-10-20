@@ -43,3 +43,12 @@ W katalogu głównym projektu tworzę folder dokumentacji i jego plik początkow
 mkdir docs
 touch docs/README.md
 ```
+
+## 5. Zapisanie dokumentacji w Git
+
+Do repozytorium dodaję tylko plik dokumentacji. Lokalne ustawienia Obsidiana w `docs/.obsidian/` pozostają poza tym commitem.
+
+```shell
+git add docs/README.md
+git commit -m "Dodanie dokumentacji projektu"
+```
