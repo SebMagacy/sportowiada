@@ -67,3 +67,13 @@ Następnie zapisuję zmianę:
 git add .gitignore
 git commit -m "Ignorowanie lokalnych ustawień Obsidiana"
 ```
+
+## 7. Sprawdzenie podstawowych testów
+
+Uruchamiam testy dołączone do świeżej instalacji Laravela:
+
+```shell
+php artisan test --compact
+```
+
+Wynik: `2 passed (2 assertions)`. Testy potwierdzają odpowiedź strony głównej i działanie przykładowego testu jednostkowego.
