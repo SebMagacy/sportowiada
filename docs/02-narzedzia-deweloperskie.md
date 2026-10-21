@@ -418,3 +418,81 @@ php artisan test --compact
 ```
 
 Wynik: 2 testy zakończone powodzeniem, 2 asercje.
+
+## Publikacja repozytorium na GitHubie
+
+Po skonfigurowaniu narzędzi opublikowaliśmy istniejące lokalne
+repozytorium Git na GitHubie. Zachowaliśmy całą historię commitów.
+
+### Sprawdzenie przed publikacją
+
+Najpierw sprawdziliśmy, czy katalog roboczy jest czysty:
+
+```bash
+git status --short
+```
+
+Polecenie nie zwróciło żadnych wpisów — wszystkie zmiany były zapisane
+w commitach.
+
+Sprawdziliśmy, czy plik `.env` kiedykolwiek trafił do historii Git:
+
+```bash
+git log --all --oneline -- .env
+```
+
+Wynik był pusty. Następnie sprawdziliśmy, które pliki o nazwach
+typowych dla danych dostępowych są obecnie śledzone:
+
+```bash
+git ls-files '.env*' 'auth.json' '*.pem' '*.key'
+```
+
+Wynik zawierał tylko `.env.example`. Obejrzeliśmy jego zawartość:
+
+```bash
+git show HEAD:.env.example
+```
+
+Pola na klucz aplikacji, hasła i klucze AWS były puste lub zawierały
+wartości przykładowe. Te kontrole dotyczyły wskazanych plików i nazw;
+nie stanowiły pełnego audytu całej historii repozytorium.
+
+### Utworzenie repozytorium na GitHubie
+
+Na GitHubie utworzyliśmy repozytorium `SebMagacy/sportowiada` z
+widocznością **Private**. Nie dodaliśmy README, `.gitignore` ani
+licencji, ponieważ lokalne repozytorium miało już własne pliki
+i historię commitów. Nie używaliśmy ponownie `git init`.
+
+### Połączenie lokalnego repozytorium z GitHubem
+
+W katalogu projektu dodaliśmy adres zdalnego repozytorium:
+
+```bash
+git remote add origin https://github.com/SebMagacy/sportowiada.git
+```
+
+Następnie sprawdziliśmy zapisany adres:
+
+```bash
+git remote -v
+```
+
+Git pokazał ten sam adres przy `fetch` i `push`. Polecenie
+`git remote add origin` wykonuje się tylko raz dla danego lokalnego
+repozytorium.
+
+### Wysłanie historii commitów
+
+Wysłaliśmy istniejącą gałąź `main`:
+
+```bash
+git push -u origin main
+```
+
+Git potwierdził utworzenie zdalnej gałęzi `main` oraz ustawienie
+śledzenia `origin/main`. Po odświeżeniu strony repozytorium na
+GitHubie zobaczyliśmy pliki projektu i ostatni commit `8f4d0b3`
+(`Potwierdź połączenie MCP z Laravel Boost`). Repozytorium pozostało
+prywatne.
