@@ -396,8 +396,10 @@ args = ["artisan", "boost:mcp"]
 Katalog `.codex` jest ignorowany przez Git zgodnie z istniejącą
 regułą w `.gitignore`.
 
-Utworzenie konfiguracji nie oznacza jeszcze potwierdzenia aktywnego
-połączenia asystenta z serwerem MCP.
+Po otwarciu Sportowiady w Codexie potwierdziliśmy połączenie
+z Laravel Boost przez odczyt informacji o aplikacji.
+Serwer zwrócił PHP 8.5, Laravel 13.38.0, Boost 2.10.3
+oraz bazę SQLite. Sprawdzenie nie zmieniło plików projektu.
 
 ### Kontrole po instalacji
 
