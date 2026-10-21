@@ -234,3 +234,87 @@ php artisan test --compact
 ```
 
 Wynik: 2 testy zakończone powodzeniem, 2 asercje.
+
+## GrumPHP
+
+GrumPHP uruchamia skonfigurowane kontrole jakości kodu.
+Dzięki hookom Git może wykonywać je automatycznie przed commitem
+i zatrzymać commit, gdy kontrola wykryje błąd.
+
+### Instalacja
+
+Najpierw wykonaliśmy próbę instalacji:
+
+```bash
+composer require --dev phpro/grumphp --dry-run
+```
+
+Composer zaproponował 32 nowe pakiety, bez aktualizacji i usuwania
+istniejących zależności.
+
+Następnie zainstalowaliśmy narzędzie:
+
+```bash
+composer require --dev phpro/grumphp
+```
+
+Zainstalowana wersja GrumPHP: 2.26.0.
+
+Podczas instalacji Composer zapytał o zgodę na uruchamianie wtyczki
+`phpro/grumphp`. Odpowiedzieliśmy `y`. Zgoda została zapisana
+w sekcji `config.allow-plugins` pliku `composer.json`.
+
+Instalator utworzył plik `grumphp.yml` z pustą listą kontroli.
+
+### Konfiguracja PHPStan
+
+W pliku `grumphp.yml` skonfigurowaliśmy kontrolę PHPStan:
+
+```yaml
+grumphp:
+    tasks:
+        phpstan:
+            configuration: phpstan.neon
+            use_grumphp_paths: false
+```
+
+Opcja `configuration` wskazuje plik konfiguracji PHPStan.
+
+Domyślnie GrumPHP przekazuje PHPStan własną listę plików do analizy.
+Podczas pierwszej próby objęła ona również testy, a PHPStan zgłosił
+zawsze prawdziwą asercję `assertTrue(true)` w przykładowym teście.
+
+Ustawienie `use_grumphp_paths: false` powoduje, że zakres analizy
+pochodzi z `phpstan.neon`. W naszym projekcie jest to cały katalog `app`.
+
+### Ręczne uruchomienie kontroli
+
+Wykonaliśmy:
+
+```bash
+vendor/bin/grumphp run
+```
+
+Po ustawieniu zakresu analizy kontrola PHPStan zakończyła się powodzeniem.
+
+### Hooki Git
+
+Zarejestrowaliśmy hooki Git:
+
+```bash
+vendor/bin/grumphp git:init --no-interaction
+```
+
+Hooki uruchamiają GrumPHP podczas wykonywania commita.
+Są lokalne i nie trafiają do repozytorium. Plik `grumphp.yml`
+przechowujemy natomiast w Git.
+
+### Testy po instalacji
+
+Uruchomiliśmy:
+
+```bash
+php artisan test --compact
+```
+
+Wynik: 2 testy zakończone powodzeniem, 2 asercje.
