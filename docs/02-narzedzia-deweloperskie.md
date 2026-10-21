@@ -318,3 +318,101 @@ php artisan test --compact
 ```
 
 Wynik: 2 testy zakończone powodzeniem, 2 asercje.
+
+## Laravel Boost
+
+Laravel Boost wspiera asystentów AI podczas pracy nad projektem.
+Dostarcza wytyczne, umiejętności oraz serwer MCP udostępniający
+narzędzia związane z aplikacją.
+
+### Instalacja
+
+Najpierw wykonaliśmy próbę instalacji:
+
+```bash
+composer require --dev laravel/boost --dry-run
+```
+
+Composer zaproponował cztery nowe pakiety, bez aktualizacji
+i usuwania istniejących zależności.
+
+Następnie wykonaliśmy instalację:
+
+```bash
+composer require --dev laravel/boost
+```
+
+Zainstalowane wersje:
+
+- `laravel/boost` — 2.10.3,
+- `laravel/mcp` — 1.1.0,
+- `laravel/roster` — 1.0.0,
+- `composer/semver` — 3.5.1.
+
+### Konfiguracja dla Codexa
+
+Sprawdziliśmy opcje konfiguratora i uruchomiliśmy go:
+
+```bash
+php artisan boost:install --help
+php artisan boost:install
+```
+
+Wybraliśmy:
+
+- AI Guidelines,
+- Agent Skills,
+- Boost MCP Server Configuration,
+- dodatkową umiejętność pakietu `fruitcake/laravel-debugbar`,
+- agenta Codex.
+
+Nie wybraliśmy integracji Laravel Cloud.
+
+Instalator zastąpił początkowe instrukcje w `AGENTS.md`
+wytycznymi dopasowanymi do projektu. Utworzył także `boost.json`
+z zapisanymi ustawieniami oraz katalog `.agents/skills/`.
+
+Zainstalowano pięć umiejętności:
+
+- `infer-conventions`,
+- `laravel-best-practices`,
+- `testing-best-practices`,
+- `tailwindcss-development`,
+- `debug-using-debugbar`.
+
+Pliki umiejętności zawierają instrukcje dla asystenta AI.
+Przechowujemy je w repozytorium razem z `AGENTS.md` i `boost.json`.
+
+### Konfiguracja MCP
+
+W pliku `.codex/config.toml` powstała konfiguracja:
+
+```toml
+[mcp_servers.laravel-boost]
+command = "php"
+args = ["artisan", "boost:mcp"]
+```
+
+Katalog `.codex` jest ignorowany przez Git zgodnie z istniejącą
+regułą w `.gitignore`.
+
+Utworzenie konfiguracji nie oznacza jeszcze potwierdzenia aktywnego
+połączenia asystenta z serwerem MCP.
+
+### Kontrole po instalacji
+
+Uruchomiliśmy kontrolę PHPStan przez GrumPHP:
+
+```bash
+vendor/bin/grumphp run
+```
+
+Kontrola zakończyła się powodzeniem.
+
+Następnie uruchomiliśmy testy:
+
+```bash
+php artisan test --compact
+```
+
+Wynik: 2 testy zakończone powodzeniem, 2 asercje.
