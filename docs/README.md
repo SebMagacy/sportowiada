@@ -52,3 +52,18 @@ Do repozytorium dodaję tylko plik dokumentacji. Lokalne ustawienia Obsidiana w 
 git add docs/README.md
 git commit -m "Dodanie dokumentacji projektu"
 ```
+
+## 6. Pominięcie lokalnych ustawień Obsidiana
+
+Obsidian zapisuje ustawienia sejfu w katalogu `docs/.obsidian/`. Aby Git ich nie śledził, dodaję do głównego pliku `.gitignore`:
+
+```gitignore
+docs/.obsidian/
+```
+
+Następnie zapisuję zmianę:
+
+```shell
+git add .gitignore
+git commit -m "Ignorowanie lokalnych ustawień Obsidiana"
+```
