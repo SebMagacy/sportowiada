@@ -100,3 +100,66 @@ Nie przechowujemy ich w repozytorium, dlatego dodaliśmy do `.gitignore`:
 ```gitignore
 /storage/debugbar
 ```
+
+## Laravel IDE Helper
+
+Laravel IDE Helper generuje plik z informacjami, które pomagają
+edytorowi podpowiadać metody i typy Laravela.
+
+### Instalacja
+
+Najpierw wykonaliśmy próbę instalacji:
+
+```bash
+composer require --dev barryvdh/laravel-ide-helper --dry-run
+```
+
+Composer zaproponował cztery nowe pakiety, bez aktualizacji i usuwania
+istniejących zależności.
+
+Następnie zainstalowaliśmy narzędzie jako zależność deweloperską:
+
+```bash
+composer require --dev barryvdh/laravel-ide-helper
+```
+
+Zainstalowana wersja: 3.7.0. Laravel automatycznie wykrył pakiet.
+
+### Generowanie pliku podpowiedzi
+
+Sprawdziliśmy dostępne opcje:
+
+```bash
+php artisan ide-helper:generate --help
+```
+
+Następnie wygenerowaliśmy plik:
+
+```bash
+php artisan ide-helper:generate --no-interaction
+```
+
+Powstał plik `_ide_helper.php` w katalogu głównym projektu.
+Po dodaniu kolejnych pakietów udostępniających fasady można ponownie
+uruchomić to polecenie, aby odświeżyć podpowiedzi.
+
+### Pominięcie wygenerowanego pliku w Git
+
+Sprawdziliśmy regułę ignorowania:
+
+```bash
+git check-ignore -v _ide_helper.php
+```
+
+Istniejący wpis `_ide_helper.php` w `.gitignore` wyklucza ten plik
+z repozytorium. Nie trzeba było zmieniać reguł ignorowania.
+
+### Testy po instalacji
+
+Uruchomiliśmy:
+
+```bash
+php artisan test --compact
+```
+
+Wynik: 2 testy zakończone powodzeniem, 2 asercje.
