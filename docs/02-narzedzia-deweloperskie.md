@@ -163,3 +163,74 @@ php artisan test --compact
 ```
 
 Wynik: 2 testy zakończone powodzeniem, 2 asercje.
+
+## Larastan i PHPStan
+
+PHPStan analizuje kod PHP bez uruchamiania aplikacji, pomagając
+wykrywać m.in. nieprawidłowe typy i wywołania nieistniejących metod.
+Larastan rozszerza tę analizę o mechanizmy Laravela.
+
+### Instalacja
+
+Najpierw wykonaliśmy próbę instalacji:
+
+```bash
+composer require --dev larastan/larastan phpstan/phpstan --dry-run
+```
+
+Composer zaproponował trzy nowe pakiety, bez aktualizacji i usuwania
+istniejących zależności.
+
+Następnie wykonaliśmy instalację:
+
+```bash
+composer require --dev larastan/larastan phpstan/phpstan
+```
+
+Zainstalowane wersje:
+
+- `larastan/larastan` — 3.13.0,
+- `phpstan/phpstan` — 2.3.1,
+- `iamcal/sql-parser` — 0.7.
+
+### Konfiguracja
+
+W katalogu głównym projektu utworzyliśmy plik `phpstan.neon`:
+
+```neon
+includes:
+    - vendor/larastan/larastan/extension.neon
+
+parameters:
+    paths:
+        - app
+
+    level: 5
+```
+
+Sekcja `includes` włącza rozszerzenie Larastan.
+Parametr `paths` określa analizowane katalogi.
+Poziom `5` określa rygor sprawdzania — wyższe poziomy dodają
+kolejne reguły analizy.
+
+### Uruchomienie analizy
+
+Wykonaliśmy:
+
+```bash
+vendor/bin/phpstan analyse
+```
+
+PHPStan automatycznie odczytał plik `phpstan.neon`.
+Przeanalizował trzy pliki z katalogu `app` i nie zgłosił błędów
+na poziomie 5.
+
+### Testy po instalacji
+
+Uruchomiliśmy:
+
+```bash
+php artisan test --compact
+```
+
+Wynik: 2 testy zakończone powodzeniem, 2 asercje.
