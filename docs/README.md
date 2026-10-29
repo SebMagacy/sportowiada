@@ -8,4 +8,4 @@ Dokumentacja tworzenia i rozwoju aplikacji krok po kroku.
 2. [Narzędzia deweloperskie](02-narzedzia-deweloperskie.md)
 3. [Konfiguracja połączenia z MySQL](03-konfiguracja-mysql.md)
 4. [Osobny użytkownik bazy i pierwsze migracje](04-uzytkownik-bazy-i-migracje.md)
-5. 
+5. [Konfiguracja domeny lokalnej](05-konfiguracja-domeny-lokalnej.md)
