@@ -1,0 +1,19 @@
+@import './app.css';
+
+.admin-layout {
+    display: flex;
+    min-height: 100vh;
+}
+
+.admin-sidebar {
+    width: 240px;
+    flex-shrink: 0;
+    padding: 24px;
+    background-color: #1f2937;
+    color: #ffffff;
+}
+
+.admin-content {
+    flex: 1;
+    padding: 32px;
+}
