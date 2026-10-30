@@ -11,3 +11,4 @@ Dokumentacja tworzenia i rozwoju aplikacji krok po kroku.
 5. [Konfiguracja domeny lokalnej](05-konfiguracja-domeny-lokalnej.md)
 6. [Trasa i widok strony głównej](06-trasa-i-widok-strony-glownej.md)
 7. [JavaScript, Vite i Vue na stronie publicznej](07-javascript-vite-vue-strona-publiczna.md)
+8. [Układ panelu administratora](08-uklad-panelu-administratora.md)
