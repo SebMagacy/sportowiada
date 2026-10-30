@@ -20,12 +20,12 @@
     background-color: #374151;
 }
 
-.admin-sidebar.is-collapsed {
+.sidebar-collapsed .admin-sidebar {
     width: 80px;
     padding: 24px 8px;
 }
 
-.admin-sidebar.is-collapsed .admin-nav-label {
+.sidebar-collapsed .admin-sidebar .admin-nav-label {
     display: none;
 }
 
