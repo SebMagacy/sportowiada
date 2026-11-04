@@ -6,4 +6,4 @@ Route::get('/', function () {
     return view('home');
 });
 
-Route::view('/admin', 'admin.dashboard')->name('admin.dashboard');
+Route::view('/admin', 'admin.dashboard')->name('admin.dashboard')->middleware(['auth', 'can:access-admin']);
