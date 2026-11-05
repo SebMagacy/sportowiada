@@ -1,5 +1,7 @@
 # Kontrola dostępu do panelu administratora
 
+Opis przygotowania migracji, modelu, Gate i ochrony trasy krok po kroku. Kontrolę dostępu sprawdzono ręcznie. Testy automatyczne pozostają odłożone zgodnie z ustaleniem użytkownika.
+
 Reguła biznesowa: **dostęp do panelu ma wyłącznie zalogowany użytkownik z uprawnieniem administratora**.
 
 ## 1. Rozróżnienie użytkownika i administratora
@@ -17,6 +19,8 @@ Plik migracji tworzymy poleceniem:
 ```bash
 php artisan make:migration add_is_admin_to_users_table --table=users
 ```
+
+To zapis polecenia użytego na tym etapie. Przy odtwarzaniu kroku zgodnie z aktualnymi instrukcjami repozytorium dodajemy `--no-interaction`. Nie uruchamiamy go ponownie dla istniejącej migracji.
 
 Znaczenie poszczególnych części polecenia:
 
@@ -94,6 +98,8 @@ Po przygotowaniu pliku zmiany w bazie wykonujemy poleceniem:
 php artisan migrate
 ```
 
+Przy nowym wykonaniu używamy `php artisan migrate --no-interaction`; istniejącej zakończonej migracji nie trzeba ponawiać.
+
 Laravel sprawdza w tabeli `migrations`, które migracje zostały już wykonane. Następnie uruchamia metodę `up()` każdej oczekującej migracji i zapisuje informację o jej wykonaniu.
 
 Polecenie wykonuje wszystkie oczekujące migracje, nie tylko ostatnio utworzony plik.
@@ -111,6 +117,8 @@ W tablicy zwracanej przez metodę `casts()` dodajemy wpis:
 Jest to rzutowanie atrybutu: podczas odczytu `is_admin` przez model Eloquent otrzymujemy w PHP wartość logiczną `true` albo `false`.
 
 Nie zmienia to struktury tabeli — tę definiuje migracja.
+
+Domyślna wartość `false` pochodzi z bazy i jest stosowana przy zapisie pomijającym tę kolumnę. Sam cast nie nadaje wartości domyślnej nowemu, niezapisanemu obiektowi. `is_admin` nie dodajemy do atrybutów `Fillable`, aby publiczny formularz nie mógł nadawać tego uprawnienia przez masowe przypisanie.
 
 ## 2. Reguła dostępu do panelu
 
@@ -164,11 +172,13 @@ Route::view('/admin', 'admin.dashboard')
 
 Middleware to mechanizm wykonywany podczas obsługi żądania, który może sprawdzić warunki dostępu przed wyświetleniem strony.
 
-- `auth` — wymaga zalogowania. Gość zostaje przekierowany do logowania.
+- `auth` — wymaga zalogowania. Dla zwykłego żądania strony w przeglądarce gość zostaje przekierowany do nazwanej trasy logowania.
 - `can:access-admin` — sprawdza regułę Gate `access-admin`.
   Zalogowany użytkownik bez uprawnienia administratora otrzymuje odpowiedź HTTP 403, oznaczającą odmowę dostępu.
 
 Administrator spełnia oba warunki i może zobaczyć panel. Samo zalogowanie nie daje zwykłemu użytkownikowi dostępu do panelu.
+
+Przekierowanie gościa wymaga istniejącej trasy o nazwie `login`, przygotowanej w rozdziale 10. Żądanie oczekujące JSON otrzymuje standardowo HTTP 401 zamiast przekierowania do formularza. Wyniki poniżej dotyczą zwykłych żądań stron w przeglądarce.
 
 ## 3. Weryfikacja działania kontroli dostępu
 

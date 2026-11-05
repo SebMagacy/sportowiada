@@ -1,10 +1,18 @@
-# 08. Układ panelu administratora
+# Układ panelu administratora
 
-## Cel i trasa
+Opis budowy układu panelu przed dodaniem logowania i autoryzacji. Ochronę trasy dodajemy w [[09-kontrola-dostępu-do-panelu-administratora]]. Wyniki sprawdzeń poniżej dotyczą etapu układu.
+
+## 1. Cel i trasa
+
+### 1.1. Cel układu
 
 Przygotowaliśmy podstawowy układ panelu administratora aplikacji Sportowiada. Filament stanowi inspirację wizualną, ale nie jest instalowany ani wykorzystywany w projekcie.
 
-W pliku `routes/web.php` zdefiniowaliśmy trasę:
+### 1.2. Trasa pulpitu
+
+Plik: `routes/web.php`
+
+Zdefiniowaliśmy trasę:
 
 ```php
 Route::view('/admin', 'admin.dashboard')->name('admin.dashboard');
@@ -12,13 +20,15 @@ Route::view('/admin', 'admin.dashboard')->name('admin.dashboard');
 
 Trasa wyświetla widok `resources/views/admin/dashboard.blade.php`.
 
-Na obecnym etapie dostęp do panelu administratora nie jest jeszcze chroniony mechanizmem uwierzytelniania ani uprawnieniami administratora.
+Na etapie opisanym w tym rozdziale dostęp do panelu administratora nie jest jeszcze chroniony mechanizmem uwierzytelniania ani uprawnieniami administratora.
 
-## Komponent układu Blade
+## 2. Komponent układu Blade
 
-Utworzyliśmy komponent:
+### 2.1. Struktura komponentu
 
-`resources/views/components/admin-layout.blade.php`
+Plik: `resources/views/components/admin-layout.blade.php`
+
+Utworzyliśmy komponent układu.
 
 Zawiera on podstawową strukturę HTML panelu administratora:
 
@@ -27,9 +37,13 @@ Zawiera on podstawową strukturę HTML panelu administratora:
 - menu nawigacyjne (`<nav>`);
 - główny obszar treści (`<main>`).
 
+### 2.2. Treść pulpitu i slot
+
+Plik: `resources/views/admin/dashboard.blade.php`
+
 Widok pulpitu wykorzystuje komponent w następujący sposób:
 
-```blade
+```html
 <x-admin-layout>
     <h1>Panel administratora</h1>
 </x-admin-layout>
@@ -37,42 +51,62 @@ Widok pulpitu wykorzystuje komponent w następujący sposób:
 
 Zawartość umieszczona wewnątrz komponentu jest przekazywana przez zmienną Blade `{{ $slot }}` do elementu `<main>`.
 
+### 2.3. Nazwany odnośnik
+
+Plik: `resources/views/components/admin-layout.blade.php`
+
 Link „Pulpit” wykorzystuje nazwaną trasę:
 
-```blade
+```html
 {{ route('admin.dashboard') }}
 ```
 
 Dzięki temu nie musimy wpisywać adresu `/admin` bezpośrednio w znaczniku odnośnika.
 
-## Style i Vite
+## 3. Style i Vite
 
-Utworzyliśmy plik:
+### 3.1. Arkusz panelu
 
-`resources/css/admin.css`
+Plik: `resources/css/admin.css`
 
-Importuje on `app.css`, który udostępnia konfigurację Tailwind CSS.
+Utworzyliśmy osobny arkusz panelu.
 
-W `vite.config.js` dodaliśmy `admin.css` do listy plików wejściowych.
+Importuje on `app.css`, który ładuje Tailwind CSS i wspólne ustawienia stylów. Oddzielny plik wejściowy panelu nie oznacza pełnej izolacji: zmiany wspólnego arkusza mogą wpłynąć na obie części aplikacji.
+
+### 3.2. Wejście Vite i ładowanie zasobów
+
+Plik: `vite.config.js`
+
+W konfiguracji dodaliśmy `admin.css` do listy plików wejściowych.
+
+Plik: `resources/views/components/admin-layout.blade.php`
 
 Komponent Blade ładuje zasoby za pomocą dyrektywy:
 
-```blade
+```html
 @vite(['resources/css/admin.css', 'resources/js/app.js'])
 ```
+
+### 3.3. Podział odpowiedzialności stylów
 
 Przyjęliśmy połączenie Tailwind CSS i własnych klas CSS.
 
 Przykłady wykorzystania Tailwind:
 
 - `<body class="flex min-h-screen">` — poziomy układ strony i minimalna wysokość odpowiadająca wysokości okna;
-- `<main class="flex-1 p-8">` — wypełnienie pozostałej przestrzeni i wewnętrzny odstęp 32 px.
+- `<main class="flex-1 p-8">` — elastyczne wykorzystanie pozostałej przestrzeni oraz odstęp wewnętrzny wynikający ze skali Tailwind.
+
+W Tailwind 4 `p-8` odpowiada `calc(var(--spacing) * 8)`. Przy domyślnym `--spacing: 0.25rem` daje to `2rem`, czyli 32 px dopiero przy bazowym rozmiarze 16 px. Nie jest to bezwarunkowo stała wartość 32 px. [Dokumentacja odstępów Tailwind](https://tailwindcss.com/docs/padding).
 
 Własny CSS odpowiada za wygląd paska bocznego, nawigacji, przycisku oraz stanu zwinięcia.
 
 Zachowaliśmy klasę `admin-sidebar-toggle`, ponieważ osobna definicja CSS jest w tym przypadku czytelniejsza niż rozbudowany zestaw klas narzędziowych Tailwind.
 
-## Zwijanie panelu bocznego
+## 4. Zwijanie panelu bocznego
+
+### 4.1. Stany szerokości panelu
+
+Plik: `resources/css/admin.css`
 
 Panel boczny ma identyfikator `admin-sidebar` i klasę `admin-sidebar`.
 
@@ -97,6 +131,10 @@ W pliku `resources/css/admin.css` znajdują się reguły:
 
 Pierwsza reguła zmniejsza szerokość i odstępy panelu, a druga ukrywa tekst etykiet menu.
 
+### 4.2. Etykiety i ikony
+
+Plik: `resources/views/components/admin-layout.blade.php`
+
 Link „Pulpit” zawiera ikonę domku w formacie SVG i tekst:
 
 ```html
@@ -109,11 +147,13 @@ Własność `flex-shrink: 0` zapobiega zmniejszaniu ikony w układzie Flexbox.
 
 Przycisk ☰ znajduje się wewnątrz panelu, dzięki czemu pozostaje dostępny również po jego zwinięciu.
 
-## Obsługa JavaScript
+## 5. Obsługa JavaScript
 
-Obsługę przycisku umieściliśmy w pliku:
+### 5.1. Odnalezienie elementów
 
-`resources/js/app.js`
+Plik: `resources/js/app.js`
+
+W tym pliku umieściliśmy obsługę przycisku.
 
 JavaScript wyszukuje elementy:
 
@@ -132,6 +172,10 @@ if (sidebar && sidebarToggle) {
 
 Jest to konieczne, ponieważ `app.js` jest wykorzystywany również na stronie publicznej, która nie musi zawierać panelu administratora.
 
+### 5.2. Przełączanie klasy
+
+Plik: `resources/js/app.js`
+
 Zmiana stanu paska odbywa się przez:
 
 ```javascript
@@ -147,7 +191,11 @@ Wartość zwracana przez tę metodę jest typu `boolean`:
 
 Nie korzystamy już z wcześniejszej klasy `is-collapsed` przypisywanej bezpośrednio do panelu.
 
-## Zapamiętywanie ustawienia — localStorage
+## 6. Zapamiętywanie ustawienia — localStorage
+
+### 6.1. Zapis ustawienia
+
+Plik: `resources/js/app.js`
 
 Wprowadziliśmy mechanizm zapamiętywania stanu paska bocznego.
 
@@ -167,6 +215,8 @@ localStorage.setItem('admin-sidebar-collapsed', String(isCollapsed));
 
 Ponieważ `localStorage` przechowuje dane jako ciągi znaków, wartość logiczną `true` lub `false` zamieniamy na tekst za pomocą `String()`.
 
+### 6.2. Odczyt i usunięcie ustawienia
+
 Odczytywanie zapisanej wartości odbywa się przez:
 
 ```javascript
@@ -183,15 +233,21 @@ Służy ona do usuwania zapisanego ustawienia.
 
 Dane `localStorage` są przechowywane lokalnie dla danego pochodzenia strony i profilu przeglądarki. Nie są zapisywane w bazie MySQL i nie synchronizują się automatycznie pomiędzy urządzeniami.
 
-## Wczesna inicjalizacja paska
+Pochodzenie obejmuje schemat, host i port. Dlatego ustawienie dla HTTP nie jest automatycznie tym samym ustawieniem dla HTTPS. Obecny kod zakłada dostępność `localStorage`; nie obsługuje wyjątków przy zablokowanym magazynie. Opisane wyniki dotyczą przeglądarki użytej do sprawdzenia.
+
+## 7. Wczesna inicjalizacja paska
+
+### 7.1. Przyczyna migania
 
 Podczas pierwszych testów zauważyliśmy, że pasek po odświeżeniu strony na moment pojawiał się rozwinięty, a następnie przechodził do zapamiętanego stanu.
 
 Problem wynikał z kolejności wykonywania JavaScript i renderowania strony.
 
-Aby temu zapobiec, utworzyliśmy osobny plik:
+### 7.2. Skrypt inicjalizacyjny
 
-`public/js/admin-sidebar-init.js`
+Plik: `public/js/admin-sidebar-init.js`
+
+Aby ustawić stan przed wyświetleniem treści, utworzyliśmy osobny skrypt.
 
 Zawiera on kod:
 
@@ -203,9 +259,13 @@ if (localStorage.getItem('admin-sidebar-collapsed') === 'true') {
 
 Skrypt odczytuje zapisane ustawienie i, jeśli pasek powinien być zwinięty, dodaje odpowiednią klasę do elementu `<html>`.
 
-W komponencie `admin-layout.blade.php`, w sekcji `<head>`, dodaliśmy:
+### 7.3. Ładowanie przed treścią strony
 
-```blade
+Plik: `resources/views/components/admin-layout.blade.php`
+
+W sekcji `<head>` dodaliśmy:
+
+```html
 <script src="{{ asset('js/admin-sidebar-init.js') }}"></script>
 @vite(['resources/css/admin.css', 'resources/js/app.js'])
 ```
@@ -218,7 +278,11 @@ Pozwala to ustalić początkowy wygląd paska bez widocznego migania.
 
 Plik inicjalizacyjny nie jest przetwarzany przez Vite, ponieważ jest ładowany bezpośrednio z katalogu `public`.
 
-## Vue a panel administratora
+## 8. Vue a panel administratora
+
+### 8.1. Montowanie tylko przy obecności elementu docelowego
+
+Plik: `resources/js/app.js`
 
 Projekt wykorzystuje również Vue.
 
@@ -245,19 +309,29 @@ Obecny pasek administratora nie jest komponentem Vue. Jego obsługę realizuje z
 
 W przyszłości, podczas budowania wielopoziomowego menu administratora, możemy rozważyć utworzenie osobnego komponentu Vue.
 
-## Dostępność i interakcje
+## 9. Dostępność i interakcje
+
+### 9.1. Opisy i stan elementów
+
+Pliki: `resources/views/components/admin-layout.blade.php`, `resources/js/app.js`
 
 Podczas tworzenia panelu uwzględniliśmy podstawowe zasady dostępności.
 
 Przycisk zawiera atrybuty:
 
 - `aria-controls="admin-sidebar"` — wskazuje element kontrolowany przez przycisk;
-- `aria-expanded` — informuje, czy panel jest rozwinięty;
+- `aria-expanded` — opisuje rozwinięty lub zwinięty stan nawigacji; `true` oznacza rozwinięcie, a `false` zwinięcie;
 - `aria-label` — opisuje działanie przycisku.
 
 W zależności od stanu panelu etykieta przycisku przyjmuje wartość „Zwiń panel nawigacyjny” albo „Rozwiń panel nawigacyjny”.
 
 Atrybuty są aktualizowane przez JavaScript zarówno podczas inicjalizacji, jak i po kliknięciu.
+
+W tym układzie zwinięcie ukrywa etykiety i zmniejsza szerokość paska, ale nie usuwa samych odnośników. Używamy `String(!isCollapsed)`, ponieważ stan rozwinięcia jest odwrotnością stanu zwinięcia.
+
+### 9.2. Klawiatura i wygląd przycisku
+
+Pliki: `resources/views/components/admin-layout.blade.php`, `resources/css/admin.css`
 
 Dodatkowo:
 
@@ -269,7 +343,9 @@ Dodatkowo:
 
 W ostatniej sprawdzonej wersji CSS kolor obramowania wynosi `#ffffff`.
 
-## Sprawdzenie działania
+## 10. Sprawdzenie działania
+
+### 10.1. Ręczne sprawdzenie w przeglądarce
 
 Przetestowaliśmy działanie panelu w przeglądarce.
 
@@ -283,6 +359,8 @@ Potwierdziliśmy:
 6. Aktualizowanie atrybutów `aria`.
 7. Brak wcześniejszego ostrzeżenia Vue dotyczącego elementu `#app`.
 
+### 10.2. Przegląd plików
+
 Przeanalizowaliśmy także zmiany w plikach:
 
 - `resources/css/admin.css`;
@@ -290,11 +368,13 @@ Przeanalizowaliśmy także zmiany w plikach:
 - `resources/views/components/admin-layout.blade.php`;
 - `public/js/admin-sidebar-init.js`.
 
-## Obecne ograniczenia i dalszy rozwój
+## 11. Obecne ograniczenia i dalszy rozwój
+
+### 11.1. Wynik i dalsze tematy
 
 Podstawowy układ panelu administratora oraz mechanizm zapamiętywania stanu paska są gotowe.
 
-Na tym etapie nie zaimplementowaliśmy jeszcze:
+Na zakończenie etapu układu nie zaimplementowaliśmy jeszcze:
 
 - responsywnego zachowania paska dla urządzeń mobilnych;
 - wielopoziomowego menu nawigacyjnego;
@@ -304,4 +384,4 @@ Na tym etapie nie zaimplementowaliśmy jeszcze:
 
 W przyszłości rozważymy przeniesienie bardziej zaawansowanych interakcji panelu do osobnego modułu JavaScript lub komponentów Vue.
 
-Obecne rozwiązanie pozostaje proste, czytelne i wystarczające do dalszej rozbudowy Sportowiady.
+Ochronę panelu wdrożono w późniejszym etapie opisanym w [[09-kontrola-dostępu-do-panelu-administratora]]. Pozostałe propozycje nie są potwierdzeniem ich wykonania.

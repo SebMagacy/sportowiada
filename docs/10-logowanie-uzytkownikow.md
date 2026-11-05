@@ -1,5 +1,7 @@
 # Logowanie użytkowników
 
+Opis budowy logowania od trasy i formularza po kontroler oraz ręczne sprawdzenia. Fragmenty pośrednie uzupełniamy w kolejnych podsekcjach. Testy automatyczne pozostają odłożone zgodnie z ustaleniem użytkownika.
+
 ## 1. Wyświetlenie formularza logowania
 
 ### 1.1. Zdefiniowanie trasy
@@ -48,7 +50,7 @@ Poszczególne elementy formularza oznaczają:
 
 - `method="POST"` — wysyła dane do serwera w treści żądania.
 - `action="{{ route('login') }}"` — wyznacza adres docelowy na podstawie nazwy trasy `login`, czyli `/login`.
-- `@csrf` — dodaje ukryte pole z tokenem, który Laravel sprawdza w celu ochrony przed CSRF.
+- `@csrf` — dodaje ukryte pole `_token` z tokenem sesji, wykorzystywane przez ochronę przed CSRF.
 - `for` w etykiecie i odpowiadające mu `id` pola — łączą etykietę z polem formularza.
 - `name="email"` i `name="password"` — określają nazwy danych przesyłanych do serwera.
 - `type="email"` — oznacza pole adresu e-mail, a `type="password"` ukrywa wpisywane znaki hasła.
@@ -57,6 +59,8 @@ Poszczególne elementy formularza oznaczają:
 - `type="submit"` — wskazuje przycisk wysyłający formularz.
 
 Trasa wyświetlająca formularz obsługuje GET `/login`. Formularz wysyła POST `/login`, dlatego potrzebna jest osobna trasa obsługująca tę metodę. Samo przygotowanie formularza nie oznacza jeszcze działającego logowania.
+
+W Laravel 13 domyślne middleware `PreventRequestForgery` w grupie `web` najpierw sprawdza pochodzenie żądania przez `Sec-Fetch-Site`. Żądanie `same-origin` może zostać dopuszczone bez porównania tokenów; w pozostałych przypadkach standardowa konfiguracja przechodzi do sprawdzenia tokenu. Dlatego nie zakładamy, że każde żądanie POST zawsze porównuje `_token`. Dyrektywę `@csrf` pozostawiamy w formularzu. [Ochrona CSRF w Laravel 13](https://laravel.com/docs/13.x/csrf#preventing-csrf-requests).
 
 ## 2. Obsługa danych logowania
 
@@ -71,7 +75,7 @@ php artisan make:controller Auth/LoginController --no-interaction
 ```
 
 - `make:controller` — tworzy klasę kontrolera.
-- `Auth/LoginController` — określa nazwę kontrolera i umieszcza go  w podkatalogu `Auth`.
+- `Auth/LoginController` — określa nazwę kontrolera i umieszcza go w podkatalogu `Auth`.
 - `--no-interaction` — wyłącza interaktywne pytania polecenia.
 
 Kontroler będzie odpowiadał za obsługę danych przesłanych z formularza logowania. Samo wygenerowanie pliku nie dodaje jeszcze logiki logowania ani trasy wywołującej kontroler.
@@ -158,6 +162,8 @@ Walidacja sprawdza wymaganą postać danych. Nie potwierdza jeszcze, czy konto i
 
 Jeśli dane są niepoprawne, Laravel przerywa dalsze wykonywanie metody i dla zwykłego żądania formularza przekierowuje użytkownika z powrotem, zapisując błędy walidacji w sesji. Wyświetlanie tych komunikatów w widoku wymaga osobnego przygotowania.
 
+Ta ścieżka jest odrębna od nieudanego `Auth::attempt()`. Domyślna obsługa błędów walidacji zachowuje również poprzednie dane wejściowe z pominięciem pól haseł. Dla żądania oczekującego JSON walidacja zwraca standardowo HTTP 422 z błędami zamiast przekierowania.
+
 Po poprawnej walidacji wykonywanie metody jest kontynuowane. Na tym etapie nie dodaliśmy jeszcze próby logowania ani odpowiedzi przekierowującej wymaganej przez deklarację `RedirectResponse`, więc metoda pozostaje niekompletna.
 
 ### 2.4. Próba logowania i obsługa nieprawidłowych danych
@@ -207,6 +213,8 @@ $request->session()->regenerate();
 
 - `$request->session()` — daje dostęp do bieżącej sesji użytkownika.
 - `regenerate()` — zmienia identyfikator sesji, zachowując jej dane.
+
+W użytej wersji Laravel metoda odświeża również token CSRF. Samo udane `Auth::attempt()` z domyślnym guardem sesyjnym wywołuje już wewnętrzną regenerację sesji przez `SessionGuard::updateSession()`. Jawne wywołanie w kontrolerze pozostaje zgodne z przykładem ręcznego logowania w dokumentacji; nie jest jedynym miejscem, w którym framework zmienia identyfikator sesji. [Ręczne uwierzytelnianie](https://laravel.com/docs/13.x/authentication#authenticating-users).
 
 Sesja pozwala aplikacji rozpoznawać zalogowanego użytkownika podczas kolejnych żądań. Zmiana jej identyfikatora po logowaniu chroni przed atakiem utrwalenia sesji (session fixation), w którym napastnik próbuje wykorzystać identyfikator znany mu przed zalogowaniem użytkownika.
 
@@ -367,3 +375,11 @@ Następnie sprawdzono bezpośrednie wejście tego użytkownika na `/admin`. Serw
 Status: **logowanie zwykłego użytkownika, przekierowanie na stronę główną i odmowa dostępu do panelu potwierdzone przez użytkownika w przeglądarce**.
 
 Opisane wyniki pochodzą z ręcznych sprawdzeń wykonanych przez użytkownika. Nie są wynikiem automatycznych testów logowania.
+
+## 4. Stan po etapie i ograniczenia
+
+### 4.1. Zakres implementacji
+
+Zaimplementowano podstawowe logowanie sesyjne i przekierowania. Formularz pokazuje błędy przypisane do `email`, ale nie renderuje osobnego komunikatu dla `password`. Samo zapisanie błędów w sesji nie sprawia, że pojawią się w HTML.
+
+Trasy logowania nie mają jeszcze jawnego ograniczania liczby prób ani middleware `guest`. Przekierowanie po sukcesie sprawdza bezpośrednio `is_admin`; ochronę panelu nadal zapewnia oddzielny Gate. Nie dodano wylogowania, odzyskiwania hasła ani weryfikacji adresu e-mail. Ręczne sprawdzenie podstawowych scenariuszy nie oznacza ukończenia całego mechanizmu kont.

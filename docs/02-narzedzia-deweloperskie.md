@@ -1,8 +1,12 @@
-# 02. Narzędzia deweloperskie
+# Narzędzia deweloperskie
 
-## Planowane narzędzia
+Opis instalacji i konfiguracji narzędzi w początkowym środowisku projektu. Wersje, SQLite i wyniki kontroli odnoszą się do tego etapu. Dokument nie jest poleceniem ponownej instalacji pakietów.
 
-Do projektu chcemy dodać:
+## 1. Plan narzędzi
+
+### 1.1. Zakres początkowy
+
+Na początku tego etapu planowaliśmy dodać:
 
 | Pakiet | Przeznaczenie |
 |---|---|
@@ -13,23 +17,27 @@ Do projektu chcemy dodać:
 | phpro/grumphp | Automatyczne uruchamianie kontroli jakości kodu przed commitem. |
 | laravel/boost | Wsparcie asystentów AI w pracy nad projektem Laravel. |
 
-## Sprawdzenie obecnych zależności
+## 2. Sprawdzenie obecnych zależności
+
+### 2.1. Lista pakietów bezpośrednich
 
 W katalogu projektu wykonaliśmy:
 
-```shell
+```bash
 composer show --direct
 ```
+
+`composer show --direct` pokazuje bezpośrednie zależności projektu wraz z zainstalowanymi wersjami. Nie instaluje ani nie aktualizuje pakietów.
 
 Żaden z planowanych pakietów nie znajdował się na liście bezpośrednich
 zależności projektu.
 
-## Laravel Debugbar
+## 3. Laravel Debugbar
 
 Debugbar wyświetla pasek diagnostyczny w przeglądarce, który pomaga
 sprawdzać m.in. zapytania SQL i czas wykonania żądania.
 
-### Sprawdzenie zgodności zależności
+### 3.1. Sprawdzenie zgodności zależności
 
 Przed instalacją sprawdziliśmy, czy wymagania nowego pakietu można
 pogodzić z wersjami PHP, Laravela i pozostałych bibliotek projektu:
@@ -48,7 +56,7 @@ bez aktualizacji i usuwania istniejących zależności.
 Jest to krok opcjonalny — zwykłe `composer require` również sprawdza
 zgodność, a następnie przeprowadza instalację.
 
-### Instalacja
+### 3.2. Instalacja
 
 Zainstalowaliśmy Debugbar jako zależność deweloperską:
 
@@ -69,7 +77,9 @@ Composer zainstalował:
 Laravel automatycznie wykrył pakiet. Nie wprowadzaliśmy dodatkowej
 konfiguracji.
 
-### Sprawdzenie działania
+Wykrycie pakietu nie oznacza, że pasek będzie widoczny w każdej odpowiedzi. Przy domyślnych ustawieniach pakietu jego włączenie zależy od trybu debugowania (`app.debug`, zwykle ustawianego przez `APP_DEBUG`), a wstrzyknięcie paska dotyczy odpowiednich odpowiedzi HTML. Poniżej potwierdzono konkretny widok w lokalnej przeglądarce.
+
+### 3.3. Sprawdzenie działania
 
 Uruchomiliśmy aplikację:
 
@@ -82,7 +92,7 @@ Debugbara na dole strony.
 
 ![Strona aplikacji z widocznym paskiem Laravel Debugbar](images/02-laravel-debugbar.png)
 
-### Testy po instalacji
+### 3.4. Testy po instalacji
 
 Po instalacji uruchomiliśmy testy:
 
@@ -92,21 +102,27 @@ php artisan test --compact
 
 Wynik: 2 testy zakończone powodzeniem, 2 asercje.
 
-### Pominięcie danych diagnostycznych w Git
+### 3.5. Pominięcie danych diagnostycznych w Git
 
 Debugbar zapisuje dane diagnostyczne w katalogu `storage/debugbar/`.
-Nie przechowujemy ich w repozytorium, dlatego dodaliśmy do `.gitignore`:
+Nie przechowujemy ich w repozytorium.
+
+Reguła ignorowania obejmuje pliki nieśledzone. Nie usuwa wcześniej zapisanych danych z historii Git.
+
+Plik: `.gitignore`
+
+Dodaliśmy regułę:
 
 ```gitignore
 /storage/debugbar
 ```
 
-## Laravel IDE Helper
+## 4. Laravel IDE Helper
 
 Laravel IDE Helper generuje plik z informacjami, które pomagają
 edytorowi podpowiadać metody i typy Laravela.
 
-### Instalacja
+### 4.1. Instalacja
 
 Najpierw wykonaliśmy próbę instalacji:
 
@@ -125,7 +141,7 @@ composer require --dev barryvdh/laravel-ide-helper
 
 Zainstalowana wersja: 3.7.0. Laravel automatycznie wykrył pakiet.
 
-### Generowanie pliku podpowiedzi
+### 4.2. Generowanie pliku podpowiedzi
 
 Sprawdziliśmy dostępne opcje:
 
@@ -143,7 +159,9 @@ Powstał plik `_ide_helper.php` w katalogu głównym projektu.
 Po dodaniu kolejnych pakietów udostępniających fasady można ponownie
 uruchomić to polecenie, aby odświeżyć podpowiedzi.
 
-### Pominięcie wygenerowanego pliku w Git
+### 4.3. Pominięcie wygenerowanego pliku w Git
+
+Plik: `.gitignore`
 
 Sprawdziliśmy regułę ignorowania:
 
@@ -154,7 +172,7 @@ git check-ignore -v _ide_helper.php
 Istniejący wpis `_ide_helper.php` w `.gitignore` wyklucza ten plik
 z repozytorium. Nie trzeba było zmieniać reguł ignorowania.
 
-### Testy po instalacji
+### 4.4. Testy po instalacji
 
 Uruchomiliśmy:
 
@@ -164,13 +182,13 @@ php artisan test --compact
 
 Wynik: 2 testy zakończone powodzeniem, 2 asercje.
 
-## Larastan i PHPStan
+## 5. Larastan i PHPStan
 
 PHPStan analizuje kod PHP bez uruchamiania aplikacji, pomagając
 wykrywać m.in. nieprawidłowe typy i wywołania nieistniejących metod.
 Larastan rozszerza tę analizę o mechanizmy Laravela.
 
-### Instalacja
+### 5.1. Instalacja
 
 Najpierw wykonaliśmy próbę instalacji:
 
@@ -193,9 +211,11 @@ Zainstalowane wersje:
 - `phpstan/phpstan` — 2.3.1,
 - `iamcal/sql-parser` — 0.7.
 
-### Konfiguracja
+### 5.2. Konfiguracja
 
-W katalogu głównym projektu utworzyliśmy plik `phpstan.neon`:
+Plik: `phpstan.neon`
+
+W katalogu głównym projektu utworzyliśmy konfigurację:
 
 ```neon
 includes:
@@ -213,7 +233,7 @@ Parametr `paths` określa analizowane katalogi.
 Poziom `5` określa rygor sprawdzania — wyższe poziomy dodają
 kolejne reguły analizy.
 
-### Uruchomienie analizy
+### 5.3. Uruchomienie analizy
 
 Wykonaliśmy:
 
@@ -225,7 +245,7 @@ PHPStan automatycznie odczytał plik `phpstan.neon`.
 Przeanalizował trzy pliki z katalogu `app` i nie zgłosił błędów
 na poziomie 5.
 
-### Testy po instalacji
+### 5.4. Testy po instalacji
 
 Uruchomiliśmy:
 
@@ -235,13 +255,13 @@ php artisan test --compact
 
 Wynik: 2 testy zakończone powodzeniem, 2 asercje.
 
-## GrumPHP
+## 6. GrumPHP
 
 GrumPHP uruchamia skonfigurowane kontrole jakości kodu.
 Dzięki hookom Git może wykonywać je automatycznie przed commitem
 i zatrzymać commit, gdy kontrola wykryje błąd.
 
-### Instalacja
+### 6.1. Instalacja
 
 Najpierw wykonaliśmy próbę instalacji:
 
@@ -266,9 +286,11 @@ w sekcji `config.allow-plugins` pliku `composer.json`.
 
 Instalator utworzył plik `grumphp.yml` z pustą listą kontroli.
 
-### Konfiguracja PHPStan
+### 6.2. Konfiguracja PHPStan
 
-W pliku `grumphp.yml` skonfigurowaliśmy kontrolę PHPStan:
+Plik: `grumphp.yml`
+
+Skonfigurowaliśmy kontrolę PHPStan:
 
 ```yaml
 grumphp:
@@ -287,7 +309,7 @@ zawsze prawdziwą asercję `assertTrue(true)` w przykładowym teście.
 Ustawienie `use_grumphp_paths: false` powoduje, że zakres analizy
 pochodzi z `phpstan.neon`. W naszym projekcie jest to cały katalog `app`.
 
-### Ręczne uruchomienie kontroli
+### 6.3. Ręczne uruchomienie kontroli
 
 Wykonaliśmy:
 
@@ -297,7 +319,7 @@ vendor/bin/grumphp run
 
 Po ustawieniu zakresu analizy kontrola PHPStan zakończyła się powodzeniem.
 
-### Hooki Git
+### 6.4. Hooki Git
 
 Zarejestrowaliśmy hooki Git:
 
@@ -309,7 +331,7 @@ Hooki uruchamiają GrumPHP podczas wykonywania commita.
 Są lokalne i nie trafiają do repozytorium. Plik `grumphp.yml`
 przechowujemy natomiast w Git.
 
-### Testy po instalacji
+### 6.5. Testy po instalacji
 
 Uruchomiliśmy:
 
@@ -319,13 +341,13 @@ php artisan test --compact
 
 Wynik: 2 testy zakończone powodzeniem, 2 asercje.
 
-## Laravel Boost
+## 7. Laravel Boost
 
 Laravel Boost wspiera asystentów AI podczas pracy nad projektem.
 Dostarcza wytyczne, umiejętności oraz serwer MCP udostępniający
 narzędzia związane z aplikacją.
 
-### Instalacja
+### 7.1. Instalacja
 
 Najpierw wykonaliśmy próbę instalacji:
 
@@ -349,7 +371,7 @@ Zainstalowane wersje:
 - `laravel/roster` — 1.0.0,
 - `composer/semver` — 3.5.1.
 
-### Konfiguracja dla Codexa
+### 7.2. Konfiguracja dla Codexa
 
 Sprawdziliśmy opcje konfiguratora i uruchomiliśmy go:
 
@@ -383,9 +405,11 @@ Zainstalowano pięć umiejętności:
 Pliki umiejętności zawierają instrukcje dla asystenta AI.
 Przechowujemy je w repozytorium razem z `AGENTS.md` i `boost.json`.
 
-### Konfiguracja MCP
+### 7.3. Konfiguracja MCP
 
-W pliku `.codex/config.toml` powstała konfiguracja:
+Plik: `.codex/config.toml`
+
+Powstała konfiguracja:
 
 ```toml
 [mcp_servers.laravel-boost]
@@ -401,7 +425,7 @@ z Laravel Boost przez odczyt informacji o aplikacji.
 Serwer zwrócił PHP 8.5, Laravel 13.38.0, Boost 2.10.3
 oraz bazę SQLite. Sprawdzenie nie zmieniło plików projektu.
 
-### Kontrole po instalacji
+### 7.4. Kontrole po instalacji
 
 Uruchomiliśmy kontrolę PHPStan przez GrumPHP:
 
@@ -419,12 +443,12 @@ php artisan test --compact
 
 Wynik: 2 testy zakończone powodzeniem, 2 asercje.
 
-## Publikacja repozytorium na GitHubie
+## 8. Publikacja repozytorium na GitHubie
 
 Po skonfigurowaniu narzędzi opublikowaliśmy istniejące lokalne
 repozytorium Git na GitHubie. Zachowaliśmy całą historię commitów.
 
-### Sprawdzenie przed publikacją
+### 8.1. Sprawdzenie przed publikacją
 
 Najpierw sprawdziliśmy, czy katalog roboczy jest czysty:
 
@@ -433,9 +457,9 @@ git status --short
 ```
 
 Polecenie nie zwróciło żadnych wpisów — wszystkie zmiany były zapisane
-w commitach.
+w commitach w zakresie plików śledzonych i nieignorowanych widocznych dla tej kontroli. Pliki ignorowane, takie jak lokalny `.env`, nie są w ten sposób sprawdzane.
 
-Sprawdziliśmy, czy plik `.env` kiedykolwiek trafił do historii Git:
+Sprawdziliśmy obecność pliku `.env` w historii dostępnej przez lokalne referencje Git:
 
 ```bash
 git log --all --oneline -- .env
@@ -458,14 +482,14 @@ Pola na klucz aplikacji, hasła i klucze AWS były puste lub zawierały
 wartości przykładowe. Te kontrole dotyczyły wskazanych plików i nazw;
 nie stanowiły pełnego audytu całej historii repozytorium.
 
-### Utworzenie repozytorium na GitHubie
+### 8.2. Utworzenie repozytorium na GitHubie
 
 Na GitHubie utworzyliśmy repozytorium `SebMagacy/sportowiada` z
 widocznością **Private**. Nie dodaliśmy README, `.gitignore` ani
 licencji, ponieważ lokalne repozytorium miało już własne pliki
 i historię commitów. Nie używaliśmy ponownie `git init`.
 
-### Połączenie lokalnego repozytorium z GitHubem
+### 8.3. Połączenie lokalnego repozytorium z GitHubem
 
 W katalogu projektu dodaliśmy adres zdalnego repozytorium:
 
@@ -480,10 +504,9 @@ git remote -v
 ```
 
 Git pokazał ten sam adres przy `fetch` i `push`. Polecenie
-`git remote add origin` wykonuje się tylko raz dla danego lokalnego
-repozytorium.
+`git remote add origin` dodaje nowy zdalny wpis i zakłada, że nazwa `origin` nie jest jeszcze zajęta. Nie powtarzamy go, jeśli wpis już istnieje; do zmiany jego adresu służy `git remote set-url`.
 
-### Wysłanie historii commitów
+### 8.4. Wysłanie historii commitów
 
 Wysłaliśmy istniejącą gałąź `main`:
 
@@ -496,3 +519,13 @@ Git potwierdził utworzenie zdalnej gałęzi `main` oraz ustawienie
 GitHubie zobaczyliśmy pliki projektu i ostatni commit `8f4d0b3`
 (`Potwierdź połączenie MCP z Laravel Boost`). Repozytorium pozostało
 prywatne.
+
+## 9. Zakres potwierdzonych kontroli
+
+### 9.1. Analiza statyczna, testy i publikacja
+
+Wyniki testów powtarzane po instalacjach dotyczą dwóch testów przykładowych: statusu HTTP 200 strony głównej i asercji `assertTrue(true)`. Nie stanowią testów działania poszczególnych pakietów. Pasek Debugbara i połączenie MCP sprawdzono osobno, w sposób opisany w odpowiednich podsekcjach.
+
+PHPStan analizuje kod w skonfigurowanym zakresie; jego sukces nie potwierdza działania interfejsu ani połączenia z bazą. Hook GrumPHP jest kontrolą lokalną, którą można pominąć, a nie obowiązkową kontrolą na serwerze GitHub.
+
+Opis prywatności i publikacji odnosi się do momentu wysłania tej wersji repozytorium. Nie potwierdza obecnej widoczności repozytorium ani publikacji późniejszych commitów.
