@@ -25,6 +25,11 @@
                 <span class="admin-nav-label">Pulpit</span>
             </a>
         </nav>
+        <form method="POST" action="{{ route('logout') }}">
+            @csrf
+
+            <button type="submit">Wyloguj się</button>
+        </form>
     </aside>
     <main class="flex-1 p-8">
         {{ $slot }}
