@@ -23,7 +23,7 @@ class LoginController extends Controller
             $seconds = RateLimiter::availableIn($throttleKey);
 
             return back()->withErrors([
-                'email' => "Zbyt wiele prób logowania. Spróbuj ponownie za {$seconds} s.",
+                'email' => __('auth.throttle', ['seconds' => $seconds]),
             ])->onlyInput('email');
         }
 
@@ -31,7 +31,7 @@ class LoginController extends Controller
             RateLimiter::hit($throttleKey, 60);
 
             return back()->withErrors([
-                'email' => 'Nieprawidłowy adres e-mail lub hasło.',
+                'email' => __('auth.failed'),
             ])->onlyInput('email');
         }
 
