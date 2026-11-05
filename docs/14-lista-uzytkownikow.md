@@ -171,7 +171,7 @@ Zrzuty potwierdziły zastosowanie ramy, nagłówków, odstępów i linii. Po zmi
 
 Plik: `app/Http/Controllers/Admin/UserController.php`
 
-Wywołanie `get()` zastąpiono `paginate(10)`. Aktualna metoda:
+Wywołanie `get()` zastąpiono `paginate(10)`. Metoda zapisana w etapie 14 (późniejsze ponowne użycie testowego limitu 1 opisuje punkt 6.6):
 
 ```php
 public function index(): View
@@ -190,7 +190,7 @@ public function index(): View
 
 Plik: `resources/views/admin/users/index.blade.php`
 
-Po `</table>`, wewnątrz karty, dodano najpierw warunkową nawigację, a następnie własny licznik przed nią. Aktualna stopka odczytana z pliku:
+Po `</table>`, wewnątrz karty, dodano najpierw warunkową nawigację, a następnie własny licznik przed nią. Pierwsza wersja stopki, przed późniejszym dostosowaniem z punktów 6.5–6.6:
 
 ```html
 <div class="border-t border-gray-200 px-6 py-4 text-sm text-gray-600">
@@ -216,7 +216,7 @@ Po `</table>`, wewnątrz karty, dodano najpierw warunkową nawigację, a następ
 - `links()` renderuje wbudowany widok paginacji Laravel z odnośnikami zawierającymi parametr `page`.
 - `border-t border-gray-200` oddziela stopkę linią, a `px-6 py-4` zapewnia odstępy.
 
-Wbudowane `links()` zawiera także własny licznik. Przy wielu stronach obecny kod pokazuje więc dwa liczniki: własny polski i wbudowany angielski. Zrzut użytkownika potwierdził ten stan. Zaproponowano warunkowe ukrycie własnego licznika przez `@class` i `hidden`, ale aktualny odczyt pliku nie potwierdza wdrożenia tej poprawki. Nie przedstawiamy jej jako wykonanej. Przy jednej stronie nawigacja wraz z wbudowanym licznikiem jest ukryta.
+Wbudowane `links()` zawiera także własny licznik. Przy wielu stronach ta pierwsza wersja pokazywała więc dwa liczniki: własny polski i wbudowany angielski. Zrzut użytkownika potwierdził ten stan. Zaproponowano warunkowe ukrycie własnego licznika przez `@class` i `hidden`, ale aktualny odczyt pliku nie potwierdza wdrożenia tej poprawki. Nie przedstawiamy jej jako wykonanej. Przy jednej stronie nawigacja wraz z wbudowanym licznikiem jest ukryta.
 
 ### 6.3. Ręczne sprawdzenie na dwóch kontach
 
@@ -235,9 +235,53 @@ app.locale ... pl
 
 Potwierdza to wykonanie `php artisan config:clear --no-interaction` i aktywny język `pl` odczytany przez `php artisan config:show app.locale --no-interaction`. Omówiono także możliwość użycia `APP_FAKER_LOCALE=pl_PL`; nie potwierdzono osobno aktywnej konfiguracji Fakera. Ustawienia lokalnego `.env` nie są treścią commitu.
 
-Sama zmiana języka nie dostarcza polskich tłumaczeń. Polecenie `lang:publish` zaproponowano, lecz nie potwierdzono jego wykonania. Użytkownik ostatecznie wybrał dodanie tłumaczeń jako kolejny etap 15, z osobną dokumentacją i commitem. W etapie 14 pozostaje działająca paginacja z angielskimi tekstami wbudowanego widoku; jej pełne spolszczenie nie jest zakończone.
+Sama zmiana języka nie dostarcza polskich tłumaczeń. Polecenie `lang:publish` zaproponowano, lecz nie potwierdzono jego wykonania. Użytkownik ostatecznie wybrał dodanie tłumaczeń jako kolejny etap 15, z osobną dokumentacją i commitem. Pierwszą wersję etapu 14 zakończono z działającą paginacją i angielskimi tekstami wbudowanego widoku. Późniejsze tłumaczenia opisuje [[15-polskie-tlumaczenia]], a zmiany szablonu i stopki — poniższe punkty.
 
-## 7. Weryfikacja i aktualny stan
+### 6.5. Publikacja i dostosowanie widoków paginacji
+
+Poniższe prace wykonano później, podczas etapu tłumaczeń, na gałęzi `codex/polish-translations`. Opis znajduje się tutaj ze względu na temat: budowę i dostosowanie paginacji. Nie są to zmiany zawarte w pierwotnym commicie listy użytkowników `8e6c699`.
+
+Na prośbę użytkownika opublikowano widoki:
+
+```bash
+php artisan vendor:publish --tag=laravel-pagination --no-interaction
+```
+
+Polecenie potwierdziło skopiowanie szablonów do `resources/views/vendor/pagination`. Wywołanie `{{ $users->links() }}` bez argumentu korzysta z domyślnego widoku `tailwind.blade.php`, a po publikacji — z jego lokalnej kopii. Publikacja dostarczyła również inne warianty szablonów. Nie instalowano Filament ani Bootstrap.
+
+W opublikowanych szablonach zastąpiono pełne teksty, np. `__('Showing')`, kluczami `pagination.*`. Umożliwiło to przeniesienie tłumaczeń do plików `pagination.php` dla obu języków. Same wpisy językowe opisuje [[15-polskie-tlumaczenia#8.2. Wszystkie teksty paginacji w `pagination.php`]]. Początkowo pozostawiono strukturę i style szablonów.
+
+Nie edytowano plików w głównym katalogu `vendor`. Zwykła aktualizacja zależności nie nadpisuje lokalnych kopii widoków, ale nie przenosi też do nich automatycznie poprawek frameworka. Przy aktualizacji należy uwzględniać różnice względem szablonu pakietu. Ponowna publikacja z `--force` może nadpisać lokalne modyfikacje.
+
+Po publikacji sprawdzono składnię plików językowych i formatowanie Pint. Polecenia `php artisan view:cache --no-interaction` oraz `php artisan view:clear --no-interaction` zakończyły się poprawnie. Próbne renderowanie paginacji z dwoma wynikami i limitem 1 w kontekście aplikacji potwierdziło tekst licznika i etykietę odnośnika do strony 2 w językach `pl` i `en`, bez nierozwiązanych kluczy. Kontrole te poprzedzały późniejsze usunięcie licznika; nie stanowią sprawdzenia końcowego układu stopki.
+
+### 6.6. Jeden licznik — wykonane zmiany i dalszy plan
+
+Podczas dalszych sprawdzeń ponownie ustawiono `paginate(1)`. Po zakończeniu sprawdzania przywrócono docelowy limit `paginate(10)`. Odczyt kontrolera oraz wynik `git status` potwierdziły powrót do wersji zapisanej w Git.
+
+Początkowo zastosowano warunkową klasę `sm:hidden`, aby ukrywać własny licznik na większych ekranach przy wielu stronach. Następnie zrezygnowano z tego rozwiązania na rzecz jednego licznika:
+
+- z lokalnego `resources/views/vendor/pagination/tailwind.blade.php` usunięto blok licznika, pozostawiając nawigację;
+- własny licznik w widoku użytkowników pozostawiono widoczny bez warunkowej klasy ukrywania;
+- jego tekst zastąpiono jednym tłumaczeniem z parametrami:
+
+```blade
+{{ __('pagination.overview', [
+    'first' => $users->firstItem(),
+    'last' => $users->lastItem(),
+    'total' => $users->total(),
+]) }}
+```
+
+Warunek `total() > 0` oraz komunikat `__('users.empty')` dla braku wyników pozostają w widoku. Zrzut użytkownika potwierdził pojedynczy licznik „Showing 1 to 1 of 2 results” i widoczne przyciski stron. Nie potwierdzono ponownie przechodzenia między stronami po tej konkretnej zmianie ani zachowania na wąskim ekranie.
+
+Porównanie z komponentem Filament 5 było inspiracją do pojedynczego licznika i jednego tłumaczenia całego zdania. Mechanizm pobierania danych i generowania odnośników nadal zapewnia Laravel; nie wykorzystano pakietu Filament.
+
+**Dalszy plan:** połączyć licznik i nawigację w jeden kontener stopki — pionowo na wąskim ekranie, w jednym rzędzie na większym. Zaproponowano `flex flex-col gap-4` oraz `sm:flex-row sm:items-center sm:justify-between`. Aktualny odczyt widoku nadal pokazuje dwa osobne kontenery z linią między nimi, więc wspólny układ nie jest jeszcze wdrożony. Nie utworzono też osobnego komponentu Blade stopki.
+
+## 7. Weryfikacja i stan przy zakończeniu pierwszej wersji
+
+Poniższe wyniki i stan Git dotyczą pierwotnego etapu. Jego późniejszy lokalny commit `8e6c699` odnotowano w [[15-polskie-tlumaczenia#1.1. Zapisany etap listy użytkowników]]. Dalsze dostosowanie paginacji dokumentują punkty 6.5–6.6.
 
 ### 7.1. Potwierdzone wyniki
 
