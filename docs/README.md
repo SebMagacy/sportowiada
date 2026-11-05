@@ -14,4 +14,5 @@ Dokumentacja tworzenia i rozwoju aplikacji krok po kroku.
 8. [Układ panelu administratora](08-uklad-panelu-administratora.md)
 9. [Kontrola dostępu do panelu administratora](09-kontrola-dostępu-do-panelu-administratora.md)
 10. [Logowanie użytkowników](10-logowanie-uzytkownikow.md)
-11. [Rejestracja użytkowników — w toku](11-rejestracja-uzytkownikow.md)
+11. [Rejestracja użytkowników](11-rejestracja-uzytkownikow.md)
+12. [Wylogowanie użytkowników](12-wylogowanie-uzytkownikow.md)
