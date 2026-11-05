@@ -8,5 +8,6 @@
 </head>
 <body>
     <div id="app"></div>
+    <a href="{{ route('login') }}">Zaloguj się</a>
 </body>
 </html>
