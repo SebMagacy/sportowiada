@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\RegistrationController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -10,3 +11,6 @@ Route::get('/', function () {
 Route::view('/admin', 'admin.dashboard')->name('admin.dashboard')->middleware(['auth', 'can:access-admin']);
 Route::view('/login', 'auth.login')->name('login');
 Route::post('/login', [LoginController::class, 'store'])->name('login.store');
+Route::view('/register', 'auth.register')->name('register');
+Route::post('/register', [RegistrationController::class, 'store'])
+    ->name('register.store');
