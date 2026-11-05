@@ -24,6 +24,17 @@
                 </svg>
                 <span class="admin-nav-label">Pulpit</span>
             </a>
+
+
+            <a href="{{ route('admin.users.index') }}" aria-label="Użytkownicy">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="1.5" aria-hidden="true">
+                    <circle cx="9" cy="8" r="3" />
+                    <path d="M3 20v-2a6 6 0 0 1 12 0v2" />
+                    <path d="M17 5a3 3 0 0 1 0 6M18 14a5 5 0 0 1 3 5v1" />
+                </svg>
+                <span class="admin-nav-label">Użytkownicy</span>
+            </a>
         </nav>
         <form method="POST" action="{{ route('logout') }}">
             @csrf
@@ -31,9 +42,11 @@
             <button type="submit">Wyloguj się</button>
         </form>
     </aside>
+
     <main class="flex-1 p-8">
         {{ $slot }}
     </main>
+
 </body>
 
 </html>

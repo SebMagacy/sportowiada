@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\RegistrationController;
@@ -18,3 +19,6 @@ Route::post('/register', [RegistrationController::class, 'store'])
 Route::post('/logout', [LogoutController::class, 'destroy'])
     ->middleware('auth')
     ->name('logout');
+Route::get('/admin/users', [UserController::class, 'index'])
+    ->middleware(['auth', 'can:access-admin'])
+    ->name('admin.users.index');
