@@ -2,6 +2,8 @@
 
 Dokumentacja tworzenia i rozwoju aplikacji krok po kroku.
 
+[Słownik pojęć](slownik-pojec.md)
+
 ## Spis treści
 
 1. [Przygotowanie projektu](01-przygotowanie-projektu.md)
@@ -16,3 +18,6 @@ Dokumentacja tworzenia i rozwoju aplikacji krok po kroku.
 10. [Logowanie użytkowników](10-logowanie-uzytkownikow.md)
 11. [Rejestracja użytkowników](11-rejestracja-uzytkownikow.md)
 12. [Wylogowanie użytkowników](12-wylogowanie-uzytkownikow.md)
+13. [Widok użytkowników w panelu administratora](13-widok-uzytkownikow.md)
+14. [Lista użytkowników w panelu administratora](14-lista-uzytkownikow.md)
+15. [Polskie tłumaczenia aplikacji — plan](15-polskie-tlumaczenia.md)
