@@ -383,3 +383,141 @@ Opisane wyniki pochodzą z ręcznych sprawdzeń wykonanych przez użytkownika. N
 Zaimplementowano podstawowe logowanie sesyjne i przekierowania. Formularz pokazuje błędy przypisane do `email`, ale nie renderuje osobnego komunikatu dla `password`. Samo zapisanie błędów w sesji nie sprawia, że pojawią się w HTML.
 
 Trasy logowania nie mają jeszcze jawnego ograniczania liczby prób ani middleware `guest`. Przekierowanie po sukcesie sprawdza bezpośrednio `is_admin`; ochronę panelu nadal zapewnia oddzielny Gate. Nie dodano wylogowania, odzyskiwania hasła ani weryfikacji adresu e-mail. Ręczne sprawdzenie podstawowych scenariuszy nie oznacza ukończenia całego mechanizmu kont.
+
+Wylogowanie dodano w późniejszym etapie opisanym w [[12-wylogowanie-uzytkownikow]], a ograniczenie błędnych prób logowania opisano w sekcji 6 poniżej. Powyższy opis ograniczeń dotyczy stanu po pierwotnym etapie logowania.
+
+## 5. Link do logowania na stronie głównej
+
+### 5.1. Dodanie odnośnika
+
+Plik: `resources/views/home.blade.php`
+
+Pod elementem `<div id="app"></div>` dodajemy link:
+
+```html
+<div id="app"></div>
+<a href="{{ route('login') }}">Zaloguj się</a>
+```
+
+- `<a>` — tworzy odnośnik otwierający formularz logowania.
+- `route('login')` — generuje adres na podstawie istniejącej nazwy trasy GET formularza logowania.
+- `Zaloguj się` — tekst odnośnika widoczny na stronie.
+
+Link znajduje się poza elementem `#app`, którego zawartością zarządza Vue. Renderuje go Blade, więc możemy bezpośrednio użyć funkcji `route()` bez zmiany komponentu `App.vue`.
+
+### 5.2. Ręczne sprawdzenie
+
+Po zapisaniu pliku użytkownik odświeżył stronę główną i kliknął „Zaloguj się”. Potwierdził otwarcie formularza logowania.
+
+Obecność odnośnika potwierdzono również odczytem pliku. Sprawdzenie dotyczy przejścia ze strony głównej do formularza, a nie ponownego testowania wysłania danych logowania. Testy automatyczne pozostają odłożone.
+
+## 6. Ograniczenie błędnych prób logowania
+
+### 6.1. Ustalone zachowanie i import
+
+Przyjęto limit pięciu błędnych prób w oknie 60 sekund dla połączenia adresu e-mail i IP. Po osiągnięciu limitu kolejne próby są odrzucane przed sprawdzeniem hasła, aż upłynie czas okna. Poprawne logowanie przed osiągnięciem limitu zeruje licznik.
+
+Plik: `app/Http/Controllers/Auth/LoginController.php`
+
+Obok pozostałych importów dodajemy:
+
+```php
+use Illuminate\Support\Facades\RateLimiter;
+```
+
+Korzystamy z mechanizmu Laravel, bez instalowania dodatkowych pakietów.
+
+### 6.2. Klucz licznika
+
+Plik: `app/Http/Controllers/Auth/LoginController.php`
+
+Po walidacji danych, przed `Auth::attempt()`, dodajemy:
+
+```php
+$throttleKey = 'login:'.mb_strtolower($credentials['email']).'|'.$request->ip();
+```
+
+- `login:` — prefiks identyfikujący licznik logowania.
+- `mb_strtolower()` — sprowadza e-mail do małych liter, dzięki czemu zmiana wielkości liter nie tworzy osobnego licznika.
+- `|` — rozdziela e-mail i IP.
+- `$request->ip()` — odczytuje adres IP żądania.
+
+Limit dotyczy danej pary e-mail + IP, a nie wszystkich prób dla konta ze wszystkich urządzeń i sieci.
+
+### 6.3. Sprawdzenie limitu
+
+Plik: `app/Http/Controllers/Auth/LoginController.php`
+
+Bezpośrednio po utworzeniu klucza, przed sprawdzeniem danych logowania, dodajemy:
+
+```php
+if (RateLimiter::tooManyAttempts($throttleKey, 5)) {
+    $seconds = RateLimiter::availableIn($throttleKey);
+
+    return back()->withErrors([
+        'email' => "Zbyt wiele prób logowania. Spróbuj ponownie za {$seconds} s.",
+    ])->onlyInput('email');
+}
+```
+
+`tooManyAttempts()` sprawdza, czy licznik osiągnął pięć prób. `availableIn()` zwraca pozostałą liczbę sekund oczekiwania. Wcześniejszy `return` zatrzymuje obsługę przed `Auth::attempt()`, więc podczas blokady również poprawne hasło nie jest sprawdzane.
+
+Błąd przypisujemy do `email`, ponieważ formularz ma już blok wyświetlający komunikaty dla tego pola. `onlyInput('email')` zachowuje e-mail bez hasła.
+
+### 6.4. Zwiększanie licznika po błędzie
+
+Plik: `app/Http/Controllers/Auth/LoginController.php`
+
+Na początku istniejącego bloku nieudanego logowania dodajemy `hit()`:
+
+```php
+if (! Auth::attempt($credentials)) {
+    RateLimiter::hit($throttleKey, 60);
+
+    return back()->withErrors([
+        'email' => 'Nieprawidłowy adres e-mail lub hasło.',
+    ])->onlyInput('email');
+}
+```
+
+`hit()` zwiększa licznik tylko wtedy, gdy dane zostały odrzucone przez `Auth::attempt()`. Pierwsza błędna próba rozpoczyna okno 60 sekund; kolejne nie przedłużają go. Po pięciu błędach szósta próba w tym samym oknie zostanie zablokowana. Nie oznacza to pełnej minuty blokady liczonej od piątego błędu.
+
+Walidacja pozostaje przed limiterem. Żądanie odrzucone przez reguły walidacji nie dochodzi do `Auth::attempt()` i nie zwiększa tego licznika.
+
+### 6.5. Zerowanie po poprawnym logowaniu
+
+Plik: `app/Http/Controllers/Auth/LoginController.php`
+
+Po bloku nieudanego logowania, przed regeneracją sesji, dodajemy:
+
+```php
+RateLimiter::clear($throttleKey);
+
+$request->session()->regenerate();
+```
+
+Przy błędnych danych wcześniejszy `return` kończy metodę, więc `clear()` wykona się dopiero po udanym uwierzytelnieniu. Znajduje się przed rozróżnieniem administratora i zwykłego użytkownika, dlatego zerowanie obejmuje oba warianty przekierowania. Dotychczasowe przekierowania pozostawiono bez zmian.
+
+### 6.6. Ręczne sprawdzenia
+
+Użytkownik wykonał zaproponowane scenariusze i przekazał następujące wyniki:
+
+| Scenariusz | Potwierdzony wynik |
+| --- | --- |
+| Pięć błędnych prób dla tego samego e-maila w ciągu minuty, następnie szósta próba | Na zrzucie widoczny komunikat „Zbyt wiele prób logowania. Spróbuj ponownie za 37 s.”, zachowany e-mail i puste pole hasła |
+| Poprawne dane tego samego konta po upływie czasu blokady | Użytkownik potwierdził udane logowanie |
+| Cztery błędne próby, poprawne logowanie, wylogowanie i dwie kolejne błędne próby w ciągu 60 sekund od pierwszej próby | Użytkownik potwierdził zwykły komunikat błędnych danych bez blokady, zgodnie ze scenariuszem zerowania licznika |
+
+Wyniki dotyczą ręcznych sprawdzeń w przeglądarce. Nie sprawdzano osobno rozdzielenia liczników między różnymi adresami IP ani wszystkich wariantów adresu e-mail. Testy automatyczne pozostają odłożone.
+
+### 6.7. Formatowanie i stan zapisu
+
+Użytkownik uruchomił:
+
+```bash
+vendor/bin/pint --dirty --format agent
+```
+
+Pierwszy przekazany wynik miał `result: fixed` i wskazywał poprawki formatowania w `LoginController.php`. Po przeglądzie usunięto jeszcze zbędny pusty wiersz na początku bloku nieudanego logowania. Ponowne uruchomienie Pinta zakończyło się `result: passed`.
+
+Obecność całego mechanizmu potwierdzono odczytem kontrolera. Na etapie uzupełniania tej sekcji nie potwierdzono jeszcze commitu ani pushu zmian limitowania.

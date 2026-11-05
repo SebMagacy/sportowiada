@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\RateLimiter;
 
 class LoginController extends Controller
 {
@@ -16,11 +17,25 @@ class LoginController extends Controller
             'password' => ['required', 'string'],
         ]);
 
+        $throttleKey = 'login:'.mb_strtolower($credentials['email']).'|'.$request->ip();
+
+        if (RateLimiter::tooManyAttempts($throttleKey, 5)) {
+            $seconds = RateLimiter::availableIn($throttleKey);
+
+            return back()->withErrors([
+                'email' => "Zbyt wiele prób logowania. Spróbuj ponownie za {$seconds} s.",
+            ])->onlyInput('email');
+        }
+
         if (! Auth::attempt($credentials)) {
+            RateLimiter::hit($throttleKey, 60);
+
             return back()->withErrors([
                 'email' => 'Nieprawidłowy adres e-mail lub hasło.',
             ])->onlyInput('email');
         }
+
+        RateLimiter::clear($throttleKey);
 
         $request->session()->regenerate();
 
