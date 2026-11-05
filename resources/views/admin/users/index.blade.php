@@ -34,22 +34,26 @@
             </tbody>
         </table>
 
-        <div class="border-t border-gray-200 px-6 py-4 text-sm text-gray-600">
-            @if ($users->total() > 0)
-                {{ __('pagination.overview', [
-                    'first' => $users->firstItem(),
-                    'last' => $users->lastItem(),
-                    'total' => $users->total(),
-                ]) }}
-            @else
-                {{ __('users.empty') }}
+        <div
+            class="flex flex-col gap-4 border-t border-gray-200 px-6 py-4 sm:flex-row sm:items-center sm:justify-between">
+            <div class="text-sm text-gray-600">
+                @if ($users->total() > 0)
+                    {{ __('pagination.overview', [
+                        'first' => $users->firstItem(),
+                        'last' => $users->lastItem(),
+                        'total' => $users->total(),
+                    ]) }}
+                @else
+                    {{ __('users.empty') }}
+                @endif
+            </div>
+
+            @if ($users->hasPages())
+                <div>
+                    {{ $users->links() }}
+                </div>
             @endif
         </div>
-        @if ($users->hasPages())
-            <div class="border-t border-gray-200 px-6 py-4">
-                {{ $users->links() }}
-            </div>
-        @endif
     </div>
 
 </x-admin-layout>

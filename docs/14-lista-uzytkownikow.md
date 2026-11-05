@@ -277,11 +277,50 @@ Warunek `total() > 0` oraz komunikat `__('users.empty')` dla braku wyników pozo
 
 Porównanie z komponentem Filament 5 było inspiracją do pojedynczego licznika i jednego tłumaczenia całego zdania. Mechanizm pobierania danych i generowania odnośników nadal zapewnia Laravel; nie wykorzystano pakietu Filament.
 
-**Dalszy plan:** połączyć licznik i nawigację w jeden kontener stopki — pionowo na wąskim ekranie, w jednym rzędzie na większym. Zaproponowano `flex flex-col gap-4` oraz `sm:flex-row sm:items-center sm:justify-between`. Aktualny odczyt widoku nadal pokazuje dwa osobne kontenery z linią między nimi, więc wspólny układ nie jest jeszcze wdrożony. Nie utworzono też osobnego komponentu Blade stopki.
+Następnie połączono licznik i nawigację w jeden kontener stopki w `resources/views/admin/users/index.blade.php`:
+
+```blade
+<div class="flex flex-col gap-4 border-t border-gray-200 px-6 py-4 sm:flex-row sm:items-center sm:justify-between">
+    <div class="text-sm text-gray-600">
+        @if ($users->total() > 0)
+            {{ __('pagination.overview', [
+                'first' => $users->firstItem(),
+                'last' => $users->lastItem(),
+                'total' => $users->total(),
+            ]) }}
+        @else
+            {{ __('users.empty') }}
+        @endif
+    </div>
+
+    @if ($users->hasPages())
+        <div>
+            {{ $users->links() }}
+        </div>
+    @endif
+</div>
+```
+
+`flex-col` i `gap-4` ustawiają elementy pionowo z odstępem na wąskim ekranie. Od progu `sm` elementy znajdują się w jednym rzędzie: licznik po lewej, przyciski po prawej. `border-t` występuje na wspólnym kontenerze, więc nie ma dodatkowej linii między licznikiem a nawigacją. Nawigacja nadal zależy od `hasPages()`. Nie wydzielono osobnego komponentu Blade stopki.
+
+Na potrzeby sprawdzenia ponownie użyto tymczasowego `paginate(1)`. Zrzut użytkownika potwierdził wspólny rząd z polskim licznikiem po lewej i przyciskami po prawej. Na tym zrzucie przyciski miały jeszcze ciemne tło.
+
+### 6.7. Jasny wygląd przycisków i końcowe sprawdzenie listy
+
+Lokalny szablon `resources/views/vendor/pagination/tailwind.blade.php` zawierał klasy `dark:*`. Przy domyślnym sposobie obsługi ciemnego motywu w Tailwind reagują one na preferencję schematu kolorów przeglądarki lub systemu. Powodowało to ciemny wygląd przycisków na tle jasnej tabeli.
+
+Na wyraźną prośbę użytkownika usunięto z tego szablonu 55 klas z prefiksem `dark:`, zachowując jasne style, m.in. `bg-white`, `bg-gray-200`, `border-gray-300` i `hover:bg-gray-100`. Zmiana dotyczy lokalnego widoku paginacji, nie globalnej konfiguracji motywu aplikacji. Użytkownik potwierdził wykonanie sprawdzenia po odświeżeniu strony.
+
+Po tej zmianie poprawnie wykonano `php artisan view:cache --no-interaction`, a następnie `php artisan view:clear --no-interaction`. `git diff --check` nie zgłosił problemów. Nie uruchamiano ponownie PHPUnit ani PHPStan dla tej zmiany wyglądu.
+
+Na zakończenie przywrócono `paginate(10)`. Użytkownik potwierdził wyświetlanie obu kont, jednego licznika z zakresem 1–2 i brak przycisków przy jednej stronie wyników. Aktualny odczyt kontrolera również potwierdza limit 10, a odczyt widoku — wspólny kontener stopki. Parametr `?page=1` oznacza pierwszą stronę i nie zmienia limitu rekordów.
+
+**Pozostałe sprawdzenia:** zachowanie układu na wąskim ekranie, wariant pustej listy oraz ponowne przechodzenie między stronami po końcowych zmianach wyglądu. Nie przedstawiamy tych scenariuszy jako zweryfikowanych.
+
 
 ## 7. Weryfikacja i stan przy zakończeniu pierwszej wersji
 
-Poniższe wyniki i stan Git dotyczą pierwotnego etapu. Jego późniejszy lokalny commit `8e6c699` odnotowano w [[15-polskie-tlumaczenia#1.1. Zapisany etap listy użytkowników]]. Dalsze dostosowanie paginacji dokumentują punkty 6.5–6.6.
+Poniższe wyniki i stan Git dotyczą pierwotnego etapu. Jego późniejszy lokalny commit `8e6c699` odnotowano w [[15-polskie-tlumaczenia#1.1. Zapisany etap listy użytkowników]]. Dalsze dostosowanie paginacji dokumentują punkty 6.5–6.7.
 
 ### 7.1. Potwierdzone wyniki
 
