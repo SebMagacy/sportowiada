@@ -37,7 +37,7 @@
         <div
             class="flex flex-col gap-4 border-t border-gray-200 px-6 py-4 sm:flex-row sm:items-center sm:justify-between">
             <div class="text-sm text-gray-600">
-                @if ($users->total() > 0)
+                @if ($users->count() > 0)
                     {{ __('pagination.overview', [
                         'first' => $users->firstItem(),
                         'last' => $users->lastItem(),

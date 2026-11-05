@@ -315,12 +315,38 @@ Po tej zmianie poprawnie wykonano `php artisan view:cache --no-interaction`, a n
 
 Na zakończenie przywrócono `paginate(10)`. Użytkownik potwierdził wyświetlanie obu kont, jednego licznika z zakresem 1–2 i brak przycisków przy jednej stronie wyników. Aktualny odczyt kontrolera również potwierdza limit 10, a odczyt widoku — wspólny kontener stopki. Parametr `?page=1` oznacza pierwszą stronę i nie zmienia limitu rekordów.
 
-**Pozostałe sprawdzenia:** zachowanie układu na wąskim ekranie, wariant pustej listy oraz ponowne przechodzenie między stronami po końcowych zmianach wyglądu. Nie przedstawiamy tych scenariuszy jako zweryfikowanych.
+Późniejsze zrzuty z wąskiego okna potwierdziły pionowy układ stopki, jasne przyciski „Poprzednia” i „Następna” oraz przejście na stronę 2 z drugim kontem i zakresem 2–2. Po przywróceniu limitu 10 i otwarciu listy bez parametru strony zrzut pokazał oba konta, zakres 1–2 i brak nawigacji. Nie sprawdzono wariantu rzeczywiście pustej bazy użytkowników. Przywrócenie limitu ujawniło natomiast przypadek opisany w punkcie 6.8.
 
+
+### 6.8. Wejście na stronę przekraczającą zakres paginacji
+
+Po zmianie testowego limitu `paginate(1)` na docelowe `paginate(10)` w adresie pozostało `?page=2`. Dwa istniejące konta mieściły się już na stronie 1, więc strona 2 nie zawierała rekordów. Tabela pokazywała „Brak użytkowników.”, ale licznik oparty na `total() > 0` próbował wyświetlić zakres bez wartości początkowej i końcowej.
+
+Najpierw w widoku `resources/views/admin/users/index.blade.php` zmieniono warunek licznika na:
+
+```blade
+@if ($users->count() > 0)
+```
+
+`count()` sprawdza rekordy bieżącej strony, natomiast `total()` obejmuje wszystkie wyniki zapytania. Zrzut potwierdził usunięcie błędnego zakresu, ale użytkownik nadal pozostawał na pustej stronie. Sama ta zmiana nie rozwiązywała więc nawigacji.
+
+Następnie w `app/Http/Controllers/Admin/UserController.php` dodano import `Illuminate\Http\RedirectResponse` i rozszerzono typ zwracany metody do `View|RedirectResponse`. Po pobraniu wyników, przed renderowaniem widoku, dodano:
+
+```php
+if ($users->currentPage() > $users->lastPage()) {
+    return redirect()->route('admin.users.index', [
+        'page' => $users->lastPage(),
+    ]);
+}
+```
+
+`currentPage()` zwraca żądany numer strony, a `lastPage()` — ostatni dostępny. Gdy żądany numer przekracza zakres, kontroler przekierowuje na ostatnią stronę za pomocą nazwanej trasy. Dla dwóch kont przy limicie 10 wejście na `?page=2` prowadzi do `?page=1`, gdzie wyświetlane są oba konta. Jest to własna obsługa przypadku brzegowego oparta na metodach paginatora Laravel.
+
+Użytkownik potwierdził działanie tego przekierowania w przeglądarce. Następnie uruchomił `vendor/bin/pint --dirty --format agent` i przekazał wynik `passed`. Odczyt kodu potwierdził warunek przekierowania, typ zwracany oraz `count()` w widoku. Nie dodawano testów PHPUnit ani nie potwierdzono jeszcze PHPStan lub commitu dla tej poprawki. Sprawdzenie strony poza zakresem nie jest sprawdzeniem listy bez jakichkolwiek użytkowników w bazie.
 
 ## 7. Weryfikacja i stan przy zakończeniu pierwszej wersji
 
-Poniższe wyniki i stan Git dotyczą pierwotnego etapu. Jego późniejszy lokalny commit `8e6c699` odnotowano w [[15-polskie-tlumaczenia#1.1. Zapisany etap listy użytkowników]]. Dalsze dostosowanie paginacji dokumentują punkty 6.5–6.7.
+Poniższe wyniki i stan Git dotyczą pierwotnego etapu. Jego późniejszy lokalny commit `8e6c699` odnotowano w [[15-polskie-tlumaczenia#1.1. Zapisany etap listy użytkowników]]. Dalsze dostosowanie paginacji dokumentują punkty 6.5–6.8.
 
 ### 7.1. Potwierdzone wyniki
 
