@@ -1,6 +1,6 @@
 # Układ panelu administratora
 
-Opis budowy układu panelu przed dodaniem logowania i autoryzacji. Ochronę trasy dodajemy w [[09-kontrola-dostępu-do-panelu-administratora]]. Wyniki sprawdzeń poniżej dotyczą etapu układu.
+Opis budowy układu panelu przed dodaniem logowania i autoryzacji. Ochronę trasy dodajemy w [[09-kontrola-dostępu-do-panelu-administratora]]. Sekcje 1–11 opisują pierwotny etap układu i jego sprawdzenia. Sekcja 12 opisuje późniejszą zmianę wyglądu przycisku wylogowania.
 
 ## 1. Cel i trasa
 
@@ -385,3 +385,63 @@ Na zakończenie etapu układu nie zaimplementowaliśmy jeszcze:
 W przyszłości rozważymy przeniesienie bardziej zaawansowanych interakcji panelu do osobnego modułu JavaScript lub komponentów Vue.
 
 Ochronę panelu wdrożono w późniejszym etapie opisanym w [[09-kontrola-dostępu-do-panelu-administratora]]. Pozostałe propozycje nie są potwierdzeniem ich wykonania.
+
+## 12. Przycisk wylogowania na dole lewego paska
+
+### 12.1. Położenie formularza
+
+Po wdrożeniu mechanizmu opisanego w [[12-wylogowanie-uzytkownikow]] dostosowaliśmy położenie i wygląd istniejącego przycisku.
+
+W `resources/css/admin.css` do reguły `.admin-sidebar` dodano:
+
+```css
+display: flex;
+flex-direction: column;
+```
+
+Elementy paska są ułożone pionowo. Formularz wylogowania pozostaje po menu, wewnątrz `<aside>`. Dodano dla niego regułę:
+
+```css
+.admin-sidebar form {
+    margin-top: auto;
+    margin-bottom: 30px;
+}
+```
+
+`margin-top: auto` wykorzystuje wolną przestrzeń nad formularzem i przesuwa go na dół paska. `margin-bottom: 30px` podnosi przycisk o dodatkowe 30 px; ten odstęp występuje oprócz istniejącego dolnego paddingu paska.
+
+### 12.2. Ikona, etykieta i dostępność
+
+W `resources/views/components/admin-layout.blade.php` zachowano formularz POST, nazwaną trasę `logout` oraz `@csrf`. Zmieniono jego przycisk na:
+
+```blade
+<button type="submit" aria-label="Wyloguj się"
+    class="flex w-full cursor-pointer items-center gap-3 rounded-lg p-3 hover:bg-gray-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+        stroke-width="1.5" aria-hidden="true" class="shrink-0">
+        <path d="M9 5H5v14h4M9 12h12m-5-5 5 5-5 5" />
+    </svg>
+    <span class="admin-nav-label">Wyloguj się</span>
+</button>
+```
+
+Ikona SVG przedstawia wyjście ze strzałką, a `shrink-0` zapobiega jej zmniejszaniu. Klasy `flex`, `items-center` i `gap-3` ustawiają ikonę i tekst obok siebie. Przycisk zajmuje całą dostępną szerokość formularza, ma odstęp wewnętrzny, zaokrąglenie i zmianę tła po najechaniu kursorem.
+
+W rozwiniętym pasku widoczne są ikona i tekst „Wyloguj się”. Istniejąca reguła dla `.admin-nav-label` ukrywa tekst po zwinięciu, pozostawiając ikonę. Nie zmieniano mechanizmu zwijania ani zapamiętywania stanu.
+
+`aria-label="Wyloguj się"` zachowuje dostępną nazwę przycisku także przy ukrytym tekście. Dekoracyjne SVG ma `aria-hidden="true"`. Klasy `focus-visible:*` dodają białą obwódkę przy obsłudze klawiaturą.
+
+### 12.3. Ręczne sprawdzenie
+
+Użytkownik wykonał zmiany i potwierdził działanie w przeglądarce:
+
+| Sprawdzenie | Potwierdzony wynik |
+| --- | --- |
+| Położenie przycisku | Przycisk znajduje się na dole lewego paska, podniesiony o dodatkowe 30 px. |
+| Pasek rozwinięty i zwinięty | Widoczne są odpowiednio ikona z tekstem oraz sama ikona. |
+| Odświeżenie przy zwiniętym pasku | Pasek pozostaje zwinięty, a przycisk pokazuje samą ikonę. |
+| Przejście klawiszem Tab | Przycisk otrzymuje widoczną obwódkę. |
+| Aktywacja klawiszem Enter | Następuje wylogowanie i przekierowanie na stronę główną. |
+| Ponowne wejście do panelu | Wyświetla się formularz logowania. |
+
+Są to wyniki ręcznego sprawdzenia przez użytkownika. W ramach tej poprawki wyglądu nie dodawano ani nie uruchamiano testów automatycznych; nie wykonywano również osobnego sprawdzenia czytnikiem ekranu.

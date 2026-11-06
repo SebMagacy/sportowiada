@@ -6,6 +6,13 @@
     padding: 24px;
     background-color: #1f2937;
     color: #ffffff;
+    display: flex;
+    flex-direction: column;
+}
+
+.admin-sidebar form {
+    margin-top: auto;
+    margin-bottom: 30px;
 }
 
 .admin-sidebar nav a {

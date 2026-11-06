@@ -39,7 +39,14 @@
         <form method="POST" action="{{ route('logout') }}">
             @csrf
 
-            <button type="submit">Wyloguj się</button>
+            <button type="submit" aria-label="Wyloguj się"
+                class="flex w-full cursor-pointer items-center gap-3 rounded-lg p-3 hover:bg-gray-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="1.5" aria-hidden="true" class="shrink-0">
+                    <path d="M9 5H5v14h4M9 12h12m-5-5 5 5-5 5" />
+                </svg>
+                <span class="admin-nav-label">Wyloguj się</span>
+            </button>
         </form>
     </aside>
 
