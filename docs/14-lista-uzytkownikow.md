@@ -165,6 +165,24 @@ Wyjaśnienie zastosowanych klas Tailwind CSS 4:
 
 Zrzuty potwierdziły zastosowanie ramy, nagłówków, odstępów i linii. Po zmianie tytułu użytkownik potwierdził wykonanie kroku, a po dodaniu podświetlenia odpowiedział „ok”. Końcowy odczyt pliku potwierdził obecność obu zmian. Nie przeprowadzono osobnego sprawdzenia przewijania na wąskim ekranie. Nie potwierdzono uruchomienia `npm run dev` ani builda w tym etapie; wskazano je jedynie jako rozwiązanie w razie niewidocznych zmian stylów.
 
+### 5.3. Późniejsza poprawka — ID na końcu i wyrównanie do prawej
+
+Po zakończeniu etapu przykładowych kont opisanego w [[17-przykladowi-uzytkownicy]] użytkownik zmienił kolejność kolumn w `resources/views/admin/users/index.blade.php` na: **Imię → E-mail → Typ konta → ID**. Przeniósł zarówno nagłówek `th`, jak i odpowiadającą mu komórkę `td` wewnątrz pętli. Liczba kolumn nadal wynosi cztery, więc `colspan="4"` komunikatu pustej listy pozostaje poprawne. Przykład z punktu 5.2 przedstawia wcześniejszą wersję tabeli.
+
+W nagłówku ID zastąpiono `text-left` przez `text-right`, a w komórce z identyfikatorem dodano `text-right`:
+
+```blade
+<th scope="col" class="px-6 py-3 text-right font-semibold text-gray-950">ID</th>
+```
+
+```blade
+<td class="px-6 py-3 text-right text-gray-500">{{ $user->id }}</td>
+```
+
+Klasa `text-right` ustawia wyrównanie tekstu do prawej krawędzi komórki, z zachowaniem odstępów `px-6`. W komórce ID nadpisuje odziedziczone z tabeli wyrównanie `text-left`. Pozostałe kolumny zachowują wyrównanie do lewej.
+
+Użytkownik zgłosił konieczność uruchomienia npm, a następnie potwierdził w przeglądarce wyrównanie nagłówka i wartości ID do prawej. Nie podał dokładnego polecenia npm. Odczyt diffu potwierdził przeniesienie obu elementów na koniec oraz klasy `text-right`. Nie dodawano ani nie uruchamiano testów dla tej poprawki wyglądu. Commit i push poprawki nie zostały jeszcze potwierdzone.
+
 ## 6. Paginacja i licznik wyników
 
 ### 6.1. Pobieranie po 10 kont
