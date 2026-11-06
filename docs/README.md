@@ -21,3 +21,4 @@ Dokumentacja tworzenia i rozwoju aplikacji krok po kroku.
 13. [Widok użytkowników w panelu administratora](13-widok-uzytkownikow.md)
 14. [Lista użytkowników w panelu administratora](14-lista-uzytkownikow.md)
 15. [Polskie tłumaczenia aplikacji — plan](15-polskie-tlumaczenia.md)
+16. [Sprawdzenie pustej listy użytkowników i testy aplikacji](16-sprawdzenie-pustej-listy-uzytkownikow.md)
