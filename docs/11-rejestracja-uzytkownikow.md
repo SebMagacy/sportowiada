@@ -514,3 +514,72 @@ Status: **komunikat dla zbyt krótkiego hasła potwierdzony zrzutem ekranu**. Sa
 Odczyt widoku potwierdził blok wyświetlania błędów i oba wywołania `old()`. Ręcznie potwierdzono podstawową rejestrację, logowanie na nowe konto, komunikaty dla zajętego adresu, niezgodnego potwierdzenia i zbyt krótkiego hasła oraz zachowanie danych po błędzie.
 
 Komunikaty walidacji są obecnie po angielsku. Nie dodano ich polskich odpowiedników, osobnego stylowania formularza, jawnego limitowania żądań ani weryfikacji adresu e-mail. Nie sprawdzono osobno każdej reguły walidacji ani nie przeprowadzono pełnego przeglądu bezpieczeństwa kont. Testy automatyczne pozostają odłożone.
+
+
+## 7. Bezpieczne przywracanie danych formularza po błędzie walidacji
+
+### 7.1. Wykryty problem — 06.11.2026
+
+Podczas rozszerzania testów wykryto, że poprzednia wartość pola nie musi być tekstem. Żądanie może zawierać tablicę zamiast imienia lub adresu e-mail, niezależnie od typu pola w HTML. Walidacja odrzuca takie dane, ale mogą one pozostać w sesji jako poprzednie dane formularza.
+
+Wcześniejszy zapis:
+
+```blade
+value="{{ old('name') }}"
+```
+
+przekazywał wynik `old()` bezpośrednio do wyświetlenia. Jeśli była to tablica, renderowanie kończyło się błędem `htmlspecialchars(): Argument #1 ($string) must be of type string, array given`. Analogiczny problem dotyczył `old('email')` w rejestracji i logowaniu.
+
+Walidacja danych i bezpieczne ponowne wyświetlenie formularza są osobnymi zadaniami. Odrzucenie nieprawidłowych danych nie gwarantuje, że można je bezpośrednio wstawić do atrybutu `value`.
+
+### 7.2. Poprawione pola Blade
+
+W `resources/views/auth/register.blade.php` zabezpieczono imię i adres e-mail:
+
+```blade
+<input id="name" name="name" type="text" autocomplete="name" value="{{ is_string(old('name')) ? old('name') : '' }}" required>
+
+<input id="email" name="email" type="email" autocomplete="email" value="{{ is_string(old('email')) ? old('email') : '' }}" required>
+```
+
+W `resources/views/auth/login.blade.php` zastosowano tę samą zasadę dla adresu e-mail:
+
+```blade
+<input id="email" name="email" type="email" autocomplete="username" value="{{ is_string(old('email')) ? old('email') : '' }}" required>
+```
+
+Poszczególne części wyrażenia oznaczają:
+
+- `old('name')` lub `old('email')` — pobranie poprzedniej wartości pola z sesji;
+- `is_string(...)` — sprawdzenie, czy wartość jest tekstem;
+- `? old(...)` — przywrócenie wartości, jeśli jest tekstem;
+- `: ''` — użycie pustego tekstu dla pozostałych typów, w tym tablicy lub `null`;
+- `{{ ... }}` — zachowanie escapowania HTML dla wybranej wartości tekstowej.
+
+Poprawka nie zmienia reguł walidacji, nie przekształca tablicy w tekst i nie zapisuje jej w bazie. Zwykła wartość tekstowa nadal wraca do formularza, a wartość innego typu pozostawia pole puste. Pola haseł nadal nie korzystają z `old()`.
+
+Przykłady z sekcji 6.3–6.4 opisują wcześniejszy etap; powyższe fragmenty przedstawiają późniejsze zabezpieczenie tych samych pól.
+
+### 7.3. Testy odtwarzające problem i wynik poprawki
+
+W `tests/Feature/AuthFormsTest.php` dodano metodę `test_array_old_input_renders_as_empty_field()` z trzema zestawami danych:
+
+| Formularz | Pole |
+| --- | --- |
+| Rejestracja | `name` |
+| Rejestracja | `email` |
+| Logowanie | `email` |
+
+Test zapisuje tablicę w sesji pod `_old_input` dla wybranego pola, a następnie wykonuje żądanie GET formularza. Sprawdza odpowiedź HTTP 200 i pusty atrybut `value` konkretnego pola. W ten sposób odtwarza stan renderowania po zachowaniu nieprawidłowej wartości; nie wysyła w tym samym scenariuszu żądania POST ani nie sprawdza komunikatu walidacji.
+
+Przed poprawką wszystkie trzy przypadki ujawniły błąd renderowania. Po zmianie widoków przeszły poprawnie. Polecenie:
+
+```bash
+php artisan test --compact tests/Feature/AuthFormsTest.php
+```
+
+zakończyło się wynikiem **8 testów, 17 asercji — wszystkie zaliczone**. Wynik obejmuje również wcześniejsze testy tego pliku, dotyczące escapowania tekstowych danych i renderowania komunikatów błędów.
+
+Po poprawce uruchomiono cały zestaw PHP: **57 testów, 282 asercje — wszystkie zaliczone**. Formatowanie `vendor/bin/pint --dirty --format agent`, PHPStan dla zmienionego pliku testowego i `git diff --check` również zakończyły się poprawnie. Nie potwierdzano tej poprawki osobnym ręcznym sprawdzeniem w przeglądarce.
+
+Powyższe testy wykonano później niż pierwotne ręczne sprawdzenia opisane w sekcjach 1–6. Opis rozszerzenia całego zestawu testów pozostaje osobnym tematem.

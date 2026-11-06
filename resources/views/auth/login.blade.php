@@ -7,7 +7,7 @@
 <form method="POST" action="{{ route('login') }}">
     @csrf
     <label for="email">Adres e-mail</label>
-    <input id="email" name="email" type="email" autocomplete="username" value="{{ old('email') }}" required>
+    <input id="email" name="email" type="email" autocomplete="username" value="{{ is_string(old('email')) ? old('email') : '' }}" required>
 
     <label for="password">Hasło</label>
     <input id="password" name="password" type="password" autocomplete="current-password" required>
