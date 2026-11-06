@@ -1,4 +1,4 @@
-# Sprawdzenie pustej listy użytkowników i testy aplikacji
+# Testy automatyczne aplikacji
 
 ## 1. Punkt wyjścia
 
