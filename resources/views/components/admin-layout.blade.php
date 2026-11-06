@@ -50,7 +50,7 @@
         </form>
     </aside>
 
-    <main class="flex-1 p-8">
+    <main class="min-w-0 flex-1 p-8">
         {{ $slot }}
     </main>
 

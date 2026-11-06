@@ -23,3 +23,4 @@ Dokumentacja tworzenia i rozwoju aplikacji krok po kroku.
 15. [Polskie tłumaczenia aplikacji — plan](15-polskie-tlumaczenia.md)
 16. [Testy automatyczne aplikacji](16-testy-automatyczne-aplikacji.md)
 17. [Przykładowi użytkownicy — plan](17-przykladowi-uzytkownicy.md)
+18. [Wyszukiwanie użytkowników — plan](18-wyszukiwanie-uzytkownikow.md)

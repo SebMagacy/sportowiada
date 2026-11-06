@@ -128,6 +128,13 @@ Przebieg implementacji opisują [[13-widok-uzytkownikow]] i [[14-lista-uzytkowni
 
 ## Prezentacja wyników
 
+### Pole wyszukiwania użytkowników
+
+**Pole wyszukiwania użytkowników** to pole tekstowe, w którym wpisuje się imię, adres e-mail lub ich fragment, aby wyświetlić na liście pasujące konta.
+
+> [!example]- Planowany przykład w Sportowiadzie
+> Administrator wpisze `example-user-25` w polu nad tabelą i naciśnie Enter. Na liście wyników zobaczy konto z adresem `example-user-25@example.com`. Plan wyszukiwania opisuje [[18-wyszukiwanie-uzytkownikow]].
+
 ### Paginacja
 
 **Paginacja** to podział wyników na strony. Zamiast pobierać i wyświetlać wszystkie rekordy naraz, aplikacja pobiera część przypadającą na wybraną stronę.
