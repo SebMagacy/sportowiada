@@ -6,6 +6,8 @@
     <div class="overflow-x-auto rounded-xl border border-gray-200 bg-white shadow-sm">
         <div class="flex justify-end border-b border-gray-200 p-4">
             <form method="GET" action="{{ route('admin.users.index') }}" class="w-full sm:w-80" role="search">
+                <input type="hidden" name="sort" value="{{ $sort }}">
+                <input type="hidden" name="direction" value="{{ $direction }}">
                 <label for="users-search" class="sr-only">
                     {{ __('users.search_label') }}
                 </label>
@@ -27,13 +29,12 @@
         <table class="w-full text-left text-sm">
             <thead class="border-b border-gray-200 bg-gray-50">
                 <tr>
-                    <th scope="col" class="px-6 py-3 text-left font-semibold text-gray-950">{{ __('users.name') }}
-                    </th>
-                    <th scope="col" class="px-6 py-3 text-left font-semibold text-gray-950">{{ __('users.email') }}
-                    </th>
-                    <th scope="col" class="px-6 py-3 text-left font-semibold text-gray-950">
-                        {{ __('users.account_type') }}</th>
-                    <th scope="col" class="px-6 py-3 text-right font-semibold text-gray-950">ID</th>
+                    @foreach ($columns as $column => $definition)
+                        <x-sortable-column :column="$column" route="admin.users.index" :sort="$sort"
+                            :direction="$direction" :sortable="$definition['sortable']" :filters="['search' => $search]" :align="$definition['align']">
+                            {{ $definition['label'] }}
+                        </x-sortable-column>
+                    @endforeach
                 </tr>
             </thead>
             <tbody class="divide-y divide-gray-200">

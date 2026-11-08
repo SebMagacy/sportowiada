@@ -24,3 +24,4 @@ Dokumentacja tworzenia i rozwoju aplikacji krok po kroku.
 16. [Testy automatyczne aplikacji](16-testy-automatyczne-aplikacji.md)
 17. [Przykładowi użytkownicy — plan](17-przykladowi-uzytkownicy.md)
 18. [Wyszukiwanie użytkowników — plan](18-wyszukiwanie-uzytkownikow.md)
+19. [Sortowanie kolumn listy użytkowników — plan, issue #5](19-sortowanie-uzytkownikow.md)
