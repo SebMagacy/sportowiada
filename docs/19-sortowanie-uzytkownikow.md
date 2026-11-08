@@ -6,7 +6,7 @@ Etap realizuje [issue #5 — Dodać sortowanie kolumn listy użytkowników](http
 
 Lista ma już wyszukiwanie opisane w [[18-wyszukiwanie-uzytkownikow]], paginację i ochronę dostępu dla administratora. Poprzedni etap zakończono wynikiem 15 testów kontrolera i 55 asercji; jest to wynik historyczny, nie weryfikacja tego etapu.
 
-**Status:** wdrożono sortowanie przez wspólny komponent, definicje kolumn i reset trzecim kliknięciem. Użytkownik potwierdził opisane poniżej sprawdzenia ręczne. Ostatnie uruchomienie całej klasy testów kontrolera przez asystenta: **31 testów przeszło, 111 asercji**. Etap nie jest jeszcze zamknięty; pozostają końcowy przegląd oraz commit i push.
+**Status:** wdrożono sortowanie przez wspólny komponent, definicje kolumn i reset trzecim kliknięciem. Użytkownik potwierdził opisane poniżej sprawdzenia ręczne. Ostatnie uruchomienie całej klasy testów kontrolera przez asystenta: **31 testów przeszło, 111 asercji**. Etap ukończony: implementację opublikowano na `main` w commicie `8a30410`, a issue #5 zamknięto po potwierdzeniu pushu i kryteriów.
 
 ## 2. Kryteria akceptacji
 
@@ -210,3 +210,11 @@ Własne końcowe kontrole asystenta:
 - `git diff --check`: brak błędów.
 
 Zmiany gotowe do publikacji. Jej wynik i stan issue należy potwierdzić operacjami Git i GitHub; powyższe kontrole same w sobie nie oznaczają wykonania pushu.
+
+## 8. Publikacja i zamknięcie issue
+
+8 listopada 2026 asystent utworzył commit `8a30410` — „Dodaj sortowanie listy użytkowników i wspólny komponent”, z odwołaniem `Refs #5`. Hook GrumPHP ponownie wykonał PHPStan pomyślnie. `git push origin main` potwierdził publikację zakresu `2c759c2..8a30410`.
+
+Integracja GitHub zwróciła 403 przy próbie aktualizacji issue; asystent dokończył operację przez zalogowaną przeglądarkę Chrome. Oznaczył wszystkie pięć kryteriów jako spełnione, dodał podsumowanie z commitem i wynikami kontroli oraz zamknął issue jako ukończone. Potwierdzono widoczny stan `Closed` i wpis zamknięcia jako `completed`.
+
+Ten końcowy zapis publikacji jest osobnym uzupełnieniem dokumentacji po commicie implementacji.
