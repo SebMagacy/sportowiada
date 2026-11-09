@@ -10,5 +10,9 @@ return [
     'empty' => 'Brak użytkowników.',
     'search_label' => 'Szukaj użytkowników',
     'search_placeholder' => 'Szukaj użytkowników…',
-    'no_results' => 'Nie znaleziono użytkowników pasujących do wyszukiwania.',
+    'no_results' => 'Nie znaleziono użytkowników spełniających wybrane kryteria.',
+    'all_accounts' => 'Wszyscy',
+    'administrators' => 'Administratorzy',
+    'regular_users' => 'Użytkownicy',
+    'apply_filters' => 'Zastosuj',
 ];

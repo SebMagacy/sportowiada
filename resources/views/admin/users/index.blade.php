@@ -24,6 +24,29 @@
                         placeholder="{{ __('users.search_placeholder') }}"
                         class="w-full rounded-lg border border-gray-300 bg-white py-2 pr-3 pl-10 text-sm text-gray-950 placeholder:text-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 focus:outline-none">
                 </div>
+
+                <div class="mt-3">
+                    <label for="users-account-type" class="mb-1 block text-sm font-medium text-gray-700">
+                        {{ __('users.account_type') }}
+                    </label>
+
+                    <select id="users-account-type" name="account_type"
+                        class="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-950 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                        <option value="all" @selected($accountType === 'all')>
+                            {{ __('users.all_accounts') }}
+                        </option>
+                        <option value="admin" @selected($accountType === 'admin')>
+                            {{ __('users.administrators') }}
+                        </option>
+                        <option value="user" @selected($accountType === 'user')>
+                            {{ __('users.regular_users') }}
+                        </option>
+                    </select>
+                </div>
+                <button type="submit"
+                    class="mt-3 rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">
+                    {{ __('users.apply_filters') }}
+                </button>
             </form>
         </div>
         <table class="w-full text-left text-sm">
@@ -31,7 +54,7 @@
                 <tr>
                     @foreach ($columns as $column => $definition)
                         <x-sortable-column :column="$column" route="admin.users.index" :sort="$sort"
-                            :direction="$direction" :sortable="$definition['sortable']" :filters="['search' => $search]" :align="$definition['align']">
+                            :direction="$direction" :sortable="$definition['sortable']" :filters="['search' => $search, 'account_type' => $accountType]" :align="$definition['align']">
                             {{ $definition['label'] }}
                         </x-sortable-column>
                     @endforeach
@@ -49,7 +72,7 @@
                 @empty
                     <tr>
                         <td colspan="4" class="px-6 py-8 text-center text-gray-500">
-                            {{ $search !== '' ? __('users.no_results') : __('users.empty') }}
+                            {{ ($search !== '' || $accountType !== 'all') ? __('users.no_results') : __('users.empty') }}
                         </td>
                     </tr>
                 @endforelse

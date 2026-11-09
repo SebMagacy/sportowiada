@@ -15,6 +15,12 @@ class UserController extends Controller
     {
         $search = $request->string('search')->trim()->toString();
 
+        $accountType = $request->query('account_type', 'all');
+
+        if (! in_array($accountType, ['all', 'admin', 'user'], true)) {
+            $accountType = 'all';
+        }
+
         $columns = [
             'name' => [
                 'label' => __('users.name'),
@@ -60,6 +66,10 @@ class UserController extends Controller
 
         $query = User::query();
 
+        if ($accountType !== 'all') {
+            $query->where('is_admin', $accountType === 'admin');
+        }
+
         if ($search !== '') {
             $query->where(function (Builder $query) use ($search): void {
                 $query->where('name', 'like', '%'.$search.'%')
@@ -78,6 +88,7 @@ class UserController extends Controller
         $users = $query->paginate(10)
             ->appends([
                 'search' => $search,
+                'account_type' => $accountType,
                 'sort' => $sort,
                 'direction' => $direction,
             ]);
@@ -86,6 +97,7 @@ class UserController extends Controller
             return redirect()->route('admin.users.index', [
                 'page' => $users->lastPage(),
                 'search' => $search !== '' ? $search : null,
+                'account_type' => $accountType,
                 'sort' => $sort,
                 'direction' => $direction,
             ]);
@@ -94,6 +106,7 @@ class UserController extends Controller
         return view('admin.users.index', [
             'users' => $users,
             'search' => $search,
+            'accountType' => $accountType,
             'sort' => $sort,
             'direction' => $direction,
             'columns' => $columns,
