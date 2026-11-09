@@ -419,3 +419,9 @@ Po ostatnich zmianach stylowania asystent ponownie uruchomił pełny zestaw PHP 
 Przejrzano diff kontrolera, widoku i importu oraz nowe pliki komponentu i modułu. Zachowano wspólny formularz GET, parametry sortowania, wartość zastosowanego typu konta i osobny kontener tabeli. Nie stwierdzono nowych problemów w tym zakresie poza ograniczeniami mobilnymi opisanymi w sekcji 23 i issue #12.
 
 Stan lokalny przed commitem: `main` wyprzedza lokalne `origin/main` o dwa wcześniejsze commity etapu 20. Pliki nowego komponentu, modułu, testów i tego rozdziału są jeszcze nieśledzone i muszą zostać objęte dodaniem do commita. Przygotowywany commit powinien zawierać `Refs #11`, bez automatycznego zamykania zgłoszenia. Nie wykonano jeszcze commita ani pushu.
+
+## 25. Commit implementacji
+
+Użytkownik utworzył commit `7d828dc` — „Przebuduj panel filtrów użytkowników”, z treścią `Refs #11`. Wynik polecenia potwierdza objęcie 12 plików, w tym nowego komponentu, modułu JavaScript, testów i dokumentacji etapu. Hook GrumPHP uruchomił PHPStan pomyślnie. Asystent potwierdził commit w lokalnym Git.
+
+Push nie został jeszcze potwierdzony. Issue #11 pozostaje otwarte ze względu na niespełnione kryterium mobilne, opisane w #12. Ten zapis dokumentacji powstał po commicie implementacji i wymaga osobnego zapisania w Git.
