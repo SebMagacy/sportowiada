@@ -523,3 +523,9 @@ Asystent przejrzał końcowy diff kontrolera, formularza i tłumaczeń oraz wcze
 - Typy kont, brak dopasowań i współpraca z wyszukiwaniem — objęte dedykowanymi testami.
 
 Ponowne `git diff --check` nie wykazało błędów. Wyników kontroli nie powielano przez kolejne uruchomienie całej suite bez nowych zmian w kodzie. Commit, push oraz aktualizacja i zamknięcie issue nie zostały jeszcze wykonane.
+
+## 37. Commit implementacji — potwierdzony
+
+Użytkownik utworzył na `main` commit `c79387a` — „Dodaj filtrowanie użytkowników według typu konta”, z treścią `Refs #6`. Commit obejmuje 10 plików: implementację filtra, tłumaczenia, podział i nowe testy oraz dokumentację. Kontrola PHPStan uruchomiona przez GrumPHP przed commitem przeszła. Asystent potwierdził numer commita przez odczyt historii Git.
+
+Publikacja tego commita na GitHubie nie została jeszcze potwierdzona. Niniejszy wpis dokumentacji powstał po commicie implementacji i wymaga osobnego zatwierdzenia. Issue #6 pozostaje do aktualizacji i zamknięcia po potwierdzonym pushu.
