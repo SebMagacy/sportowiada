@@ -1,5 +1,6 @@
 import { createApp } from 'vue';
 import App from './App.vue';
+import './user-filters.js';
 
 const vueRoot = document.getElementById('app');
 

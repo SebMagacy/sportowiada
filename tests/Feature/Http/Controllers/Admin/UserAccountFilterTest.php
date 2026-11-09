@@ -54,6 +54,7 @@ class UserAccountFilterTest extends TestCase
         $response = $this->actingAs($admin)->get(route('admin.users.index', ['account_type' => $accountType]));
 
         $response->assertOk()->assertViewHas('accountType', 'all');
+        $response->assertViewHas('activeFiltersCount', 0);
         $response->assertViewHas('users', function (LengthAwarePaginator $users) use ($admin, $user): bool {
             return $users->total() === 2 && $users->pluck('id')->all() === [$admin->id, $user->id];
         });

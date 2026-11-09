@@ -26,3 +26,4 @@ Dokumentacja tworzenia i rozwoju aplikacji krok po kroku.
 18. [Wyszukiwanie użytkowników — plan](18-wyszukiwanie-uzytkownikow.md)
 19. [Sortowanie kolumn listy użytkowników — plan, issue #5](19-sortowanie-uzytkownikow.md)
 20. [Filtrowanie użytkowników według typu konta — plan, issue #6](20-filtrowanie-uzytkownikow.md)
+21. [Panel filtrów użytkowników — plan, issue #11](21-panel-filtrow-uzytkownikow.md)

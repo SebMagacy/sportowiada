@@ -3,81 +3,81 @@
         {{ __('users.title') }}
     </h1>
 
-    <div class="overflow-x-auto rounded-xl border border-gray-200 bg-white shadow-sm">
-        <div class="flex justify-end border-b border-gray-200 p-4">
-            <form method="GET" action="{{ route('admin.users.index') }}" class="w-full sm:w-80" role="search">
+    <div class="rounded-xl border border-gray-200 bg-white shadow-sm">
+        <div class="border-b border-gray-200 p-4">
+            <form method="GET" action="{{ route('admin.users.index') }}" class="w-full" role="search">
                 <input type="hidden" name="sort" value="{{ $sort }}">
                 <input type="hidden" name="direction" value="{{ $direction }}">
                 <label for="users-search" class="sr-only">
                     {{ __('users.search_label') }}
                 </label>
 
-                <div class="relative">
-                    <svg class="pointer-events-none absolute top-1/2 left-3 size-5 -translate-y-1/2 text-gray-400"
-                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                        stroke="currentColor" aria-hidden="true">
-                        <circle cx="10.5" cy="10.5" r="6.75" />
-                        <path stroke-linecap="round" d="m16 16 4.25 4.25" />
-                    </svg>
+                <x-user-filters :account-type="$accountType" :search="$search" :sort="$sort" :direction="$direction" />
 
-                    <input type="search" id="users-search" name="search" value="{{ $search }}"
-                        placeholder="{{ __('users.search_placeholder') }}"
-                        class="w-full rounded-lg border border-gray-300 bg-white py-2 pr-3 pl-10 text-sm text-gray-950 placeholder:text-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                <div class="flex items-center justify-between gap-3">
+                    <button type="button" id="users-filters-toggle" aria-controls="users-filters-panel"
+                        aria-expanded="false"
+                        class="inline-flex shrink-0 items-center gap-2 rounded-lg border border-gray-300 px-3 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">
+                        <svg class="size-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                            stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M3 4.5h18l-7.5 9v6l-3-1.5v-4.5L3 4.5Z" />
+                        </svg>
+
+                        @if ($activeFiltersCount > 0)
+                            <span>({{ $activeFiltersCount }})</span>
+                        @endif
+
+                        {{ __('users.filters') }}
+                    </button>
+
+                    <div class="relative min-w-0 flex-1 sm:max-w-xs">
+                        <svg class="pointer-events-none absolute top-1/2 left-3 size-5 -translate-y-1/2 text-gray-400"
+                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" aria-hidden="true">
+                            <circle cx="10.5" cy="10.5" r="6.75" />
+                            <path stroke-linecap="round" d="m16 16 4.25 4.25" />
+                        </svg>
+
+                        <input type="search" id="users-search" name="search" value="{{ $search }}"
+                            placeholder="{{ __('users.search_placeholder') }}"
+                            class="w-full rounded-lg border border-gray-300 bg-white py-2 pr-3 pl-10 text-sm text-gray-950 placeholder:text-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                    </div>
                 </div>
 
-                <div class="mt-3">
-                    <label for="users-account-type" class="mb-1 block text-sm font-medium text-gray-700">
-                        {{ __('users.account_type') }}
-                    </label>
-
-                    <select id="users-account-type" name="account_type"
-                        class="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-950 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 focus:outline-none">
-                        <option value="all" @selected($accountType === 'all')>
-                            {{ __('users.all_accounts') }}
-                        </option>
-                        <option value="admin" @selected($accountType === 'admin')>
-                            {{ __('users.administrators') }}
-                        </option>
-                        <option value="user" @selected($accountType === 'user')>
-                            {{ __('users.regular_users') }}
-                        </option>
-                    </select>
-                </div>
-                <button type="submit"
-                    class="mt-3 rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">
-                    {{ __('users.apply_filters') }}
-                </button>
             </form>
         </div>
-        <table class="w-full text-left text-sm">
-            <thead class="border-b border-gray-200 bg-gray-50">
-                <tr>
-                    @foreach ($columns as $column => $definition)
-                        <x-sortable-column :column="$column" route="admin.users.index" :sort="$sort"
-                            :direction="$direction" :sortable="$definition['sortable']" :filters="['search' => $search, 'account_type' => $accountType]" :align="$definition['align']">
-                            {{ $definition['label'] }}
-                        </x-sortable-column>
-                    @endforeach
-                </tr>
-            </thead>
-            <tbody class="divide-y divide-gray-200">
-                @forelse ($users as $user)
-                    <tr class="hover:bg-gray-50">
-                        <td class="px-6 py-3 font-medium text-gray-950">{{ $user->name }}</td>
-                        <td class="px-6 py-3 text-gray-700">{{ $user->email }}</td>
-                        <td class="px-6 py-3 text-gray-700">
-                            {{ $user->is_admin ? __('users.administrator') : __('users.user') }}</td>
-                        <td class="px-6 py-3 text-right text-gray-500">{{ $user->id }}</td>
-                    </tr>
-                @empty
+        <div class="overflow-x-auto">
+            <table class="w-full text-left text-sm">
+                <thead class="border-b border-gray-200 bg-gray-50">
                     <tr>
-                        <td colspan="4" class="px-6 py-8 text-center text-gray-500">
-                            {{ ($search !== '' || $accountType !== 'all') ? __('users.no_results') : __('users.empty') }}
-                        </td>
+                        @foreach ($columns as $column => $definition)
+                            <x-sortable-column :column="$column" route="admin.users.index" :sort="$sort"
+                                :direction="$direction" :sortable="$definition['sortable']" :filters="['search' => $search, 'account_type' => $accountType]" :align="$definition['align']">
+                                {{ $definition['label'] }}
+                            </x-sortable-column>
+                        @endforeach
                     </tr>
-                @endforelse
-            </tbody>
-        </table>
+                </thead>
+                <tbody class="divide-y divide-gray-200">
+                    @forelse ($users as $user)
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-3 font-medium text-gray-950">{{ $user->name }}</td>
+                            <td class="px-6 py-3 text-gray-700">{{ $user->email }}</td>
+                            <td class="px-6 py-3 text-gray-700">
+                                {{ $user->is_admin ? __('users.administrator') : __('users.user') }}</td>
+                            <td class="px-6 py-3 text-right text-gray-500">{{ $user->id }}</td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="4" class="px-6 py-8 text-center text-gray-500">
+                                {{ $search !== '' || $accountType !== 'all' ? __('users.no_results') : __('users.empty') }}
+                            </td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
 
         @if ($users->count() > 0)
             <div

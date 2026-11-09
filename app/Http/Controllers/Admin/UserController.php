@@ -21,6 +21,12 @@ class UserController extends Controller
             $accountType = 'all';
         }
 
+        $activeFiltersCount = 0;
+
+        if ($accountType !== 'all') {
+            $activeFiltersCount++;
+        }
+
         $columns = [
             'name' => [
                 'label' => __('users.name'),
@@ -107,6 +113,7 @@ class UserController extends Controller
             'users' => $users,
             'search' => $search,
             'accountType' => $accountType,
+            'activeFiltersCount' => $activeFiltersCount,
             'sort' => $sort,
             'direction' => $direction,
             'columns' => $columns,

@@ -15,4 +15,6 @@ return [
     'administrators' => 'Administrators',
     'regular_users' => 'Users',
     'apply_filters' => 'Apply',
+    'filters' => 'Filters',
+    'clear_filters' => 'Clear filters',
 ];
