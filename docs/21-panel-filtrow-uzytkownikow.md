@@ -425,3 +425,9 @@ Stan lokalny przed commitem: `main` wyprzedza lokalne `origin/main` o dwa wcześ
 Użytkownik utworzył commit `7d828dc` — „Przebuduj panel filtrów użytkowników”, z treścią `Refs #11`. Wynik polecenia potwierdza objęcie 12 plików, w tym nowego komponentu, modułu JavaScript, testów i dokumentacji etapu. Hook GrumPHP uruchomił PHPStan pomyślnie. Asystent potwierdził commit w lokalnym Git.
 
 Push nie został jeszcze potwierdzony. Issue #11 pozostaje otwarte ze względu na niespełnione kryterium mobilne, opisane w #12. Ten zapis dokumentacji powstał po commicie implementacji i wymaga osobnego zapisania w Git.
+
+## 26. Publikacja zmian
+
+Użytkownik utworzył commit dokumentacji `818fa70` — „Udokumentuj commit panelu filtrów”, z `Refs #11`. Hook PHPStan przeszedł. Następnie `git push origin main` potwierdził publikację zakresu `0288c7e..818fa70` na zdalny `main`, obejmującego również wcześniejsze commity etapu 20 oraz implementację panelu `7d828dc`.
+
+Asystent sprawdził po tym wyniku lokalny stan: `main` jest zgodny z lokalnym `origin/main`, a drzewo robocze było czyste przed dopisaniem tej sekcji. Potwierdzenie publikacji pochodzi z wyniku pushu przekazanego przez użytkownika. Issue #11 nie zostało zamknięte; ograniczenie mobilne pozostaje opisane w #12. Ten końcowy zapis publikacji jest lokalnym uzupełnieniem dokumentacji po pushu i można go objąć kolejnym commitem dokumentacji.
