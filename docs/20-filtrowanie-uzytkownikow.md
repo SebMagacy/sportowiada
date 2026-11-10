@@ -8,7 +8,7 @@ Lista ma wyszukiwanie, paginację oraz sortowanie opisane w [[19-sortowanie-uzyt
 
 Etap 19 opublikowano na `main`: implementacja `8a30410`, końcowa dokumentacja `0288c7e`; issue #5 zamknięto. Ostatnie potwierdzone kontrole poprzedniego etapu: 81 testów PHP / 361 asercji, 1 test JavaScript, PHPStan bez błędów i poprawny Pint. Nie są to wyniki nowego etapu.
 
-**Status:** wdrożono filtr, formularz i tłumaczenia PL/EN. Wykonano opisane niżej sprawdzenia ręczne oraz dodano 17 przypadków automatycznych w 6 metodach testowych. Pełny zestaw PHP przechodzi: 98 testów, 466 asercji; przechodzi też 1 test JavaScript, Pint i PHPStan. Przegląd końcowy, commit, push i zamknięcie issue pozostają do wykonania. Poniższe kryteria określają zakres etapu; szczegółowe potwierdzenia zapisano w kolejnych sekcjach.
+**Status:** wdrożono filtr, formularz i tłumaczenia PL/EN. Wykonano opisane niżej sprawdzenia ręczne oraz dodano 17 przypadków automatycznych w 6 metodach testowych. Pełny zestaw PHP przechodzi: 98 testów, 466 asercji; przechodzi też 1 test JavaScript, Pint i PHPStan. Implementację opublikowano w commicie `c79387a`; issue #6 zamknięto 10 listopada 2026 po potwierdzeniu kryteriów i publikacji. Poniższe kryteria określają zakres etapu; szczegółowe potwierdzenia zapisano w kolejnych sekcjach.
 
 ## 2. Kryteria akceptacji
 
@@ -528,4 +528,10 @@ Ponowne `git diff --check` nie wykazało błędów. Wyników kontroli nie powiel
 
 Użytkownik utworzył na `main` commit `c79387a` — „Dodaj filtrowanie użytkowników według typu konta”, z treścią `Refs #6`. Commit obejmuje 10 plików: implementację filtra, tłumaczenia, podział i nowe testy oraz dokumentację. Kontrola PHPStan uruchomiona przez GrumPHP przed commitem przeszła. Asystent potwierdził numer commita przez odczyt historii Git.
 
-Publikacja tego commita na GitHubie nie została jeszcze potwierdzona. Niniejszy wpis dokumentacji powstał po commicie implementacji i wymaga osobnego zatwierdzenia. Issue #6 pozostaje do aktualizacji i zamknięcia po potwierdzonym pushu.
+## 38. Publikacja i zamknięcie issue #6
+
+Publikację implementacji potwierdził wynik pushu użytkownika `0288c7e..818fa70`, obejmujący również commity etapu 20. Dnia 10 listopada 2026, na wyraźną prośbę użytkownika, asystent oznaczył wszystkie pięć kryteriów issue #6 jako spełnione, dodał komentarz z podsumowaniem, commitem `c79387a` i wynikami weryfikacji oraz zamknął zgłoszenie przez zalogowane Chrome. Potwierdzono widoczny stan `Closed` i zapis komentarza.
+
+Podstawą zamknięcia były opisane wcześniej sprawdzenia kryteriów oraz opublikowana implementacja. W komentarzu rozróżniono wyniki etapu 20 (98 testów PHP / 466 asercji) od późniejszych wyników etapu 21 (115 testów PHP / 571 asercji i 8 przypadków JavaScript). Nie uruchamiano ponownie testów w ramach samego zamykania zgłoszenia. Issue #11 i problem mobilny #12 pozostają osobnymi otwartymi zadaniami. Ten zapis dokumentacji jest lokalnym uzupełnieniem po zamknięciu zgłoszenia.
+
+W chwili zapisu sekcji 37 publikacja nie była jeszcze potwierdzona. Jej późniejsze potwierdzenie i zamknięcie issue opisuje sekcja 38.
