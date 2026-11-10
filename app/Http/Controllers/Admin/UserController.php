@@ -117,6 +117,11 @@ class UserController extends Controller
             'sort' => $sort,
             'direction' => $direction,
             'columns' => $columns,
+            'clearSearchUrl' => route('admin.users.index', [
+                'account_type' => $accountType,
+                'sort' => $sort,
+                'direction' => $direction,
+            ]),
         ]);
     }
 }

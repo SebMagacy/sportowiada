@@ -17,4 +17,5 @@ return [
     'apply_filters' => 'Apply',
     'filters' => 'Filters',
     'clear_filters' => 'Clear filters',
+    'clear_search' => 'Clear search',
 ];

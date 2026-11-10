@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panel administratora — Sportowiada</title>
     <script src="{{ asset('js/admin-sidebar-init.js') }}"></script>
-    @vite(['resources/css/admin.css', 'resources/js/app.js'])
+    @vite(['resources/css/admin.css', 'resources/js/admin.js'])
 </head>
 
 <body class="flex min-h-screen">

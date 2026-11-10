@@ -17,4 +17,5 @@ return [
     'apply_filters' => 'Zastosuj',
     'filters' => 'Filtry',
     'clear_filters' => 'Wyczyść filtry',
+    'clear_search' => 'Wyczyść wyszukiwanie',
 ];

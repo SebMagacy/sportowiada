@@ -8,16 +8,13 @@
             <form method="GET" action="{{ route('admin.users.index') }}" class="w-full" role="search">
                 <input type="hidden" name="sort" value="{{ $sort }}">
                 <input type="hidden" name="direction" value="{{ $direction }}">
-                <label for="users-search" class="sr-only">
-                    {{ __('users.search_label') }}
-                </label>
 
                 <x-user-filters :account-type="$accountType" :search="$search" :sort="$sort" :direction="$direction" />
 
-                <div class="flex items-center justify-between gap-3">
+                <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                     <button type="button" id="users-filters-toggle" aria-controls="users-filters-panel"
                         aria-expanded="false"
-                        class="inline-flex shrink-0 items-center gap-2 rounded-lg border border-gray-300 px-3 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">
+                        class="inline-flex shrink-0 items-center gap-2 rounded-lg border border-gray-300 px-3 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 self-start sm:self-auto">
                         <svg class="size-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                             stroke-width="1.5" stroke="currentColor" aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round"
@@ -31,18 +28,8 @@
                         {{ __('users.filters') }}
                     </button>
 
-                    <div class="relative min-w-0 flex-1 sm:max-w-xs">
-                        <svg class="pointer-events-none absolute top-1/2 left-3 size-5 -translate-y-1/2 text-gray-400"
-                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                            stroke="currentColor" aria-hidden="true">
-                            <circle cx="10.5" cy="10.5" r="6.75" />
-                            <path stroke-linecap="round" d="m16 16 4.25 4.25" />
-                        </svg>
-
-                        <input type="search" id="users-search" name="search" value="{{ $search }}"
-                            placeholder="{{ __('users.search_placeholder') }}"
-                            class="w-full rounded-lg border border-gray-300 bg-white py-2 pr-3 pl-10 text-sm text-gray-950 placeholder:text-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 focus:outline-none">
-                    </div>
+                    <x-search-input id="users-search" name="search" :value="$search" :label="__('users.search_label')"
+                        :placeholder="__('users.search_placeholder')" :clear-url="$clearSearchUrl" :clear-label="__('users.clear_search')" class="w-full sm:flex-1 sm:max-w-xs" />
                 </div>
 
             </form>

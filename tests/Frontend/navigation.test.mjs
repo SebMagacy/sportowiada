@@ -8,6 +8,8 @@ import vm from 'node:vm';
 const initialization = readFileSync(new URL('../../public/js/admin-sidebar-init.js', import.meta.url), 'utf8');
 const application = readFileSync(new URL('../../resources/js/app.js', import.meta.url), 'utf8')
     .replace(/^import .*;\s*$/gm, '');
+const administration = readFileSync(new URL('../../resources/js/admin.js', import.meta.url), 'utf8')
+    .replace(/^import .*;\s*$/gm, '');
 
 // Każdy test dostaje własny uproszczony DOM i localStorage, bez współdzielenia stanu.
 function environment(stored = null, hasSidebar = true, hasVue = false) {
@@ -34,10 +36,12 @@ function environment(stored = null, hasSidebar = true, hasVue = false) {
         },
         App: {},
         createApp: () => ({ mount: (root) => { mounted = root; } }),
+        initializeSearchInputs: () => {},
     };
     vm.createContext(context);
     vm.runInContext(initialization, context);
     vm.runInContext(application, context);
+    vm.runInContext(administration, context);
     return { classes, attributes, storage, click: () => click(), mounted: () => mounted, vueRoot };
 }
 
