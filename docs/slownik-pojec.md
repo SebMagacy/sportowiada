@@ -2,6 +2,13 @@
 
 Pojęcia używane w projekcie Sportowiada, wyjaśnione na przykładach z aplikacji.
 
+## Pojęcia do zdefiniowania
+### 1. `aria-label`
+### 2. Czytnik ekranu
+### 3. Klucz tłumaczenia
+### 4. @props
+### 5. Komponent Blade
+
 ## Dokumentacja projektu
 
 ### Dokumentacja projektu
