@@ -4,7 +4,7 @@
 
 Etap 22 realizuje [issue #8 — Dodać przycisk wyczyszczenia wyszukiwania użytkowników](https://github.com/SebMagacy/sportowiada/issues/8).
 
-**Status:** zaimplementowano przycisk X, komponent pola, moduł JavaScript i osobne zasoby panelu. Użytkownik potwierdził opisane niżej sprawdzenia ręczne. Na wyraźne zlecenie użytkownika asystent dodał i uruchomił testy automatyczne. Problem układu mobilnego przy rozwiniętym sidebarze pozostaje otwarty i powiązany z #12. Nie potwierdzono publikacji zmian ani zamknięcia #8. Sekcje 2–7 opisują punkt wyjścia i uzgodniony zakres, a sekcja 8 wykonane kroki oraz ich wyniki.
+**Status:** zaimplementowano i opublikowano przycisk X, komponent pola, moduł JavaScript i osobne zasoby panelu (commit `4ddcec4`). Użytkownik potwierdził opisane niżej sprawdzenia ręczne. Na wyraźne zlecenie użytkownika asystent dodał i uruchomił testy automatyczne. Problem układu mobilnego przy rozwiniętym sidebarze pozostaje otwarty i powiązany z #12. Issue #8 pozostaje otwarte. Sekcje 2–7 opisują punkt wyjścia i uzgodniony zakres, a sekcja 8 wykonane kroki oraz ich wyniki.
 
 ## 2. Punkt wyjścia
 
@@ -210,3 +210,9 @@ Wyniki własnych uruchomień asystenta:
 Testy PHP uruchamiano z `VIEW_COMPILED_PATH` wskazującym świeży katalog `mktemp` w `/tmp`. Pierwsza analiza PHPStan zgłosiła `modelKeys()` na kolekcji paginatora; test poprawiono na `getCollection()->pluck('id')->all()` i ponownie uruchomiono pełny zestaw oraz analizę. Przy `node --test` raport tego środowiska pokazywał liczbę plików, dlatego liczbę przypadków potwierdzono także osobnym uruchomieniem `node tests/Frontend/<plik>.test.mjs` dla każdego z trzech plików.
 
 Testy z uproszczonym DOM nie dowodzą poprawności wymiarów pola, fokusu w przeglądarce ani mobilnego układu. Wyniki nie zamykają problemu rozwiniętej nawigacji z #12. Nie wykonano commita, pusha ani zmian w GitHub.
+
+### Publikacja etapu 22 i przegląd kryteriów
+
+Po opisanych testach, na wyraźne zlecenie użytkownika, asystent utworzył trzy osobne commity: `4ddcec4` — funkcja X, testy i dokumentacja etapu 22 (`Refs #8`); `a8c1d0f` — dokumentacja zamknięcia #6; `18bd875` — pojęcia do słownika. Kontrola PHPStan uruchamiana przez GrumPHP przeszła przy każdym commicie. Potwierdzony push do `origin/main`: `423096a..18bd875`. Bezpośrednio po pushu Git był czysty, a porównanie `HEAD...origin/main` zwróciło `0 0`.
+
+Asystent ponownie odczytał aktualne #8: zgłoszenie jest otwarte, a checklista nie została zmieniona. Czyszczenie, reset strony, zachowanie zastosowanych parametrów, widoczność, klawiatura i etykiety PL/EN mają opisane wcześniej potwierdzenia. Kryterium położenia X bez zasłaniania frazy nie jest spełnione we wszystkich sprawdzonych układach: przy 375 px i rozwiniętym sidebarze nadal występuje problem. Przy zwiniętym pasku wygląd został potwierdzony. Nie oznaczono całego issue jako ukończonego. Ten wpis jest lokalnym uzupełnieniem dokumentacji po publikacji i nie wchodzi do wskazanych trzech commitów.
