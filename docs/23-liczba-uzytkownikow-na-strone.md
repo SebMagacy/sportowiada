@@ -4,7 +4,7 @@
 
 Etap 23 dotyczy [issue #7 — Dodać wybór liczby użytkowników na stronę](https://github.com/SebMagacy/sportowiada/issues/7).
 
-**Status:** implementacja i lokalna weryfikacja zakończone. Użytkownik potwierdził opisane poniżej scenariusze ręczne; na jego polecenie „Przygotuj wszystko” asystent przygotował testy i wykonał kontrole z sekcji 31. Commit, push i zamknięcie issue nie zostały jeszcze wykonane.
+**Status:** implementacja, lokalna weryfikacja i publikacja zakończone. Użytkownik potwierdził opisane poniżej scenariusze ręczne; na jego polecenie „Przygotuj wszystko” asystent przygotował testy i wykonał kontrole z sekcji 31. Funkcja jest opublikowana w commicie `8547ae4`. Zamknięcie issue nie zostało jeszcze potwierdzone.
 
 ## 2. Zakres
 
@@ -332,3 +332,9 @@ W środowisku testu `navigation.test.mjs` dodano zastępnik `initializePerPageSe
 - `git diff --check` — poprawnie.
 
 Wszystkie kryteria funkcjonalne issue mają pokrycie w lokalnej implementacji i sprawdzeniach. Wersję EN potwierdzono przez renderowanie odpowiedzi w testach, bez ręcznego przełączania języka w przeglądarce. Nie wykonywano audytu czytnikiem ekranu ani odłożonych prac mobilnych. Zachowano wcześniejsze zmiany dokumentacji etapu 22 i wpis w `docs/README.md`. Publikacja i zamknięcie issue pozostają osobnym krokiem.
+
+## 32. Commity i potwierdzenie publikacji
+
+Na polecenie użytkownika asystent utworzył dwa commity: `0b49022` — zapis publikacji etapu 22 (`Refs #8`) oraz `8547ae4` — wybór liczby użytkowników na stronę, testy i dokumentacja etapu 23 (`Refs #7`). Kontrola PHPStan w hookach GrumPHP przeszła dla obu commitów.
+
+Użytkownik przesłał wynik `git push origin main`: `Everything up-to-date`. Asystent potwierdził, że lokalne `main` i `origin/main` wskazują `8547ae4ae8b549d8474be1c54fa925c26c7f6b4b`, a porównanie zwraca `0 0`. Przed niniejszym zapisem Git był czysty. Oba commity są opublikowane; nie potwierdzono jeszcze zamknięcia issue #7. Ten zapis dokumentacji powstał po wskazanych commitach.
