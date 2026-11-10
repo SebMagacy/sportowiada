@@ -4,7 +4,7 @@
 
 Etap 23 dotyczy [issue #7 — Dodać wybór liczby użytkowników na stronę](https://github.com/SebMagacy/sportowiada/issues/7).
 
-**Status:** implementacja, lokalna weryfikacja i publikacja zakończone. Użytkownik potwierdził opisane poniżej scenariusze ręczne; na jego polecenie „Przygotuj wszystko” asystent przygotował testy i wykonał kontrole z sekcji 31. Funkcja jest opublikowana w commicie `8547ae4`. Zamknięcie issue nie zostało jeszcze potwierdzone.
+**Status:** implementacja, lokalna weryfikacja i publikacja zakończone. Użytkownik potwierdził opisane poniżej scenariusze ręczne; na jego polecenie „Przygotuj wszystko” asystent przygotował testy i wykonał kontrole z sekcji 31. Funkcja jest opublikowana w commicie `8547ae4`. Issue #7 zamknięto jako ukończone; wszystkie kryteria zaznaczono.
 
 ## 2. Zakres
 
@@ -338,3 +338,10 @@ Wszystkie kryteria funkcjonalne issue mają pokrycie w lokalnej implementacji i 
 Na polecenie użytkownika asystent utworzył dwa commity: `0b49022` — zapis publikacji etapu 22 (`Refs #8`) oraz `8547ae4` — wybór liczby użytkowników na stronę, testy i dokumentacja etapu 23 (`Refs #7`). Kontrola PHPStan w hookach GrumPHP przeszła dla obu commitów.
 
 Użytkownik przesłał wynik `git push origin main`: `Everything up-to-date`. Asystent potwierdził, że lokalne `main` i `origin/main` wskazują `8547ae4ae8b549d8474be1c54fa925c26c7f6b4b`, a porównanie zwraca `0 0`. Przed niniejszym zapisem Git był czysty. Oba commity są opublikowane; nie potwierdzono jeszcze zamknięcia issue #7. Ten zapis dokumentacji powstał po wskazanych commitach.
+
+
+## 33. Zamknięcie issue #7
+
+Na wyraźną zgodę użytkownika asystent zaznaczył wszystkie pięć kryteriów akceptacji i zamknął issue #7 jako ukończone. Wykonano to przez zalogowaną przeglądarkę Chrome po odrzuceniu zapisu przez integrację GitHub (403). Interfejs potwierdził stan Closed i zdarzenie completed.
+
+Dodano [komentarz podsumowujący](https://github.com/SebMagacy/sportowiada/issues/7#issuecomment-6775629159) z commitem `8547ae4`, zakresem funkcji, wynikami 143 testów PHP / 778 asercji i 22 przypadków JS oraz pozostałych kontroli. Prace mobilne pozostają poza zakresem. Użytkownik zadeklarował samodzielny push dalszej dokumentacji; wpisy sekcji 32–33 nie zostały przez asystenta zacommitowane ani wypchnięte.
