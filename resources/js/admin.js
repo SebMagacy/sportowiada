@@ -1,7 +1,9 @@
 import './user-filters.js';
 import { initializeSearchInputs } from './search-input.js';
+import { initializePerPageSelects } from './per-page-select.js';
 
 initializeSearchInputs();
+initializePerPageSelects();
 
 const sidebar = document.getElementById('admin-sidebar');
 const sidebarToggle = document.getElementById('sidebar-toggle');

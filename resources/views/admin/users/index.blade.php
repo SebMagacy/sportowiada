@@ -8,8 +8,10 @@
             <form method="GET" action="{{ route('admin.users.index') }}" class="w-full" role="search">
                 <input type="hidden" name="sort" value="{{ $sort }}">
                 <input type="hidden" name="direction" value="{{ $direction }}">
+                <input type="hidden" name="per_page" value="{{ $perPage }}">
 
-                <x-user-filters :account-type="$accountType" :search="$search" :sort="$sort" :direction="$direction" />
+                <x-user-filters :account-type="$accountType" :search="$search" :sort="$sort" :direction="$direction"
+                    :per-page="$perPage" />
 
                 <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                     <button type="button" id="users-filters-toggle" aria-controls="users-filters-panel"
@@ -40,7 +42,11 @@
                     <tr>
                         @foreach ($columns as $column => $definition)
                             <x-sortable-column :column="$column" route="admin.users.index" :sort="$sort"
-                                :direction="$direction" :sortable="$definition['sortable']" :filters="['search' => $search, 'account_type' => $accountType]" :align="$definition['align']">
+                                :direction="$direction" :sortable="$definition['sortable']" :filters="[
+                                    'search' => $search,
+                                    'account_type' => $accountType,
+                                    'per_page' => $perPage,
+                                ]" :align="$definition['align']">
                                 {{ $definition['label'] }}
                             </x-sortable-column>
                         @endforeach
@@ -66,24 +72,31 @@
             </table>
         </div>
 
-        @if ($users->count() > 0)
-            <div
-                class="flex flex-col gap-4 border-t border-gray-200 px-6 py-4 sm:flex-row sm:items-center sm:justify-between">
-                <div class="text-sm text-gray-600">
+        <div class="grid grid-cols-3 items-center gap-4 border-t border-gray-200 px-6 py-4">
+            <div class="text-sm text-gray-600">
+                @if ($users->count() > 0)
                     {{ __('pagination.overview', [
                         'first' => $users->firstItem(),
                         'last' => $users->lastItem(),
                         'total' => $users->total(),
                     ]) }}
-                </div>
-
-                @if ($users->hasPages())
-                    <div>
-                        {{ $users->links() }}
-                    </div>
                 @endif
             </div>
-        @endif
+
+            <x-per-page-select id="users-per-page" :action="route('admin.users.index')" :value="$perPage" :options="[10, 25, 50]"
+                :label="__('users.per_page')" :hint="__('users.per_page_hint')" :parameters="[
+                    'search' => $search,
+                    'account_type' => $accountType,
+                    'sort' => $sort,
+                    'direction' => $direction,
+                ]" class="justify-self-center" />
+
+            <div class="justify-self-end">
+                @if ($users->hasPages())
+                    {{ $users->links() }}
+                @endif
+            </div>
+        </div>
 
     </div>
 

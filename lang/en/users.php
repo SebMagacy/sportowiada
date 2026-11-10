@@ -18,4 +18,6 @@ return [
     'filters' => 'Filters',
     'clear_filters' => 'Clear filters',
     'clear_search' => 'Clear search',
+    'per_page' => 'Per page',
+    'per_page_hint' => 'Changing the number of results automatically refreshes the list.',
 ];

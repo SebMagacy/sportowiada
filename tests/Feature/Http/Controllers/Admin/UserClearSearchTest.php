@@ -130,7 +130,7 @@ class UserClearSearchTest extends TestCase
         $this->assertSame($search, $xpath->evaluate('string(//input[@name="search"]/@value)'));
         $address = $xpath->evaluate('string(//button[@data-clear-search]/@data-clear-url)');
         $this->assertSame(route('admin.users.index', [
-            'account_type' => 'user', 'sort' => 'name', 'direction' => 'desc',
+            'account_type' => 'user', 'sort' => 'name', 'direction' => 'desc', 'per_page' => '10',
         ]), $address);
     }
 

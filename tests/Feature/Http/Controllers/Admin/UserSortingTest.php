@@ -264,7 +264,7 @@ class UserSortingTest extends TestCase
             'account_type' => 'all',
             'sort' => 'name',
             'direction' => 'desc',
-            'page' => 2,
+            'per_page' => '10', 'page' => 2,
         ]);
 
         $response->assertOk()
@@ -292,7 +292,7 @@ class UserSortingTest extends TestCase
                 'search' => 'Sport',
                 'account_type' => 'all',
                 'sort' => 'name',
-                'direction' => 'desc',
+                'direction' => 'desc', 'per_page' => '10',
             ]));
     }
 
@@ -318,7 +318,7 @@ class UserSortingTest extends TestCase
 
         $resetUrl = route('admin.users.index', [
             'search' => 'Sport',
-            'account_type' => 'all',
+            'account_type' => 'all', 'per_page' => '10',
         ]);
 
         $response->assertOk()
@@ -458,13 +458,13 @@ class UserSortingTest extends TestCase
         $admin = User::factory()->make(['is_admin' => true]);
         $ascendingUrl = route('admin.users.index', [
             'search' => '',
-            'account_type' => 'all',
+            'account_type' => 'all', 'per_page' => '10',
             'sort' => 'name',
             'direction' => 'asc',
         ]);
         $descendingUrl = route('admin.users.index', [
             'search' => '',
-            'account_type' => 'all',
+            'account_type' => 'all', 'per_page' => '10',
             'sort' => 'name',
             'direction' => 'desc',
         ]);
@@ -497,7 +497,7 @@ class UserSortingTest extends TestCase
         $anna = User::factory()->create(['name' => 'Anna Sport']);
         $resetUrl = route('admin.users.index', [
             'search' => 'Sport',
-            'account_type' => 'all',
+            'account_type' => 'all', 'per_page' => '10',
         ]);
 
         $this->actingAs($admin)->get(route('admin.users.index', [

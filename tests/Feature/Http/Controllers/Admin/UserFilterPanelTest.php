@@ -100,7 +100,8 @@ class UserFilterPanelTest extends TestCase
 
         $response->assertOk();
         $href = $this->xpath($response->getContent())->evaluate('string(//div[@id="users-filters-panel"]//a/@href)');
-        $this->assertSame(route('admin.users.index', ['search' => $search, 'sort' => $sort, 'direction' => $direction]), $href);
+        $this->assertSame(route('admin.users.index', ['search' => $search, 'sort' => $sort, 'direction' => $direction, 'per_page' => '10',
+        ]), $href);
         $cleared = $this->get($href);
         $cleared->assertOk()->assertViewHas('accountType', 'all')->assertViewHas('activeFiltersCount', 0)
             ->assertViewHas('search', $search)->assertViewHas('sort', $sort)->assertViewHas('direction', $direction);
@@ -136,7 +137,8 @@ class UserFilterPanelTest extends TestCase
         $xpath = $this->xpath($response->getContent());
         $this->assertSame($search, $xpath->evaluate('string(//input[@name="search"]/@value)'));
         $this->assertSame(
-            route('admin.users.index', ['search' => $search, 'sort' => 'name', 'direction' => 'desc']),
+            route('admin.users.index', ['search' => $search, 'sort' => 'name', 'direction' => 'desc', 'per_page' => '10',
+            ]),
             $xpath->evaluate('string(//div[@id="users-filters-panel"]//a/@href)'),
         );
     }

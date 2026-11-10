@@ -120,7 +120,7 @@ class UserSearchTest extends TestCase
         $secondPageUrl = route('admin.users.index', [
             'search' => 'Pasujący',
             'account_type' => 'all',
-            'page' => 2,
+            'per_page' => '10', 'page' => 2,
         ]);
 
         $response->assertOk()
@@ -151,7 +151,7 @@ class UserSearchTest extends TestCase
             ->assertRedirect(route('admin.users.index', [
                 'page' => 1,
                 'search' => 'Norbert',
-                'account_type' => 'all',
+                'account_type' => 'all', 'per_page' => '10',
             ]));
     }
 }

@@ -1,7 +1,7 @@
-@props(['accountType', 'search', 'sort', 'direction'])
+@props(['accountType', 'search', 'sort', 'direction', 'perPage'])
 
 <div id="users-filters-panel" class="mb-4 rounded-lg border border-gray-200 bg-gray-50 p-4" hidden>
-    <div class="w-full sm:max-w-[17.5rem]">
+    <div class="w-full sm:max-w-70">
         <label for="users-account-type" class="mb-1 block text-sm font-medium text-gray-700">
             {{ __('users.account_type') }}
         </label>
@@ -27,6 +27,7 @@
         'search' => $search,
         'sort' => $sort,
         'direction' => $direction,
+        'per_page' => $perPage,
     ]) }}"
         class="ml-3 inline-block rounded px-2 py-1 text-sm font-semibold text-red-600 transition duration-150 hover:text-red-700 hover:blur-[0.3px] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600">
         {{ __('users.clear_filters') }}

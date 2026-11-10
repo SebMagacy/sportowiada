@@ -21,6 +21,12 @@ class UserController extends Controller
             $accountType = 'all';
         }
 
+        $perPage = $request->query('per_page', '10');
+
+        if (! in_array($perPage, ['10', '25', '50'], true)) {
+            $perPage = '10';
+        }
+
         $activeFiltersCount = 0;
 
         if ($accountType !== 'all') {
@@ -91,12 +97,13 @@ class UserController extends Controller
             $query->orderBy('id');
         }
 
-        $users = $query->paginate(10)
+        $users = $query->paginate((int) $perPage)
             ->appends([
                 'search' => $search,
                 'account_type' => $accountType,
                 'sort' => $sort,
                 'direction' => $direction,
+                'per_page' => $perPage,
             ]);
 
         if ($users->currentPage() > $users->lastPage()) {
@@ -106,6 +113,7 @@ class UserController extends Controller
                 'account_type' => $accountType,
                 'sort' => $sort,
                 'direction' => $direction,
+                'per_page' => $perPage,
             ]);
         }
 
@@ -113,6 +121,7 @@ class UserController extends Controller
             'users' => $users,
             'search' => $search,
             'accountType' => $accountType,
+            'perPage' => $perPage,
             'activeFiltersCount' => $activeFiltersCount,
             'sort' => $sort,
             'direction' => $direction,
@@ -121,6 +130,8 @@ class UserController extends Controller
                 'account_type' => $accountType,
                 'sort' => $sort,
                 'direction' => $direction,
+                'per_page' => $perPage,
+
             ]),
         ]);
     }

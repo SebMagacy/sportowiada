@@ -60,7 +60,7 @@ class UserAccountFilterTest extends TestCase
         });
         $this->assertMatchesRegularExpression('/<option\s+value="all"\s+selected\b/', $response->getContent());
         $response->assertSee('href="'.e(route('admin.users.index', [
-            'search' => '', 'account_type' => 'all', 'sort' => 'name', 'direction' => 'asc',
+            'search' => '', 'account_type' => 'all', 'per_page' => '10', 'sort' => 'name', 'direction' => 'asc',
         ])).'"', false);
     }
 
@@ -115,7 +115,7 @@ class UserAccountFilterTest extends TestCase
         )->create(['is_admin' => false]);
         User::factory()->create(['is_admin' => false, 'name' => 'Inne konto', 'email' => 'other@example.com']);
         $criteria = ['search' => 'Sport', 'account_type' => 'user', 'sort' => 'name', 'direction' => 'desc'];
-        $secondPageUrl = route('admin.users.index', [...$criteria, 'page' => 2]);
+        $secondPageUrl = route('admin.users.index', [...$criteria, 'per_page' => '10', 'page' => 2]);
 
         $response = $this->actingAs($admin)->get(route('admin.users.index', $criteria));
 
@@ -126,7 +126,7 @@ class UserAccountFilterTest extends TestCase
         });
 
         $this->get(route('admin.users.index', [...$criteria, 'page' => 99]))
-            ->assertRedirect(route('admin.users.index', ['page' => 2, ...$criteria]));
+            ->assertRedirect(route('admin.users.index', ['page' => 2, ...$criteria, 'per_page' => '10']));
 
         $this->get($secondPageUrl)->assertOk()->assertViewHas('accountType', 'user')
             ->assertViewHas('users', function (LengthAwarePaginator $page) use ($users): bool {
@@ -142,7 +142,7 @@ class UserAccountFilterTest extends TestCase
         $admin = User::factory()->make(['is_admin' => true]);
         User::factory()->count(11)->create(['is_admin' => false, 'name' => 'Sport Test']);
         $filters = ['search' => 'Sport', 'account_type' => 'user'];
-        $nextUrl = route('admin.users.index', [...$filters, ...$nextSorting]);
+        $nextUrl = route('admin.users.index', [...$filters, 'per_page' => '10', ...$nextSorting]);
 
         $response = $this->actingAs($admin)->get(route('admin.users.index', [
             ...$filters, 'sort' => $direction === null ? null : 'name', 'direction' => $direction, 'page' => 2,

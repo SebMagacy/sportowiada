@@ -141,7 +141,7 @@ class UserControllerTest extends TestCase
         $this->actingAs($admin)->get(route('admin.users.index', ['page' => 99]))
             ->assertRedirect(route('admin.users.index', [
                 'page' => 2,
-                'account_type' => 'all',
+                'account_type' => 'all', 'per_page' => '10',
             ]));
     }
 
@@ -156,7 +156,7 @@ class UserControllerTest extends TestCase
         $this->actingAs($admin)->get(route('admin.users.index', ['page' => 2]))
             ->assertRedirect(route('admin.users.index', [
                 'page' => 1,
-                'account_type' => 'all',
+                'account_type' => 'all', 'per_page' => '10',
             ]));
     }
 
