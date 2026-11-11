@@ -116,3 +116,7 @@ Testy renderowania nie mierzą układu w pikselach ani zawijania tekstu. Wyniki 
 Użytkownik wykonał `npm run build` i przekazał wynik: Vite 8.3.5 zakończył build poprawnie w 461 ms, przetwarzając 15 modułów. Ostrzeżenie o opcjonalnym `fontaine` nie zablokowało kompilacji; nie instalowano pakietu. Wynik buildu pochodzi od użytkownika.
 
 Przegląd aktualnego issue #15 potwierdził, że nadal jest otwarte. Wykonano wspólne komponenty, trzy nagłówki, rozmiar 40 × 40, wspólne wyrównanie, semantyczne `h1`, tłumaczenia PL/EN i dekoracyjne ikony. Testy potwierdzają renderowanie trzech stron i brak regresji w zestawie PHP. Zrzuty potwierdzają szeroki widok listy i edycji oraz zawijanie tytułu edycji w wąskim oknie, także po ostatniej zmianie rozmiaru i wyrównania. Nie przeprowadzono osobnego sprawdzenia skrajnie długiego ciągu bez spacji. Docelowy zestaw sportowy pozostaje odłożony decyzją użytkownika, a ikona szczegółów zależy od przyszłego #9. Nie zmieniano checklisty ani stanu issue. Commit i push pozostają do wykonania przez użytkownika.
+
+## Commit implementacji
+
+Użytkownik przygotował 15 plików etapu i utworzył commit `4a46de3` — `Dodaj ikony nagłówków panelu administratora`, z odwołaniem `Refs #15`. Przekazany wynik potwierdza poprawne wykonanie PHPStan w hooku GrumPHP. Asystent potwierdził lokalny HEAD i czysty status po commicie przed tym uzupełnieniem dokumentacji. Publikacja commita nie jest jeszcze potwierdzona; issue #15 pozostaje otwarte.
