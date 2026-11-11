@@ -1,3 +1,9 @@
 <x-admin-layout>
-    <h1>Panel administratora</h1>
+    <x-page-heading>
+        <x-slot:icon>
+            <x-icon name="dashboard" class="size-full" />
+        </x-slot:icon>
+
+        {{ __('dashboard.title') }}
+    </x-page-heading>
 </x-admin-layout>

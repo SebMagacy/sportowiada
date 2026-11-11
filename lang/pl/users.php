@@ -25,7 +25,7 @@ return [
     'edit' => 'Edytuj',
 
     // EDIT
-    'edit_title' => 'Edycja użytkownika: :name',
+    'edit_title' => 'Edycja: :name',
     'save_changes' => 'Zapisz zmiany',
     'updated' => 'Dane użytkownika zostały zapisane.',
     'cancel' => 'Anuluj',

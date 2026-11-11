@@ -272,8 +272,8 @@ class UserEditTest extends TestCase
     /** @return array<string, array{string, string, string, string, string}> */
     public static function locales(): array
     {
-        return ['Polish' => ['pl', 'Edycja użytkownika: Test Person', 'Zapisz zmiany', 'Anuluj', 'Dane użytkownika zostały zapisane.'],
-            'English' => ['en', 'Edit user: Test Person', 'Save changes', 'Cancel', 'User details have been saved.']];
+        return ['Polish' => ['pl', 'Edycja: Test Person', 'Zapisz zmiany', 'Anuluj', 'Dane użytkownika zostały zapisane.'],
+            'English' => ['en', 'Edit: Test Person', 'Save changes', 'Cancel', 'User details have been saved.']];
     }
 
     public function test_user_data_is_escaped_in_form(): void

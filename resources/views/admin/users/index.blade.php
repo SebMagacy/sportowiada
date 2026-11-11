@@ -1,7 +1,11 @@
 <x-admin-layout>
-    <h1 class="mb-6 text-2xl font-bold tracking-tight text-gray-950">
+    <x-page-heading>
+        <x-slot:icon>
+            <x-icon name="users" class="size-full" />
+        </x-slot:icon>
+
         {{ __('users.title') }}
-    </h1>
+    </x-page-heading>
 
     @if (session('status'))
         <div role="status" class="mb-6 rounded-lg border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-800">

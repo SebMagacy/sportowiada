@@ -1,7 +1,11 @@
 <x-admin-layout>
-    <h1 class="mb-6 text-2xl font-bold tracking-tight text-gray-950">
+    <x-page-heading>
+        <x-slot:icon>
+            <x-icon name="edit" class="size-full" />
+        </x-slot:icon>
+
         {{ __('users.edit_title', ['name' => $user->name]) }}
-    </h1>
+    </x-page-heading>
 
     <form method="POST"
         action="{{ route('admin.users.update', [
