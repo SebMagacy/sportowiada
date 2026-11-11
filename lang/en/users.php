@@ -1,6 +1,7 @@
 <?php
 
 return [
+    // INDEX
     'title' => 'Users',
     'name' => 'Name',
     'email' => 'Email',
@@ -20,4 +21,13 @@ return [
     'clear_search' => 'Clear search',
     'per_page' => 'Per page',
     'per_page_hint' => 'Changing the number of results automatically refreshes the list.',
+    'actions' => 'Actions',
+    'edit' => 'Edit',
+
+    // EDIT
+    'edit_title' => 'Edit user: :name',
+    'save_changes' => 'Save changes',
+    'updated' => 'User details have been saved.',
+    'cancel' => 'Cancel',
+    'cannot_demote_self' => 'You cannot revoke your own administrator privileges.',
 ];

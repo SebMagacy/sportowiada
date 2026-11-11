@@ -7,6 +7,9 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 
 class UserController extends Controller
@@ -52,6 +55,11 @@ class UserController extends Controller
             'id' => [
                 'label' => 'ID',
                 'sortable' => true,
+                'align' => 'right',
+            ],
+            'actions' => [
+                'label' => __('users.actions'),
+                'sortable' => false,
                 'align' => 'right',
             ],
         ];
@@ -107,6 +115,8 @@ class UserController extends Controller
             ]);
 
         if ($users->currentPage() > $users->lastPage()) {
+            Session::keep('status');
+
             return redirect()->route('admin.users.index', [
                 'page' => $users->lastPage(),
                 'search' => $search !== '' ? $search : null,
@@ -134,5 +144,59 @@ class UserController extends Controller
 
             ]),
         ]);
+    }
+
+    public function edit(Request $request, User $user): View
+    {
+        return view('admin.users.edit', [
+            'user' => $user,
+            'listParameters' => $this->listParameters($request),
+        ]);
+    }
+
+    public function update(Request $request, User $user): RedirectResponse
+    {
+        $validated = $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => [
+                'required',
+                'email',
+                'max:255',
+                Rule::unique('users', 'email')->ignore($user),
+            ],
+            'is_admin' => ['required', 'boolean'],
+        ]);
+
+        if ($user->is($request->user()) && ! $request->boolean('is_admin')) {
+            throw ValidationException::withMessages([
+                'is_admin' => __('users.cannot_demote_self'),
+            ]);
+        }
+
+        $user->name = $validated['name'];
+        $user->email = $validated['email'];
+        $user->is_admin = $request->boolean('is_admin');
+        $user->save();
+
+        return redirect()->route('admin.users.index', $this->listParameters($request))
+            ->with('status', __('users.updated'));
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    private function listParameters(Request $request): array
+    {
+        return array_filter(
+            $request->only([
+                'search',
+                'account_type',
+                'sort',
+                'direction',
+                'per_page',
+                'page',
+            ]),
+            fn (mixed $value): bool => is_string($value),
+        );
     }
 }

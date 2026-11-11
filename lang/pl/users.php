@@ -1,6 +1,7 @@
 <?php
 
 return [
+    // INDEX
     'title' => 'Użytkownicy',
     'name' => 'Imię',
     'email' => 'E-mail',
@@ -20,4 +21,13 @@ return [
     'clear_search' => 'Wyczyść wyszukiwanie',
     'per_page' => 'Na stronie',
     'per_page_hint' => 'Zmiana liczby wyników automatycznie odświeża listę.',
+    'actions' => 'Akcje',
+    'edit' => 'Edytuj',
+
+    // EDIT
+    'edit_title' => 'Edycja użytkownika: :name',
+    'save_changes' => 'Zapisz zmiany',
+    'updated' => 'Dane użytkownika zostały zapisane.',
+    'cancel' => 'Anuluj',
+    'cannot_demote_self' => 'Nie możesz odebrać sobie uprawnień administratora.',
 ];

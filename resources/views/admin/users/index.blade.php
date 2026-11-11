@@ -3,6 +3,12 @@
         {{ __('users.title') }}
     </h1>
 
+    @if (session('status'))
+        <div role="status" class="mb-6 rounded-lg border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-800">
+            {{ session('status') }}
+        </div>
+    @endif
+
     <div class="rounded-xl border border-gray-200 bg-white shadow-sm">
         <div class="border-b border-gray-200 p-4">
             <form method="GET" action="{{ route('admin.users.index') }}" class="w-full" role="search">
@@ -47,7 +53,9 @@
                                     'account_type' => $accountType,
                                     'per_page' => $perPage,
                                 ]" :align="$definition['align']">
-                                {{ $definition['label'] }}
+                                <span @class(['sr-only' => $column === 'actions'])>
+                                    {{ $definition['label'] }}
+                                </span>
                             </x-sortable-column>
                         @endforeach
                     </tr>
@@ -60,10 +68,30 @@
                             <td class="px-6 py-3 text-gray-700">
                                 {{ $user->is_admin ? __('users.administrator') : __('users.user') }}</td>
                             <td class="px-6 py-3 text-right text-gray-500">{{ $user->id }}</td>
+                            <td class="px-6 py-3 text-right">
+                                <a href="{{ route('admin.users.edit', [
+                                    'user' => $user,
+                                    'search' => $search,
+                                    'account_type' => $accountType,
+                                    'sort' => $sort,
+                                    'direction' => $direction,
+                                    'per_page' => $perPage,
+                                    'page' => $users->currentPage(),
+                                ]) }}"
+                                    class="inline-flex items-center gap-1.5 font-medium text-blue-600 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">
+                                    <svg class="size-4" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                        viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125M18 14.25V19.5A2.25 2.25 0 0 1 15.75 21H4.5A2.25 2.25 0 0 1 2.25 18.75V7.5A2.25 2.25 0 0 1 4.5 5.25H9" />
+                                    </svg>
+
+                                    {{ __('users.edit') }}
+                                </a>
+                            </td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="4" class="px-6 py-8 text-center text-gray-500">
+                            <td colspan="{{ count($columns) }}" class="px-6 py-8 text-center text-gray-500">
                                 {{ $search !== '' || $accountType !== 'all' ? __('users.no_results') : __('users.empty') }}
                             </td>
                         </tr>

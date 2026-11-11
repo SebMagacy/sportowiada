@@ -22,3 +22,12 @@ Route::post('/logout', [LogoutController::class, 'destroy'])
 Route::get('/admin/users', [UserController::class, 'index'])
     ->middleware(['auth', 'can:access-admin'])
     ->name('admin.users.index');
+
+// EDIT
+
+Route::get('/admin/users/{user}/edit', [UserController::class, 'edit'])
+    ->middleware(['auth', 'can:access-admin'])
+    ->name('admin.users.edit');
+Route::patch('/admin/users/{user}', [UserController::class, 'update'])
+    ->middleware(['auth', 'can:access-admin'])
+    ->name('admin.users.update');
