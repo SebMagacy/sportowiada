@@ -26,7 +26,7 @@ Jest to uzgodniony plan, jeszcze nie implementacja. Wyniki 175 testów PHP dotyc
 
 ## Stan realizacji
 
-Dodano trasy edycji i aktualizacji, formularz, walidację, zapis dozwolonych pól, komunikaty, anulowanie i wejście z listy. Powroty zachowują ustawienia listy. Użytkownik potwierdził podstawowe scenariusze ręczne; testy automatyczne i kontrole opisano w kroku 21. Publikacja zmian i zamknięcie issue nie zostały wykonane.
+Etap ukończono: edycja imienia, e-maila i typu konta, walidacja, blokada odebrania sobie uprawnień, komunikaty PL/EN i powroty z ustawieniami listy są zaimplementowane i sprawdzone. Implementację opublikowano w commicie `3449977`; issue #10 zamknięto jako completed. Końcowy wynik testów PHP: 193 testy i 1000 asercji. Szczegóły kontroli i publikacji opisano w kolejnych krokach. Końcowe wpisy dokumentacyjne oczekują na osobny commit i push.
 
 ## Krok 1 — trasa edycji
 
@@ -275,3 +275,17 @@ Pojawiło się ostrzeżenie wtyczki `laravel:fonts` o opcjonalnym pakiecie `font
 Użytkownik uaktualnił opis issue #10: dodano kryterium zmiany typu konta przez administratora i serwerowej blokady odebrania sobie uprawnień. Usunięto wykluczenie zmiany roli, zachowując wykluczenie zmiany hasła i usuwania kont. Asystent potwierdził aktualną treść na GitHub; zgłoszenie pozostaje otwarte, a sześć kryteriów nie jest jeszcze zaznaczonych.
 
 Kod i przeprowadzone kontrole pokrywają sześć kryteriów rozszerzonego zgłoszenia. Asystent potwierdził gałąź `main` i poprawny `git diff --check`. Osiem plików etapu oczekuje na dodanie do commita; commit, push i zamknięcie zgłoszenia nie zostały jeszcze wykonane.
+
+## Krok 29 — commit implementacji
+
+Użytkownik utworzył commit **`3449977` — „Dodaj edycję danych i typu konta użytkownika”**, z odwołaniem `Refs #10`. Commit obejmuje osiem plików, 924 dodane linie i dwie usunięte. Kontrola PHPStan w hooku GrumPHP przeszła. Asystent potwierdził commit w lokalnym logu i czysty stan repozytorium przed dopisaniem tego wpisu.
+
+Push i zamknięcie issue nie zostały jeszcze potwierdzone. Ten wpis dokumentacyjny powstał po commicie implementacji i wymaga osobnego opublikowania.
+
+## Krok 30 — publikacja implementacji
+
+Użytkownik wykonał `git push origin main` i przekazał potwierdzenie publikacji zakresu **`9ef3bc0..3449977`** na zdalnej gałęzi `main` repozytorium `SebMagacy/sportowiada`. Implementacja etapu 24 została opublikowana. Zamknięcie issue #10 i publikacja końcowych wpisów dokumentacyjnych pozostają do potwierdzenia.
+
+## Krok 31 — zamknięcie issue #10
+
+11 listopada 2026 użytkownik zamknął issue #10. Asystent potwierdził na GitHub stan **closed**, przyczynę **completed**, zaznaczenie wszystkich sześciu kryteriów oraz obecność jednego komentarza. Etap implementacyjny jest zakończony; końcowe wpisy dokumentacyjne wymagają jeszcze commita i push. Układ mobilny pozostaje odłożony, a następnym uzgodnionym etapem funkcjonalnym jest widok szczegółów użytkownika z issue #9.
