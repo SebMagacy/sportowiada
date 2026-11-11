@@ -11,7 +11,7 @@ Etap 25 dotyczy [issue #15 — Dodać ikony przy nagłówkach widoków panelu ad
 
 Użytkownik wybrał dodanie pierwszej ikony jako kolejny etap, prowadzony w nowym czacie i osobnym rozdziale dokumentacji. Cel: spójne ikony SVG przy nagłówkach panelu, z wykorzystaniem małego współdzielonego komponentu Blade i istniejących zależności.
 
-## Plan do uzgodnienia
+## Początkowy plan etapu
 
 - Rozpocząć od zatwierdzonej przez użytkownika ikony edycji (ołówka) przy „Edycja użytkownika: …”.
 - Sprawdzić istniejące komponenty i ikony, następnie dodawać rozwiązanie małymi krokami.
@@ -120,3 +120,15 @@ Przegląd aktualnego issue #15 potwierdził, że nadal jest otwarte. Wykonano ws
 ## Commit implementacji
 
 Użytkownik przygotował 15 plików etapu i utworzył commit `4a46de3` — `Dodaj ikony nagłówków panelu administratora`, z odwołaniem `Refs #15`. Przekazany wynik potwierdza poprawne wykonanie PHPStan w hooku GrumPHP. Asystent potwierdził lokalny HEAD i czysty status po commicie przed tym uzupełnieniem dokumentacji. Publikacja commita nie jest jeszcze potwierdzona; issue #15 pozostaje otwarte.
+
+## Publikacja
+
+Użytkownik utworzył commit dokumentacji `7f9ac61` — `Udokumentuj commit implementacji etapu 25`; PHPStan w hooku ponownie przeszedł poprawnie. Następnie wykonał `git push origin main`. Przekazany wynik `c8f7aad..7f9ac61 main -> main` potwierdza publikację implementacji `4a46de3` i dokumentacji `7f9ac61`. Asystent potwierdził lokalny wskaźnik `origin/main` na `7f9ac61`.
+
+Issue #15 pozostaje otwarte; nie aktualizowano jego checklisty ani nie zamykano zgłoszenia. Wybór zestawu sportowego jest odłożony decyzją użytkownika. Ten wpis o publikacji powstał po pushu i wymaga osobnego zapisu w Git.
+
+## Domknięcie etapu
+
+Na wyraźną prośbę użytkownika o domknięcie tematu asystent zaktualizował opis issue #15 do końcowego uzgodnionego zakresu. Siedem kryteriów dotyczących istniejących nagłówków oznaczono jako wykonane na podstawie kodu, testów i potwierdzonych sprawdzeń użytkownika. Odłożony wybór zestawu sportowego, przyszłą ikonę szczegółów z #9 i stronę podglądu wyraźnie wydzielono poza zakres ukończonych prac, zamiast oznaczać je jako wykonane.
+
+Dodano komentarz z podsumowaniem implementacji `4a46de3`, publikacji, wyników testów i ograniczeń. GitHub potwierdził zamknięcie [issue #15](https://github.com/SebMagacy/sportowiada/issues/15) jako **completed**. Etap 25 jest zakończony. Końcowy zapis publikacji i zamknięcia w tym rozdziale pozostaje do commitowania i wysłania przez użytkownika.
