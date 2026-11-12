@@ -97,7 +97,11 @@ Własna weryfikacja asystenta 12 listopada 2026:
 - PHPStan obu zmienionych plików testowych z `--debug --no-progress` — bez błędów.
 - `git diff --check` — poprawny.
 
-Problem mobilny pozostaje odłożony. Wyniki testów nie oznaczają spełnienia tego kryterium ani zamknięcia issue #18. Nie wykonano commita ani push.
+Problem mobilny pozostaje odłożony. Wyniki testów nie oznaczają spełnienia tego kryterium ani zamknięcia issue #18.
+
+## Zatwierdzenie zmian
+
+Użytkownik utworzył commit `4ca6aea` — `Dodaj górny pasek panelu z linkiem do witryny`, z odwołaniem `Refs #18`. Commit obejmuje 11 plików: implementację, tłumaczenia, testy i dokumentację. Kontrola PHPStan w hooku GrumPHP zakończyła się poprawnie, co potwierdził przesłany wynik polecenia. Własny odczyt Git potwierdził commit i czysty stan przed dopisaniem niniejszej informacji. Publikacja przez push pozostaje do potwierdzenia.
 
 ## Poza zakresem
 
