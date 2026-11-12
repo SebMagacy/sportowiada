@@ -1,6 +1,73 @@
 # Sportowiada — trwałe źródło kontekstu
 
-Stan na **5 listopada 2026 r.** Dokument do wykorzystania w kolejnych rozmowach i do ręcznego dodania do źródeł projektu ChatGPT. Jest samodzielnym podsumowaniem; nie wymaga dostępu do historii rozmów. Należy aktualizować ten plik po kolejnych potwierdzonych etapach, zamiast tworzyć konkurencyjne podsumowania.
+## Aktualny kontekst — 12 listopada 2026 r.
+
+Ta sekcja określa obecny punkt kontynuacji. Sekcje 1–13 poniżej zachowują historię z 3–5 listopada 2026 r.; ich opisy „obecnie”, „aktualnie”, brakujących funkcji, Git i odłożonych testów odnoszą się do tamtych dat. Nie należy ich traktować jako bieżącego planu ani wykonywać dawnych instrukcji startowych. Aktualne instrukcje repozytorium i potwierdzone późniejsze ustalenia mają pierwszeństwo.
+
+### Stan aplikacji potwierdzony odczytem plików
+
+- Aplikacja ma logowanie, rejestrację, wylogowanie oraz panel chroniony przez `auth` i Gate `access-admin`. Nie jest to stwierdzenie kompletności modułu kont.
+- Lista użytkowników obsługuje wyszukiwanie, czyszczenie wyszukiwania, filtr typu konta, panel filtrów, sortowanie i paginację z limitami 10/25/50. Parametry listy są zachowywane w nawigacji i powrocie z edycji.
+- Administrator edytuje imię, e-mail i typ konta. Serwer blokuje odebranie sobie uprawnień administratora. Zmiana hasła i usuwanie kont nie są częścią tej edycji.
+- Checkboxy umożliwiają wybór użytkowników na bieżącej stronie, pokazują licznik i pozwalają wyczyścić wybór. Zmiana strony lub kryteriów listy resetuje wybór. Nie wykonują operacji zbiorczych ani wyboru wszystkich wyników wyszukiwania.
+- Nagłówki korzystają z komponentów `page-heading` i `icon`. Układ panelu ma wspólny górny obszar z odnośnikiem do witryny.
+- Panel ładuje `resources/js/admin.js`, a strona publiczna `resources/js/app.js`. `admin.js` inicjalizuje moduły filtrów, wyszukiwania, limitu i zaznaczania oraz obsługuje sidebar. Starszy opis obsługi panelu przez `app.js` jest historyczny.
+- Istnieją testy PHP funkcji panelu i uwierzytelniania oraz testy frontendowe w `tests/Frontend`. Dawny zapis o wyłącznie dwóch testach i odłożeniu całego testowania jest nieaktualny.
+- Istnieje `.ai/rules`; przed pracą obowiązuje odczyt indeksu i pasujących reguł oraz wyszukanie reguł tematycznych. Nowe listy należy składać ze współdzielonych komponentów zgodnie z regułami widoków.
+- Nie zaimplementowano jeszcze modeli, tabel ani widoku domeny sportowej. Rozdziały 28 i 29 opisują ustalenia oraz przygotowanie pracy.
+
+`composer show --direct` odczytane 12.11.2026 potwierdza m.in. Laravel 13.38.0, PHPUnit 12.5.40, Pint 1.32.1, Boost 2.10.3, Larastan 3.13.0 i PHPStan 2.3.1. Filament nie występuje w bezpośrednich zależnościach. Nie odświeżano wersji PHP-FPM, MySQL ani dokładnych zainstalowanych wersji npm. Przed użyciem API nadal należy sprawdzać odpowiednie wersje.
+
+### Git i zakres weryfikacji
+
+Odczyt lokalny 12.11.2026: gałąź `main`; `HEAD` i lokalny ref `origin/main` wskazują `79a4935` — „Dodaj zaznaczanie użytkowników na bieżącej stronie”. Nie wykonano `fetch` ani ponownego odczytu GitHuba; zgodność lokalnych refów nie jest nowym potwierdzeniem stanu zdalnego. W przekazaniu poprzedniego etapu potwierdzono push tego commita.
+
+Przed aktualizacją niniejszego pliku nieśledzone były `docs/28-definiowanie-dyscyplin-sportowych.md` oraz nowy katalog `docs/Sport/`. Aktualizacja kontekstu jest dodatkową lokalną zmianą; asystent nie wykonuje commita ani pushu.
+
+Rozdział 27 dokumentuje wcześniejszą weryfikację: 209 testów PHP / 1162 asercje, 31 przypadków JS, Pint, PHPStan, build i `git diff --check` zakończone poprawnie. Są to wyniki etapu zaznaczania użytkowników, nie testy domeny sportowej ani ponowny test podczas aktualizacji kontekstu. Ręczne kontrole użytkownika i testy JS z uproszczonym DOM mają oddzielny zakres. Problemy mobilne panelu pozostają odłożone.
+
+### Potwierdzone wymagania sportowe
+
+Szczegóły zapisano w [rozdziale 28](28-definiowanie-dyscyplin-sportowych.md), związanym z [issue #21](https://github.com/SebMagacy/sportowiada/issues/21). Dotychczas ustalono:
+
+- Pierwsze dyscypliny to piłka nożna, siatkówka i koszykówka. Początkowy zakres obejmuje ligi; puchary i fazy grupowe pozostają na przyszłość.
+- Klub jest organizacją, która może mieć wiele drużyn w różnych dyscyplinach. Drużyna dotyczy jednej dyscypliny i może istnieć bez klubu.
+- Dane jednej osoby zapisujemy raz. Osoba może uprawiać wiele dyscyplin; zawodnik nie musi mieć konta użytkownika, a użytkownik nie musi być zawodnikiem.
+- Zmiana drużyny zachowuje wcześniejszą przynależność, występy i statystyki. Można dopisywać dane historyczne i stopniowo uzupełniać niepełne informacje. Brak danych oznacza „nie wiadomo”, a nie zero.
+- Sezon jest osobną, współdzieloną encją domenową opisującą nazwany okres, bez narzuconego układu jesień–wiosna. Edycja łączy ligę z sezonem i ma własne daty, uczestników, mecze, regulamin i tabelę.
+- Trwałą drużynę odróżniamy od jej udziału (zgłoszenia) w konkretnej edycji, z własnym składem i wynikami.
+
+To zaakceptowane pojęcia i wymagania, nie wykonany schemat bazy. Szczegóły wyników, klasyfikacji, regulaminów, statystyk, dat i relacji pozostają otwarte. Przegląd JSM, SportsPress, CourtHive i Bracket był porównaniem fragmentów, nie audytem ani wyborem architektury do skopiowania. Ewentualne użycie Filament wymaga osobnej decyzji; nie ma zgody na instalację.
+
+### Aktualny punkt kontynuacji: pierwszy widok dyscyplin
+
+Użytkownik wstrzymał dalszą analizę i poprosił o rozpoczęcie widoku dyscyplin w nowym czacie oraz nowym folderze dokumentacji. Utworzono [rozdział 29 — Pierwszy widok dyscyplin](Sport/Dyscypliny/29-widok-dyscyplin.md), z tagiem `sport`, i czat „Etap 29 — Widok dyscyplin” (`01a1cf79-4300-74a0-b4b6-646f90818013`) w tym samym lokalnym projekcie.
+
+Propozycja do potwierdzenia przed implementacją: strona „Dyscypliny” w panelu administratora, odnośnik w bocznym menu, istniejący układ i nagłówek oraz stała lista trzech dyscyplin. Bez bazy danych i formularzy w pierwszym kroku. Nie dodano jeszcze trasy, widoku ani pozycji menu. Rozpoczęcie widoku nie oznacza ukończenia analizy issue #21.
+
+Korzystać z istniejących `admin-layout`, `page-heading` i `icon`, a zakres nowych komponentów dobrać do rzeczywistych potrzeb. Zadania CMS, w tym operacje zbiorcze (#19), wybór wszystkich wyników (#20), refaktoryzacja listy i mobilny panel, nie są częścią tego kroku. Statusów zgłoszeń nie sprawdzano ponownie podczas tej aktualizacji.
+
+### Obowiązujący sposób współpracy
+
+Po polsku, jedna mała zmiana naraz: cel, mechanizm, konkretne działanie i kryterium sukcesu, następnie oczekiwanie na wynik. Użytkownik wykonuje edycje aplikacji, polecenia i Git, chyba że wyraźnie zleci je asystentowi. Zgoda na samodzielne testy poprzedniego etapu nie upoważnia do samodzielnej implementacji następnego.
+
+Asystent sam aktualizuje istniejący rozdział bieżącego etapu po potwierdzonych ustaleniach i wynikach. Nowe rozdziały powstają na wyraźną prośbę; dokumentacja oddziela plany, wykonanie, weryfikację i publikację. Bez nowych zależności, Filament, nowej gałęzi i worktree w obecnym zadaniu.
+
+Tekst startowy do kontynuacji:
+
+> Kontynuujemy Sportowiadę: pierwszy widok dyscyplin. Przeczytaj aktualną sekcję docs/00-kontekst-projektu.md, docs/Sport/Dyscypliny/29-widok-dyscyplin.md, AGENTS.md i pasujące reguły .ai/rules. Sprawdź bieżący Git i kod; zachowaj lokalną dokumentację. Prowadź mnie po polsku, po jednej małej zmianie; sam wykonuję kod, polecenia i Git. Zacznij od potwierdzenia zakresu: strona Dyscypliny w panelu, link w menu i stała lista piłki nożnej, siatkówki i koszykówki, bez bazy i formularzy. Nie wracaj do dawnych instrukcji feature/admin-users i nie implementuj całego modułu samodzielnie.
+
+### Źródła i kontrola aktualizacji
+
+Aktualizację oparto na odczycie lokalnego statusu i historii Git, tras, kontrolera użytkowników, modułu JS panelu, konfiguracji Vite, manifestu i wersji Composer, listy plików testów, dokumentacji 27–29 oraz potwierdzeniach użytkownika w bieżącej rozmowie. Nie uruchamiano testów aplikacji, migracji ani builda i nie zmieniano kodu aplikacji. Spis treści `docs/README.md` kończy się obecnie na etapie 23 i zawiera historyczne oznaczenia „plan”; nie określa samodzielnie aktualnego stanu realizacji.
+
+---
+
+## Historyczne źródło kontekstu — 3–5 listopada 2026 r.
+
+Całość sekcji 1–13 poniżej zachowano jako zapis historyczny. Obowiązujący punkt kontynuacji znajduje się powyżej.
+
+Poniższa część historyczna opisuje stan na **5 listopada 2026 r.** Dokument do wykorzystania w kolejnych rozmowach i do ręcznego dodania do źródeł projektu ChatGPT. Jest samodzielnym podsumowaniem; nie wymaga dostępu do historii rozmów. Należy aktualizować ten plik po kolejnych potwierdzonych etapach, zamiast tworzyć konkurencyjne podsumowania.
 
 ## 1. Cel i wiarygodność informacji
 
@@ -344,7 +411,7 @@ Rozdziały 1–9 zawierają stan i decyzje, rozdział 11 wskazuje materiały do 
 Przed usunięciem rozmów zachowaj ten plik poza czatem i dodaj jego aktualną wersję do źródeł projektu. Dodanie i odczyt w nowym czacie nadal wymagają potwierdzenia po stronie użytkownika; dostępne narzędzia nie wykonały tej operacji. Jeśli chcesz zachować dosłownie każdą wiadomość lub załącznik, zachowaj również pełny eksport — streszczenie celowo porządkuje i scala informacje zamiast odtwarzać historię słowo w słowo.
 
 
-## 13. Aktualny punkt kontynuacji — 05.11.2026
+## 13. Historyczny punkt kontynuacji — 05.11.2026
 
 Ostatnie wykonane zadania: odtworzenie rejestracji od początku, dodanie wyświetlania błędów i przywracania danych formularza, ręczne sprawdzenia użytkownika oraz ujednolicenie i korekta techniczna dokumentacji. Użytkownik zapisał rejestrację w `f25cf1a`, a poprawki dokumentacji w `446a998`; oba commity przeszły PHPStan przez GrumPHP. Teraz na jego prośbę zaktualizowano niniejszy kontekst. Nie wykonano commitu tego podsumowania ani pushu; plik pozostaje nieśledzony do czasu dodania przez użytkownika.
 
@@ -354,6 +421,6 @@ Przed kontynuacją przeczytać aktualne instrukcje repozytorium, odświeżyć `g
 
 Nie ustalono następnego zadania implementacyjnego po uporządkowaniu Git. Możliwe tematy to wylogowanie, limitowanie prób, polskie komunikaty, wygląd formularzy lub lista użytkowników. To propozycje, nie zaakceptowany plan. Testy automatyczne użytkownik odłożył na później.
 
-Aktualny tekst startowy kolejnej rozmowy:
+Historyczny tekst startowy rozmowy z 05.11.2026 (nie używać do obecnej kontynuacji):
 
 > Kontynuujemy Sportowiadę. Przeczytaj docs/00-kontekst-projektu.md i aktualne instrukcje repozytorium. Odpowiadaj po polsku; sam wykonuję polecenia i edycje kodu. Prowadź po jednym małym kroku z celem, mechanizmem i kryterium sukcesu. Na feature/admin-users zapisano lokalne commity 083bebb (is_admin i Gate), e9f3ebf (logowanie), f25cf1a (rejestracja i dokumentacja 11) oraz 446a998 (ujednolicenie i korekty dokumentacji). Podstawy logowania, kontroli dostępu i rejestracji sprawdziłem ręcznie, w tym błędy rejestracji i zachowanie imienia oraz e-maila bez haseł. Testy automatyczne odkładamy. Ostatnio aktualizowaliśmy kontekst przed osobnym commitem i pushem. Najpierw sprawdź Git; nie zakładaj, że te operacje już wykonano. Roboczy link /admin/users pozostaje lokalnie, a lista i CRUD nie istnieją. Nie odrzucaj zmian. Po zakończeniu publikacji wybierzemy kolejny mały krok implementacyjny.
