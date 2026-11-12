@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\DisciplineController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
@@ -34,6 +35,6 @@ Route::patch('/admin/users/{user}', [UserController::class, 'update'])
 
 // DISCIPLINES
 
-Route::view('/admin/disciplines', 'admin.disciplines.index')
+Route::get('/admin/disciplines', [DisciplineController::class, 'index'])
     ->middleware(['auth', 'can:access-admin'])
     ->name('admin.disciplines.index');

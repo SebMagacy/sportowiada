@@ -61,68 +61,64 @@
                 </button>
             </div>
         </div>
-        <div class="overflow-x-auto">
-            <table class="w-full text-left text-sm">
-                <thead class="border-b border-gray-200 bg-gray-50">
-                    <tr>
-                        <th scope="col" class="w-12 px-6 py-3">
-                            <input type="checkbox" data-select-page disabled aria-label="{{ __('users.select_page') }}"
-                                class="size-4 align-middle accent-blue-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">
-                        </th>
-                        @foreach ($columns as $column => $definition)
-                            <x-lists.sortable-column :column="$column" route="admin.users.index" :sort="$sort"
-                                :direction="$direction" :sortable="$definition['sortable']" :filters="[
-                                    'search' => $search,
-                                    'account_type' => $accountType,
-                                    'per_page' => $perPage,
-                                ]" :align="$definition['align']">
-                                <span @class(['sr-only' => $column === 'actions'])>
-                                    {{ $definition['label'] }}
-                                </span>
-                            </x-lists.sortable-column>
-                        @endforeach
-                    </tr>
-                </thead>
-                <tbody class="divide-y divide-gray-200">
-                    @forelse ($users as $user)
-                        <tr class="hover:bg-gray-50">
-                            <td class="px-6 py-3">
-                                <input type="checkbox" data-select-user value="{{ $user->id }}"
-                                    aria-label="{{ __('users.select_user', ['name' => $user->name, 'id' => $user->id]) }}"
-                                    class="size-4 align-middle accent-blue-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">
-                            </td>
-                            <td class="px-6 py-3 font-medium text-gray-950">{{ $user->name }}</td>
-                            <td class="px-6 py-3 text-gray-700">{{ $user->email }}</td>
-                            <td class="px-6 py-3 text-gray-700">
-                                {{ $user->is_admin ? __('users.administrator') : __('users.user') }}</td>
-                            <td class="px-6 py-3 text-right text-gray-500">{{ $user->id }}</td>
-                            <td class="px-6 py-3 text-right">
-                                <a href="{{ route('admin.users.edit', [
-                                    'user' => $user,
-                                    'search' => $search,
-                                    'account_type' => $accountType,
-                                    'sort' => $sort,
-                                    'direction' => $direction,
-                                    'per_page' => $perPage,
-                                    'page' => $users->currentPage(),
-                                ]) }}"
-                                    class="inline-flex items-center gap-1.5 font-medium text-blue-600 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">
-                                    <x-ui.icon name="edit" class="size-4" />
+        <x-lists.table>
+            <x-slot:head>
+                <tr>
+                    <th scope="col" class="w-12 px-6 py-3">
+                        <input type="checkbox" data-select-page disabled aria-label="{{ __('users.select_page') }}"
+                            class="size-4 align-middle accent-blue-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">
+                    </th>
+                    @foreach ($columns as $column => $definition)
+                        <x-lists.sortable-column :column="$column" route="admin.users.index" :sort="$sort"
+                            :direction="$direction" :sortable="$definition['sortable']" :filters="[
+                                'search' => $search,
+                                'account_type' => $accountType,
+                                'per_page' => $perPage,
+                            ]" :align="$definition['align']">
+                            <span @class(['sr-only' => $column === 'actions'])>
+                                {{ $definition['label'] }}
+                            </span>
+                        </x-lists.sortable-column>
+                    @endforeach
+                </tr>
+            </x-slot:head>
+            @forelse ($users as $user)
+                <tr class="hover:bg-gray-50">
+                    <td class="px-6 py-3">
+                        <input type="checkbox" data-select-user value="{{ $user->id }}"
+                            aria-label="{{ __('users.select_user', ['name' => $user->name, 'id' => $user->id]) }}"
+                            class="size-4 align-middle accent-blue-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">
+                    </td>
+                    <td class="px-6 py-3 font-medium text-gray-950">{{ $user->name }}</td>
+                    <td class="px-6 py-3 text-gray-700">{{ $user->email }}</td>
+                    <td class="px-6 py-3 text-gray-700">
+                        {{ $user->is_admin ? __('users.administrator') : __('users.user') }}</td>
+                    <td class="px-6 py-3 text-right text-gray-500">{{ $user->id }}</td>
+                    <td class="px-6 py-3 text-right">
+                        <a href="{{ route('admin.users.edit', [
+                            'user' => $user,
+                            'search' => $search,
+                            'account_type' => $accountType,
+                            'sort' => $sort,
+                            'direction' => $direction,
+                            'per_page' => $perPage,
+                            'page' => $users->currentPage(),
+                        ]) }}"
+                            class="inline-flex items-center gap-1.5 font-medium text-blue-600 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">
+                            <x-ui.icon name="edit" class="size-4" />
 
-                                    {{ __('users.edit') }}
-                                </a>
-                            </td>
-                        </tr>
-                    @empty
-                        <tr>
-                            <td colspan="{{ count($columns) + 1 }}" class="px-6 py-8 text-center text-gray-500">
-                                {{ $search !== '' || $accountType !== 'all' ? __('users.no_results') : __('users.empty') }}
-                            </td>
-                        </tr>
-                    @endforelse
-                </tbody>
-            </table>
-        </div>
+                            {{ __('users.edit') }}
+                        </a>
+                    </td>
+                </tr>
+            @empty
+                <tr>
+                    <td colspan="{{ count($columns) + 1 }}" class="px-6 py-8 text-center text-gray-500">
+                        {{ $search !== '' || $accountType !== 'all' ? __('users.no_results') : __('users.empty') }}
+                    </td>
+                </tr>
+            @endforelse
+        </x-lists.table>
 
         <div class="grid grid-cols-3 items-center gap-4 border-t border-gray-200 px-6 py-4">
             <div class="text-sm text-gray-600">
