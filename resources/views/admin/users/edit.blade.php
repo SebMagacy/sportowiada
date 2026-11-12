@@ -1,11 +1,13 @@
 <x-admin-layout>
-    <x-page-heading>
-        <x-slot:icon>
-            <x-icon name="edit" class="size-full" />
-        </x-slot:icon>
+    <x-slot:heading>
+        <x-page-heading>
+            <x-slot:icon>
+                <x-icon name="edit" class="size-full" />
+            </x-slot:icon>
 
-        {{ __('users.edit_title', ['name' => $user->name]) }}
-    </x-page-heading>
+            {{ __('users.edit_title', ['name' => $user->name]) }}
+        </x-page-heading>
+    </x-slot:heading>
 
     <form method="POST"
         action="{{ route('admin.users.update', [

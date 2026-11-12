@@ -1,11 +1,13 @@
 <x-admin-layout>
-    <x-page-heading>
-        <x-slot:icon>
-            <x-icon name="users" class="size-full" />
-        </x-slot:icon>
+    <x-slot:heading>
+        <x-page-heading>
+            <x-slot:icon>
+                <x-icon name="users" class="size-full" />
+            </x-slot:icon>
 
-        {{ __('users.title') }}
-    </x-page-heading>
+            {{ __('users.title') }}
+        </x-page-heading>
+    </x-slot:heading>
 
     @if (session('status'))
         <div role="status" class="mb-6 rounded-lg border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-800">

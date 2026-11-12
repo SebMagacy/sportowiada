@@ -89,10 +89,10 @@ class PageHeadingTest extends TestCase
 
             $response->assertOk();
             $xpath = $this->xpath($response->getContent());
-            $this->assertSame(1, $xpath->query('//main//h1')->length);
-            $this->assertSame($title, $xpath->evaluate('normalize-space(//main//h1)'));
-            $this->assertSame(1, $xpath->query('//main//h1//svg')->length);
-            $this->assertSame(0, $xpath->query('//main//h1//script')->length);
+            $this->assertSame(1, $xpath->query('//header//h1')->length);
+            $this->assertSame($title, $xpath->evaluate('normalize-space(//header//h1)'));
+            $this->assertSame(1, $xpath->query('//header//h1//svg')->length);
+            $this->assertSame(0, $xpath->query('//header//h1//script')->length);
         }
 
         $response->assertSee($name)->assertDontSee($name, false);
