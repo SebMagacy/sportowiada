@@ -23,6 +23,10 @@ return [
     'per_page_hint' => 'Zmiana liczby wyników automatycznie odświeża listę.',
     'actions' => 'Akcje',
     'edit' => 'Edytuj',
+    'select_page' => 'Zaznacz wszystkich użytkowników na tej stronie',
+    'select_user' => 'Zaznacz użytkownika: :name (ID: :id)',
+    'selected_count' => 'Zaznaczono:',
+    'clear_selection' => 'Wyczyść zaznaczenie',
 
     // EDIT
     'edit_title' => 'Edycja: :name',

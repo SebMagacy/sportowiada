@@ -23,6 +23,10 @@ return [
     'per_page_hint' => 'Changing the number of results automatically refreshes the list.',
     'actions' => 'Actions',
     'edit' => 'Edit',
+    'select_page' => 'Select all users on this page',
+    'select_user' => 'Select user: :name (ID: :id)',
+    'selected_count' => 'Selected:',
+    'clear_selection' => 'Clear selection',
 
     // EDIT
     'edit_title' => 'Edit: :name',

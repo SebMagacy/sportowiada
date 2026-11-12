@@ -66,7 +66,7 @@ class UserPerPageTest extends TestCase
         $this->assertSame($criteria + ['page' => '2'], $this->criteria($next));
         $this->get($next)->assertOk()->assertViewHas('users', fn (LengthAwarePaginator $users): bool => $users->count() === 1 && $users->currentPage() === 2 && $users->perPage() === 25);
 
-        $sortUrl = $xpath->evaluate('string(//th[1]/a/@href)');
+        $sortUrl = $xpath->evaluate('string((//thead//th/a)[1]/@href)');
         $this->assertSame(['search' => 'Sport', 'account_type' => 'user', 'per_page' => '25', 'sort' => 'name', 'direction' => 'asc'], $this->criteria($sortUrl));
         $this->get($sortUrl)->assertOk()->assertViewHas('perPage', '25')->assertViewHas('sort', 'name');
 

@@ -15,7 +15,7 @@
         </div>
     @endif
 
-    <div class="rounded-xl border border-gray-200 bg-white shadow-sm">
+    <div data-row-selection class="rounded-xl border border-gray-200 bg-white shadow-sm">
         <div class="border-b border-gray-200 p-4">
             <form method="GET" action="{{ route('admin.users.index') }}" class="w-full" role="search">
                 <input type="hidden" name="sort" value="{{ $sort }}">
@@ -48,10 +48,27 @@
 
             </form>
         </div>
+        <div data-selection-toolbar hidden>
+            <div class="flex items-center justify-between gap-4 border-b border-gray-200 px-6 py-3">
+                <p role="status" aria-atomic="true" class="text-sm text-gray-600">
+                    {{ __('users.selected_count') }}
+                    <span data-selection-count>0</span>
+                </p>
+
+                <button type="button" data-clear-selection
+                    class="rounded-lg px-3 py-2 text-sm font-semibold text-blue-600 hover:bg-blue-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">
+                    {{ __('users.clear_selection') }}
+                </button>
+            </div>
+        </div>
         <div class="overflow-x-auto">
             <table class="w-full text-left text-sm">
                 <thead class="border-b border-gray-200 bg-gray-50">
                     <tr>
+                        <th scope="col" class="w-12 px-6 py-3">
+                            <input type="checkbox" data-select-page disabled aria-label="{{ __('users.select_page') }}"
+                                class="size-4 align-middle accent-blue-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">
+                        </th>
                         @foreach ($columns as $column => $definition)
                             <x-sortable-column :column="$column" route="admin.users.index" :sort="$sort"
                                 :direction="$direction" :sortable="$definition['sortable']" :filters="[
@@ -69,6 +86,11 @@
                 <tbody class="divide-y divide-gray-200">
                     @forelse ($users as $user)
                         <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-3">
+                                <input type="checkbox" data-select-user value="{{ $user->id }}"
+                                    aria-label="{{ __('users.select_user', ['name' => $user->name, 'id' => $user->id]) }}"
+                                    class="size-4 align-middle accent-blue-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">
+                            </td>
                             <td class="px-6 py-3 font-medium text-gray-950">{{ $user->name }}</td>
                             <td class="px-6 py-3 text-gray-700">{{ $user->email }}</td>
                             <td class="px-6 py-3 text-gray-700">
@@ -97,7 +119,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="{{ count($columns) }}" class="px-6 py-8 text-center text-gray-500">
+                            <td colspan="{{ count($columns) + 1 }}" class="px-6 py-8 text-center text-gray-500">
                                 {{ $search !== '' || $accountType !== 'all' ? __('users.no_results') : __('users.empty') }}
                             </td>
                         </tr>

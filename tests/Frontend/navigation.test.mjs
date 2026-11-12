@@ -38,6 +38,7 @@ function environment(stored = null, hasSidebar = true, hasVue = false) {
         createApp: () => ({ mount: (root) => { mounted = root; } }),
         initializeSearchInputs: () => {},
         initializePerPageSelects: () => {},
+        initializeRowSelections: () => {},
     };
     vm.createContext(context);
     vm.runInContext(initialization, context);
