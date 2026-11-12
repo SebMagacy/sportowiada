@@ -1,12 +1,12 @@
-<x-admin-layout>
+<x-layouts.admin>
     <x-slot:heading>
-        <x-page-heading>
+        <x-ui.page-heading>
             <x-slot:icon>
-                <x-icon name="users" class="size-full" />
+                <x-ui.icon name="users" class="size-full" />
             </x-slot:icon>
 
             {{ __('users.title') }}
-        </x-page-heading>
+        </x-ui.page-heading>
     </x-slot:heading>
 
     @if (session('status'))
@@ -15,14 +15,14 @@
         </div>
     @endif
 
-    <div data-row-selection class="rounded-xl border border-gray-200 bg-white shadow-sm">
+    <x-lists.panel data-row-selection>
         <div class="border-b border-gray-200 p-4">
             <form method="GET" action="{{ route('admin.users.index') }}" class="w-full" role="search">
                 <input type="hidden" name="sort" value="{{ $sort }}">
                 <input type="hidden" name="direction" value="{{ $direction }}">
                 <input type="hidden" name="per_page" value="{{ $perPage }}">
 
-                <x-user-filters :account-type="$accountType" :search="$search" :sort="$sort" :direction="$direction"
+                <x-users.filters :account-type="$accountType" :search="$search" :sort="$sort" :direction="$direction"
                     :per-page="$perPage" />
 
                 <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
@@ -42,7 +42,7 @@
                         {{ __('users.filters') }}
                     </button>
 
-                    <x-search-input id="users-search" name="search" :value="$search" :label="__('users.search_label')"
+                    <x-lists.search-input id="users-search" name="search" :value="$search" :label="__('users.search_label')"
                         :placeholder="__('users.search_placeholder')" :clear-url="$clearSearchUrl" :clear-label="__('users.clear_search')" class="w-full sm:flex-1 sm:max-w-xs" />
                 </div>
 
@@ -70,7 +70,7 @@
                                 class="size-4 align-middle accent-blue-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">
                         </th>
                         @foreach ($columns as $column => $definition)
-                            <x-sortable-column :column="$column" route="admin.users.index" :sort="$sort"
+                            <x-lists.sortable-column :column="$column" route="admin.users.index" :sort="$sort"
                                 :direction="$direction" :sortable="$definition['sortable']" :filters="[
                                     'search' => $search,
                                     'account_type' => $accountType,
@@ -79,7 +79,7 @@
                                 <span @class(['sr-only' => $column === 'actions'])>
                                     {{ $definition['label'] }}
                                 </span>
-                            </x-sortable-column>
+                            </x-lists.sortable-column>
                         @endforeach
                     </tr>
                 </thead>
@@ -107,11 +107,7 @@
                                     'page' => $users->currentPage(),
                                 ]) }}"
                                     class="inline-flex items-center gap-1.5 font-medium text-blue-600 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">
-                                    <svg class="size-4" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                        viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                            d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125M18 14.25V19.5A2.25 2.25 0 0 1 15.75 21H4.5A2.25 2.25 0 0 1 2.25 18.75V7.5A2.25 2.25 0 0 1 4.5 5.25H9" />
-                                    </svg>
+                                    <x-ui.icon name="edit" class="size-4" />
 
                                     {{ __('users.edit') }}
                                 </a>
@@ -139,7 +135,7 @@
                 @endif
             </div>
 
-            <x-per-page-select id="users-per-page" :action="route('admin.users.index')" :value="$perPage" :options="[10, 25, 50]"
+            <x-lists.per-page-select id="users-per-page" :action="route('admin.users.index')" :value="$perPage" :options="[10, 25, 50]"
                 :label="__('users.per_page')" :hint="__('users.per_page_hint')" :parameters="[
                     'search' => $search,
                     'account_type' => $accountType,
@@ -154,6 +150,6 @@
             </div>
         </div>
 
-    </div>
+    </x-lists.panel>
 
-</x-admin-layout>
+</x-layouts.admin>

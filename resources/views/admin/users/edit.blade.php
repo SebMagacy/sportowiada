@@ -1,12 +1,12 @@
-<x-admin-layout>
+<x-layouts.admin>
     <x-slot:heading>
-        <x-page-heading>
+        <x-ui.page-heading>
             <x-slot:icon>
-                <x-icon name="edit" class="size-full" />
+                <x-ui.icon name="edit" class="size-full" />
             </x-slot:icon>
 
             {{ __('users.edit_title', ['name' => $user->name]) }}
-        </x-page-heading>
+        </x-ui.page-heading>
     </x-slot:heading>
 
     <form method="POST"
@@ -86,4 +86,4 @@
             </a>
         </div>
     </form>
-</x-admin-layout>
+</x-layouts.admin>

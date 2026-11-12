@@ -1,11 +1,11 @@
-<x-admin-layout>
+<x-layouts.admin>
     <x-slot:heading>
-        <x-page-heading>
+        <x-ui.page-heading>
             <x-slot:icon>
-                <x-icon name="dashboard" class="size-full" />
+                <x-ui.icon name="dashboard" class="size-full" />
             </x-slot:icon>
 
             {{ __('dashboard.title') }}
-        </x-page-heading>
+        </x-ui.page-heading>
     </x-slot:heading>
-</x-admin-layout>
+</x-layouts.admin>

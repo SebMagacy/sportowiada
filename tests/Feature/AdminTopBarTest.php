@@ -38,7 +38,7 @@ class AdminTopBarTest extends TestCase
             $this->assertSame(1, $xpath->query('//header//a[contains(concat(" ", normalize-space(@rel), " "), " noopener ")]')->length);
             $this->assertSame($label, $xpath->evaluate('normalize-space(//header//a/span[1])'));
             $this->assertSame('('.$hint.')', $xpath->evaluate('normalize-space(//header//a/span[contains(concat(" ", @class, " "), " sr-only ")])'));
-            $this->assertSame(1, $xpath->query('//header//a/svg[@aria-hidden="true"]')->length);
+            $this->assertSame(1, $xpath->query('//header//a/span[@aria-hidden="true"]/svg')->length);
         }
     }
 
