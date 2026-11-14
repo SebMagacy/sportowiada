@@ -6,7 +6,7 @@ Filament jest zainstalowany (5.11.3, Livewire 4.4.8, Laravel 13.42.0). Panel dzi
 
 Użytkownik potwierdził ręcznie gościa, administratora, wylogowanie, odmowę zwykłemu kontu oraz nawigację do obu list własnego panelu. Lista użytkowników Filamentu ma cztery kolumny i ikonę; własne etykiety pozostają polskie. Formularz tworzenia kont we własnym panelu również istnieje. Dyscypliny mają już formularz dodawania opisany w rozdziale 30; jego etap jest częściowy.
 
-Na zlecenie użytkownika zapisano osobne lokalne commity kodu i szkieletu testu. Szczegóły w [rozdziale 31](31-filament-pierwszy-panel.md). Asystent potwierdził 220 testów / 1189 asercji; jeden test jest tylko przykładem generatora. Dedykowane testy Filamentu i tworzenia kont pozostają do napisania. Nie wykonano pushu w tej operacji. Issue uruchomienia Filamentu nadal nie powstało po odrzuceniu publikacji przez automatyczną kontrolę; projekt treści jest w rozdziale 31.
+Na zlecenie użytkownika zapisano osobne lokalne commity kodu i szkieletu testu. Szczegóły w [rozdziale 31](31-filament-pierwszy-panel.md). Asystent potwierdził 220 testów / 1189 asercji; jeden test jest tylko przykładem generatora. Dedykowane testy Filamentu i tworzenia kont pozostają do napisania. Użytkownik następnie potwierdził push wszystkich pięciu commitów, do `bbc58fb` włącznie. Późniejsze porządkowanie dokumentacji nie jest objęte tym potwierdzeniem. Issue uruchomienia Filamentu nadal nie powstało po odrzuceniu publikacji przez automatyczną kontrolę; projekt treści jest w rozdziale 31.
 
 Poniższe zapisy sprzed instalacji zachowują historię decyzji; nie są poleceniem ponownej instalacji. Najbliższa praca implementacyjna: uzupełnić `FilamentPanelAccessTest` o rzeczywiste scenariusze dostępu, małymi krokami z użytkownikiem.
 
@@ -32,15 +32,15 @@ Szczegółowy zakres statystyk i ewentualnych porównań zostanie ustalony osobn
 
 Konta logowania i ich uprawnienia będą zarządzane w Filamencie. Dotychczasowy własny interfejs użytkowników może posłużyć jako punkt wyjścia dla obsługi danych zawodników, po dostosowaniu do ich odrębnego modelu. Nie oznacza to przemianowania istniejących kont na zawodników: zawodnik może istnieć bez konta, a jego dane nie wymagają hasła ani typu konta.
 
-### Stan realizacji i następny etap
+### Historyczny stan w chwili decyzji o instalacji
 
 Powyższe punkty zapisują zatwierdzony kierunek i plan prac, a nie wykonanie migracji. W tej aktualizacji zmieniono wyłącznie dokumentację; nie instalowano Filamentu, nie zmieniano kodu aplikacji ani danych. Instalację przekazano do osobnego czatu „Instalacja Filamentu w Sportowiadzie” (`01a1da8b-8ca3-7fc2-91f6-68daa1013c6b`). Przed instalacją należy sprawdzić bieżące zależności, zgodność wersji i kolizje z istniejącymi trasami panelu. Nie usuwać dotychczasowych funkcji przed przygotowaniem i sprawdzeniem ich następstwa.
 
 W dokumentacji oddawanego projektu należy opisać rzeczywisty zakres integracji Filamentu oraz własny wkład w model danych, logikę sportową, witrynę publiczną i testy, oddzielając rozwiązania gotowe od planowanych.
 
-## Aktualny kontekst — 12 listopada 2026 r.
+## Historyczny kontekst — 12 listopada 2026 r.
 
-Ta sekcja określa obecny punkt kontynuacji. Sekcje 1–13 poniżej zachowują historię z 3–5 listopada 2026 r.; ich opisy „obecnie”, „aktualnie”, brakujących funkcji, Git i odłożonych testów odnoszą się do tamtych dat. Nie należy ich traktować jako bieżącego planu ani wykonywać dawnych instrukcji startowych. Aktualne instrukcje repozytorium i potwierdzone późniejsze ustalenia mają pierwszeństwo.
+Ta sekcja zachowuje punkt kontynuacji z 12 listopada; bieżący stan opisano na początku dokumentu. Sekcje 1–13 poniżej zachowują historię z 3–5 listopada 2026 r.; ich opisy „obecnie”, „aktualnie”, brakujących funkcji, Git i odłożonych testów odnoszą się do tamtych dat. Nie należy ich traktować jako bieżącego planu ani wykonywać dawnych instrukcji startowych. Aktualne instrukcje repozytorium i potwierdzone późniejsze ustalenia mają pierwszeństwo.
 
 ### Stan aplikacji potwierdzony odczytem plików
 

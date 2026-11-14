@@ -2,6 +2,8 @@
 
 Dokumentacja tworzenia i rozwoju aplikacji krok po kroku.
 
+Zacznij od [bieżącego kontekstu](00-kontekst-projektu.md). Starsze rozdziały zachowują historię nauki; opisane w nich adresy `/admin` dotyczą własnego panelu, obecnie pod `/legacy-admin`. Aktualny `/admin` obsługuje Filament. Status wykonania i weryfikacji sprawdzaj w treści rozdziału.
+
 [Słownik pojęć](slownik-pojec.md)
 
 ## Spis treści
@@ -20,15 +22,26 @@ Dokumentacja tworzenia i rozwoju aplikacji krok po kroku.
 12. [Wylogowanie użytkowników](12-wylogowanie-uzytkownikow.md)
 13. [Widok użytkowników w panelu administratora](13-widok-uzytkownikow.md)
 14. [Lista użytkowników w panelu administratora](14-lista-uzytkownikow.md)
-15. [Polskie tłumaczenia aplikacji — plan](15-polskie-tlumaczenia.md)
+15. [Polskie tłumaczenia aplikacji](15-polskie-tlumaczenia.md)
 16. [Testy automatyczne aplikacji](16-testy-automatyczne-aplikacji.md)
-17. [Przykładowi użytkownicy — plan](17-przykladowi-uzytkownicy.md)
-18. [Wyszukiwanie użytkowników — plan](18-wyszukiwanie-uzytkownikow.md)
-19. [Sortowanie kolumn listy użytkowników — plan, issue #5](19-sortowanie-uzytkownikow.md)
-20. [Filtrowanie użytkowników według typu konta — plan, issue #6](20-filtrowanie-uzytkownikow.md)
-21. [Panel filtrów użytkowników — plan, issue #11](21-panel-filtrow-uzytkownikow.md)
-22. [Czyszczenie wyszukiwania użytkowników — plan, issue #8](22-czyszczenie-wyszukiwania-uzytkownikow.md)
-23. [Wybór liczby użytkowników na stronę — plan, issue #7](23-liczba-uzytkownikow-na-strone.md)
+17. [Przykładowi użytkownicy](17-przykladowi-uzytkownicy.md)
+18. [Wyszukiwanie użytkowników](18-wyszukiwanie-uzytkownikow.md)
+19. [Sortowanie kolumn listy użytkowników — issue #5](19-sortowanie-uzytkownikow.md)
+20. [Filtrowanie użytkowników według typu konta — issue #6](20-filtrowanie-uzytkownikow.md)
+21. [Panel filtrów użytkowników — issue #11](21-panel-filtrow-uzytkownikow.md)
+22. [Czyszczenie wyszukiwania użytkowników — issue #8](22-czyszczenie-wyszukiwania-uzytkownikow.md)
+23. [Wybór liczby użytkowników na stronę — issue #7](23-liczba-uzytkownikow-na-strone.md)
+
+24. [Edycja użytkownika](24-edycja-uzytkownika.md)
+25. [Ikony nagłówków panelu](25-ikony-naglowkow-panelu.md)
+26. [Górny pasek panelu](26-gorny-pasek-panelu.md)
+27. [Zaznaczanie użytkowników](27-zaznaczanie-uzytkownikow.md)
+
+## Domena sportowa
+
+28. [Wymagania dyscyplin sportowych](28-definiowanie-dyscyplin-sportowych.md)
+29. [Lista dyscyplin](Sport/Dyscypliny/29-widok-dyscyplin.md)
+30. [Dodawanie dyscypliny — etap częściowy](Sport/Dyscypliny/30-dodawanie-dyscypliny.md)
 
 ## Filament
 
