@@ -2,7 +2,7 @@
 
 ## Cel i aktualny stan
 
-Stan na 14.11.2026. Filament jest zainstalowany i działa pod `/admin`. Własny panel pozostaje dostępny pod `/legacy-admin`. Użytkownik potwierdził podstawowe scenariusze dostępu i nawigację własnego panelu. Kod zapisano w osobnych commitach, a użytkownik potwierdził wykonanie pushu. Dedykowane testy Filamentu pozostają do napisania.
+Stan na 14.11.2026. Filament jest zainstalowany i działa pod `/admin`. Własny panel pozostaje dostępny pod `/legacy-admin`. Użytkownik potwierdził podstawowe scenariusze dostępu i nawigację własnego panelu. Dotychczasowy kod zapisano w osobnych commitach, a użytkownik potwierdził wykonanie pushu. Dedykowany zestaw 11 testów Filamentu potwierdza dostęp do pulpitu i listy użytkowników, logowanie oraz wylogowanie.
 
 Etap obejmuje instalację, konfigurację panelu, kontrolę dostępu i zmianę adresów. Lista kont jest osobnym etapem funkcjonalnym. CRUD, przełącznik PL/EN i migracja pozostałych modułów nie należą do uruchomienia panelu. Rozróżnienie komunikatów logowania opisuje [issue #23](https://github.com/SebMagacy/sportowiada/issues/23).
 
@@ -81,7 +81,7 @@ Dotychczasowy formularz `/login` nadal kieruje administratora przez `admin.dashb
 
 W `AdminPanelProvider::panel()` ustawiono `->sidebarCollapsibleOnDesktop()`. Metoda włącza zwijanie paska na komputerze z pozostawieniem ikon. Alternatywna metoda `->sidebarFullyCollapsibleOnDesktop()` ukrywa pasek w całości; nie jest obecnie wybrana.
 
-Obecność konfiguracji potwierdzono w kodzie. Ręczne zwinięcie i ponowne rozwinięcie paska nadal wymaga potwierdzenia użytkownika.
+Obecność konfiguracji potwierdzono w kodzie. Użytkownik potwierdził 14.11.2026, że zwijanie i rozwijanie paska działa poprawnie.
 
 Źródło: [Filament 5 — Collapsible sidebar on desktop](https://github.com/filamentphp/filament/blob/5.x/docs/06-navigation/01-overview.md#collapsible-sidebar-on-desktop).
 
@@ -108,9 +108,45 @@ Ostatni scenariusz potwierdza nawigację i wyświetlenie list, nie ponowne spraw
 | Po zmianie adresów i providera | Użytkownik | 219 testów / 1188 asercji, 6.30 s. |
 | Po utworzeniu szkieletu testu i uporządkowaniu kodu | Asystent | 220 testów / 1189 asercji, wszystkie poprawne. |
 
-Dodatkowy test jest przykładem generatora sprawdzającym stronę główną. `tests/Feature/FilamentPanelAccessTest.php` **nie zawiera jeszcze testów dostępu do Filamentu**. Zielony wynik zestawu nie oznacza ukończenia tego zadania.
+Wynik 220 testów obejmował jeszcze przykład generatora sprawdzający stronę główną. Następnie użytkownik zastąpił go w `tests/Feature/FilamentPanelAccessTest.php` testem `test_guest_is_redirected_to_filament_login`. Asystent potwierdził zapisany kod:
+
+```php
+$this->get(route('filament.panel.pages.dashboard'))
+    ->assertRedirect(route('filament.panel.auth.login'));
+```
+
+Żądanie bez zalogowanego użytkownika sprawdza ochronę pulpitu i docelowy adres przekierowania. Klasa używa `LazilyRefreshDatabase`, zgodnie z istniejącymi testami projektu; baza jest przygotowywana dopiero przy jej użyciu.
+
+Użytkownik uruchomił `php artisan test --compact tests/Feature/FilamentPanelAccessTest.php`: **1 test poprawny, 2 asercje, 0.27 s**. Była to weryfikacja pierwszego scenariusza; późniejsze rozszerzenie i wyniki opisano poniżej.
 
 Użytkownik uruchomił Pint; poprawiono importy i formatowanie Resource oraz usunięto nieużywane importy szkieletu testu. PHPStan w hookach przeszedł przy wszystkich pięciu commitach porządkowania. Wcześniej przekazano poprawny `composer audit` po instalacji; podczas porządkowania nie wykonywano nowego audytu.
+
+### Dedykowane testy dostępu — ukończone
+
+Na wyraźne zlecenie użytkownika asystent rozszerzył `tests/Feature/FilamentPanelAccessTest.php` do **11 testów / 35 asercji**. Zachował pierwszy test użytkownika i dodał 10 kolejnych:
+
+| Scenariusze | Liczba testów |
+| --- | --- |
+| Pulpit: przekierowanie gościa, odmowa zwykłemu kontu, dostęp administratora i odnośnik do listy | 3 |
+| Lista użytkowników: przekierowanie gościa, odmowa zwykłemu kontu, dostęp administratora i widoczność jego adresu e-mail | 3 |
+| Wyświetlenie formularza logowania gościowi | 1 |
+| Logowanie administratora poprawnymi danymi i przekierowanie na pulpit | 1 |
+| Odmowa logowania zwykłemu kontu mimo poprawnych danych | 1 |
+| Odmowa logowania administratorowi z błędnym hasłem | 1 |
+| Wylogowanie, przekierowanie do logowania i ponowna ochrona pulpitu | 1 |
+
+Testy HTTP przechodzą przez rzeczywiste trasy i middleware. Testy formularza używają `Livewire::test(Login::class)`, ustawiają `data.email` i `data.password`, po czym wywołują `authenticate`. `Filament::setCurrentPanel('panel')` określa kontekst dla komponentu testowanego bez żądania do trasy panelu. `assertAuthenticatedAs` potwierdza zalogowane konto; odrzucone próby sprawdzają błąd formularza, aktualny komunikat Filamentu, brak przekierowania i pozostanie gościem. Komunikatów nie zmieniano — issue #23 pozostaje poza zakresem.
+
+Konta powstają przez istniejącą fabrykę z jawnym `is_admin`. Baza testowa to SQLite w pamięci zgodnie z `phpunit.xml`; testy nie korzystają z kont użytkownika w bazie roboczej. Nie dodano zależności ani zmian w kodzie aplikacji.
+
+Weryfikacja asystenta 14.11.2026:
+
+- Dedykowany plik: **11 testów / 35 asercji**, wszystkie poprawne.
+- Po formatowaniu pełny zestaw: **230 testów / 1223 asercje**, wszystkie poprawne, 7.564 s.
+- `vendor/bin/pint --dirty --format agent`: uporządkowano importy testu.
+- `vendor/bin/phpstan analyse --no-progress --memory-limit=1G`: bez błędów.
+
+Są to testy HTTP i komponentu Livewire, bez sterowania prawdziwą przeglądarką. Nie potwierdzają działania przycisku zwijania paska ani jego wyglądu. Test listy dotyczy dostępu, nie pełnej funkcjonalności Resource.
 
 ## Zapis i publikacja prac
 
@@ -126,8 +162,7 @@ Użytkownik potwierdził wykonanie pushu tych commitów. Jest to jego potwierdze
 
 ## Pozostałe kroki
 
-- Zastąpić przykładowy test rzeczywistymi scenariuszami dostępu do Filamentu i uruchomić je.
-- Potwierdzić ręcznie zwijanie oraz rozwijanie paska bocznego.
+- Zapisać i opublikować nowe testy oraz aktualizację dokumentacji; wcześniejszy push ich nie obejmuje.
 - Utworzyć issue z poniższego projektu po rozstrzygnięciu blokady publikacji.
 - Listę użytkowników i dalszą migrację prowadzić jako osobne etapy.
 
@@ -146,10 +181,10 @@ Użytkownik potwierdził wykonanie pushu tych commitów. Jest to jego potwierdze
 - [x] Potwierdzono ręcznie przekierowanie gościa, dostęp administratora, odmowę zwykłemu kontu i wylogowanie.
 - [x] `User::canAccessPanel()` korzysta z `access-admin`.
 - [x] W kodzie włączono zwijanie menu z pozostawieniem ikon.
-- [ ] Potwierdzono ręcznie zwijanie i rozwijanie menu.
+- [x] Potwierdzono ręcznie zwijanie i rozwijanie menu — wynik użytkownika z 14.11.2026.
 - [x] Potwierdzono nawigację i wyświetlenie obu list własnego panelu po przeniesieniu.
 - [x] Dotychczasowe testy przeszły po instalacji i zmianie adresów.
-- [ ] Dodano i uruchomiono dedykowane testy dostępu do Filamentu.
+- [x] Dodano i uruchomiono dedykowane testy dostępu do Filamentu — 11 testów / 35 asercji; pełny zestaw 230 / 1223.
 - [x] Opisano konfigurację i dostępne wyniki w dokumentacji.
 - [x] Zapisano i wysłano dotychczasowe commity — push potwierdzony przez użytkownika.
 
