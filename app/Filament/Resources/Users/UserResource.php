@@ -1,0 +1,53 @@
+<?php
+
+namespace App\Filament\Resources\Users;
+
+use App\Filament\Resources\Users\Pages\ListUsers;
+use App\Models\User;
+use BackedEnum;
+use Filament\Resources\Resource;
+use Filament\Support\Icons\Heroicon;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Table;
+
+class UserResource extends Resource
+{
+    protected static ?string $model = User::class;
+
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedUsers;
+
+    protected static ?string $modelLabel = 'użytkownik';
+
+    protected static ?string $pluralModelLabel = 'Użytkownicy';
+
+    public static function table(Table $table): Table
+    {
+        return $table
+            ->columns([
+                TextColumn::make('name')
+                    ->label('Nazwa'),
+
+                TextColumn::make('email')
+                    ->label('E-mail'),
+
+                TextColumn::make('is_admin')
+                    ->label('Typ konta')
+                    ->formatStateUsing(
+                        fn (bool $state): string => $state
+                            ? 'Administrator'
+                            : 'Użytkownik'
+                    ),
+
+                TextColumn::make('id')
+                    ->label('ID'),
+            ])
+            ->defaultSort('id');
+    }
+
+    public static function getPages(): array
+    {
+        return [
+            'index' => ListUsers::route('/'),
+        ];
+    }
+}
