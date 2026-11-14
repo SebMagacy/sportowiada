@@ -360,4 +360,14 @@ Edycja i usuwanie dyscyplin, wyszukiwanie, filtry, paginacja, operacje zbiorcze,
 
 ## Stan wykonania
 
+### Zapis częściowego etapu w Git — 14 listopada 2026
+
+Użytkownik potwierdził działanie odnośnika „Dodaj dyscyplinę” na liście i powrotu przez „Anuluj”. Odnośnik znajduje się nad panelem tabeli, prowadzi przez `route('admin.disciplines.create')`, używa ikony `add-circle` i tłumaczenia `disciplines.create_title`.
+
+Do indeksu dodano 13 plików związanych z #22, w tym wspólny komponent statusu i jego użycie na liście użytkowników. Niezależne porządkowanie sekcji w `routes/web.php` pozostawiono poza indeksem. `git diff --cached --check` wykonany przez asystenta przeszedł. Użytkownik uruchomił `vendor/bin/pint --dirty --format agent` z wynikiem `passed`; po formatowaniu poza indeksem pozostało tylko porządkowanie tras.
+
+Użytkownik utworzył commit `0cf7a64` — `Dodaj formularz tworzenia dyscypliny i wspólny komunikat statusu`, z treścią `Refs #22`. Commit obejmuje 13 plików, 519 dodanych i 5 usuniętych linii. PHPStan w hooku GrumPHP przeszedł. Push nie jest jeszcze potwierdzony.
+
+To częściowa realizacja: nowe testy automatyczne, błąd pola nazwy, pełne sprawdzenie dostępności, wąskiego ekranu i pozostałych kryteriów nadal wymagają pracy. Issue #22 nie zostało zamknięte. Temat dodawania użytkowników z listy przeniesiono na prośbę użytkownika do osobnego czatu. Poniższy wpis opisuje historyczne utworzenie rozdziału, przed opisanymi wyżej zmianami.
+
 13 listopada 2026 roku na prośbę użytkownika utworzono ten rozdział. Issue #22 i osobny czat „Issue #22 — Dodawanie dyscypliny” zostały przygotowane. Formularz i jego testy nie zostały jeszcze wdrożone. Rozdział jest lokalny i niecommitowany.
