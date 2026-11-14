@@ -33,6 +33,12 @@ Route::view('/admin', 'admin.dashboard')->name('admin.dashboard')->middleware(['
 Route::get('/admin/users', [UserController::class, 'index'])
     ->middleware(['auth', 'can:access-admin'])
     ->name('admin.users.index');
+Route::get('/admin/users/create', [UserController::class, 'create'])
+    ->middleware(['auth', 'can:access-admin'])
+    ->name('admin.users.create');
+Route::post('/admin/users', [UserController::class, 'store'])
+    ->middleware(['auth', 'can:access-admin'])
+    ->name('admin.users.store');
 Route::get('/admin/users/{user}/edit', [UserController::class, 'edit'])
     ->middleware(['auth', 'can:access-admin'])
     ->name('admin.users.edit');

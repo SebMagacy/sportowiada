@@ -1,0 +1,109 @@
+<x-layouts.admin>
+    <x-slot:heading>
+        <x-ui.page-heading>
+            <x-slot:icon>
+                <x-ui.icon name="add-circle" class="size-full" />
+            </x-slot:icon>
+
+            {{ __('users.create_title') }}
+        </x-ui.page-heading>
+    </x-slot:heading>
+    <form method="POST" action="{{ route('admin.users.store') }}">
+        @csrf
+        <div
+            class="grid max-w-3xl grid-cols-1 gap-6 rounded-xl border border-gray-200 bg-white p-6 shadow-sm md:grid-cols-2">
+            <div>
+                <label for="name" class="mb-2 block text-sm font-medium text-gray-700">
+                    {{ __('users.name') }}
+                </label>
+
+                <input type="text" id="name" name="name" autocomplete="name"
+                    value="{{ is_string(old('name')) ? old('name') : '' }}"
+                    class="w-full rounded-lg border border-gray-300 px-3 py-2" required>
+
+                @error('name')
+                    <p role="alert" class="mt-2 text-sm text-red-600">
+                        {{ $message }}
+                    </p>
+                @enderror
+            </div>
+
+            <div>
+                <label for="email" class="mb-2 block text-sm font-medium text-gray-700">
+                    {{ __('users.email') }}
+                </label>
+
+                <input type="email" id="email" name="email" autocomplete="email"
+                    value="{{ is_string(old('email')) ? old('email') : '' }}"
+                    class="w-full rounded-lg border border-gray-300 px-3 py-2" required>
+
+                @error('email')
+                    <p role="alert" class="mt-2 text-sm text-red-600">
+                        {{ $message }}
+                    </p>
+                @enderror
+            </div>
+
+            <div>
+                <label for="password" class="mb-2 block text-sm font-medium text-gray-700">
+                    {{ __('users.password') }}
+                </label>
+
+                <input type="password" id="password" name="password" autocomplete="new-password"
+                    class="w-full rounded-lg border border-gray-300 px-3 py-2" required>
+
+                @error('password')
+                    <p role="alert" class="mt-2 text-sm text-red-600">
+                        {{ $message }}
+                    </p>
+                @enderror
+            </div>
+
+            <div>
+                <label for="password_confirmation" class="mb-2 block text-sm font-medium text-gray-700">
+                    {{ __('users.password_confirmation') }}
+                </label>
+
+                <input type="password" id="password_confirmation" name="password_confirmation"
+                    autocomplete="new-password" class="w-full rounded-lg border border-gray-300 px-3 py-2" required>
+
+                @error('password_confirmation')
+                    <p role="alert" class="mt-2 text-sm text-red-600">
+                        {{ $message }}
+                    </p>
+                @enderror
+            </div>
+            <div>
+                <label for="is_admin" class="mb-2 block text-sm font-medium text-gray-700">
+                    {{ __('users.account_type') }}
+                </label>
+
+                <select id="is_admin" name="is_admin"
+                    class="w-full rounded-lg border border-gray-300 bg-white px-3 py-2">
+                    <option value="0" @selected(old('is_admin', '0') === '0')>
+                        {{ __('users.user') }}
+                    </option>
+                    <option value="1" @selected(old('is_admin', '0') === '1')>
+                        {{ __('users.administrator') }}
+                    </option>
+                </select>
+
+                @error('is_admin')
+                    <p role="alert" class="mt-2 text-sm text-red-600">
+                        {{ $message }}
+                    </p>
+                @enderror
+            </div>
+        </div>
+        <div class="mt-6 flex items-center gap-3">
+            <button type="submit"
+                class="rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">
+                {{ __('users.save') }}
+            </button>
+            <a href="{{ route('admin.users.index') }}"
+                class="rounded-lg border border-gray-300 px-4 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">
+                {{ __('users.cancel') }}
+            </a>
+        </div>
+    </form>
+</x-layouts.admin>

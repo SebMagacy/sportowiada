@@ -3,6 +3,7 @@
 return [
     // INDEX
     'title' => 'Users',
+    'create_title' => 'Add user',
     'name' => 'Name',
     'email' => 'Email',
     'account_type' => 'Account type',
@@ -34,4 +35,9 @@ return [
     'updated' => 'User details have been saved.',
     'cancel' => 'Cancel',
     'cannot_demote_self' => 'You cannot revoke your own administrator privileges.',
+
+    // CREATE
+    'password' => 'Password',
+    'password_confirmation' => 'Confirm password',
+    'save' => 'Save',
 ];

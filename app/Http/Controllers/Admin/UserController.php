@@ -146,6 +146,30 @@ class UserController extends Controller
         ]);
     }
 
+    public function create(): View
+    {
+        return view('admin.users.create');
+    }
+
+    public function store(Request $request): RedirectResponse
+    {
+        $validated = $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'email', 'max:255', 'unique:users,email'],
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'is_admin' => ['required', 'boolean'],
+        ]);
+
+        $user = new User;
+        $user->name = $validated['name'];
+        $user->email = $validated['email'];
+        $user->password = $validated['password'];
+        $user->is_admin = $request->boolean('is_admin');
+        $user->save();
+
+        return redirect()->route('admin.users.index');
+    }
+
     public function edit(Request $request, User $user): View
     {
         return view('admin.users.edit', [

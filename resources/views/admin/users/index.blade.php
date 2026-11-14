@@ -11,6 +11,14 @@
 
     <x-ui.status-message />
 
+    <div class="mb-6 flex flex-wrap items-center gap-3">
+        <a href="{{ route('admin.users.create') }}"
+            class="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">
+            <x-ui.icon name="add-circle" class="size-5" />
+            {{ __('users.create_title') }}
+        </a>
+    </div>
+
     <x-lists.panel data-row-selection>
         <div class="border-b border-gray-200 p-4">
             <form method="GET" action="{{ route('admin.users.index') }}" class="w-full" role="search">

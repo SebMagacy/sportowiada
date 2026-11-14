@@ -3,6 +3,7 @@
 return [
     // INDEX
     'title' => 'Użytkownicy',
+    'create_title' => 'Dodaj użytkownika',
     'name' => 'Imię',
     'email' => 'E-mail',
     'account_type' => 'Typ konta',
@@ -34,4 +35,9 @@ return [
     'updated' => 'Dane użytkownika zostały zapisane.',
     'cancel' => 'Anuluj',
     'cannot_demote_self' => 'Nie możesz odebrać sobie uprawnień administratora.',
+
+    // CREATE
+    'password' => 'Hasło',
+    'password_confirmation' => 'Powtórz hasło',
+    'save' => 'Zapisz',
 ];
