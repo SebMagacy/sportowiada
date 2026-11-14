@@ -30,6 +30,7 @@ class AdminPanelProvider extends PanelProvider
             ->brandName('Sportowiada')
             ->login()
             ->sidebarCollapsibleOnDesktop()
+            ->sidebarWidth('15rem')
             ->colors([
                 'primary' => Color::Amber,
             ])

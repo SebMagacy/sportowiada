@@ -1,14 +1,18 @@
 # Sportowiada — trwałe źródło kontekstu
 
-## Bieżący stan po uruchomieniu Filamentu — 14 listopada 2026 r.
+## Bieżący stan po uruchomieniu Filamentu — 15 listopada 2026 r.
 
 Filament jest zainstalowany (5.11.3, Livewire 4.4.8, Laravel 13.42.0). Panel działa pod `/admin`, provider to `AdminPanelProvider`, identyfikator panelu pozostaje `panel`. Własny panel przeniesiono pod `/legacy-admin`, zachowując nazwy tras `admin.*`. Kontrola dostępu korzysta z `User::canAccessPanel()` i istniejącej bramki `access-admin`.
 
 Użytkownik potwierdził ręcznie gościa, administratora, wylogowanie, odmowę zwykłemu kontu oraz nawigację do obu list własnego panelu. Lista użytkowników Filamentu ma cztery kolumny i ikonę; własne etykiety pozostają polskie. Formularz tworzenia kont we własnym panelu również istnieje. Dyscypliny mają już formularz dodawania opisany w rozdziale 30; jego etap jest częściowy.
 
-Na zlecenie użytkownika zapisano osobne lokalne commity kodu i szkieletu testu. Szczegóły w [rozdziale 31](31-filament-pierwszy-panel.md). Asystent potwierdził 220 testów / 1189 asercji; jeden test jest tylko przykładem generatora. Dedykowane testy Filamentu i tworzenia kont pozostają do napisania. Użytkownik następnie potwierdził push wszystkich pięciu commitów, do `bbc58fb` włącznie. Późniejsze porządkowanie dokumentacji nie jest objęte tym potwierdzeniem. Issue uruchomienia Filamentu nadal nie powstało po odrzuceniu publikacji przez automatyczną kontrolę; projekt treści jest w rozdziale 31.
+Dedykowane testy dostępu do Filamentu są gotowe: **11 testów / 35 asercji**. Ostatnia weryfikacja asystenta 14.11.2026: cały zestaw **230 testów / 1223 asercje**, Pint i PHPStan poprawne. Testy obejmują dostęp do pulpitu i listy kont, formularz logowania, udane i odrzucone logowanie oraz wylogowanie. Są zapisane w lokalnym commicie `079c09d`. Nie potwierdzają osobno formularza tworzenia kont we własnym panelu.
 
-Poniższe zapisy sprzed instalacji zachowują historię decyzji; nie są poleceniem ponownej instalacji. Najbliższa praca implementacyjna: uzupełnić `FilamentPanelAccessTest` o rzeczywiste scenariusze dostępu, małymi krokami z użytkownikiem.
+Użytkownik potwierdził zwijanie i rozwijanie paska. Następnie ustawił `->sidebarWidth('15rem')`; 15.11.2026 potwierdził poprawny wygląd węższego menu. Po tej zmianie szerokości nie powtarzano kontroli automatycznych.
+
+Użytkownik wcześniej potwierdził push pięciu commitów do `bbc58fb` włącznie. Późniejsze commity `5e3cb98` (dokumentacja) i `079c09d` (testy) potwierdzono lokalnie; ich publikacja nie ma osobnego potwierdzenia. Na zakończenie pracy 15.11.2026 pozostają zmiana szerokości paska i aktualizacja dokumentacji, które użytkownik zamierza sam zapisać w Git i opublikować. Nie oznaczamy tego jako wykonanego. Issue uruchomienia Filamentu nadal nie powstało po odrzuceniu publikacji przez automatyczną kontrolę; projekt treści i szczegóły etapu są w [rozdziale 31](31-filament-pierwszy-panel.md).
+
+Poniższe zapisy sprzed instalacji zachowują historię decyzji; nie są poleceniem ponownej instalacji. Testy dostępu i ręczna weryfikacja paska są zakończone. Dalsze funkcje panelu oraz komunikaty logowania z issue #23 wymagają osobnego wyboru zakresu.
 
 ## Aktualizacja zakresu prac — 14 listopada 2026 r.
 

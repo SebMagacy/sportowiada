@@ -2,7 +2,7 @@
 
 ## Cel i aktualny stan
 
-Stan na 14.11.2026. Filament jest zainstalowany i działa pod `/admin`. Własny panel pozostaje dostępny pod `/legacy-admin`. Użytkownik potwierdził podstawowe scenariusze dostępu i nawigację własnego panelu. Dotychczasowy kod zapisano w osobnych commitach, a użytkownik potwierdził wykonanie pushu. Dedykowany zestaw 11 testów Filamentu potwierdza dostęp do pulpitu i listy użytkowników, logowanie oraz wylogowanie.
+Stan na 15.11.2026. Filament jest zainstalowany i działa pod `/admin`. Własny panel pozostaje dostępny pod `/legacy-admin`. Użytkownik potwierdził podstawowe scenariusze dostępu i nawigację własnego panelu. Dotychczasowy kod zapisano w osobnych commitach, a użytkownik potwierdził wykonanie pushu. Dedykowany zestaw 11 testów Filamentu potwierdza dostęp do pulpitu i listy użytkowników, logowanie oraz wylogowanie.
 
 Etap obejmuje instalację, konfigurację panelu, kontrolę dostępu i zmianę adresów. Lista kont jest osobnym etapem funkcjonalnym. CRUD, przełącznik PL/EN i migracja pozostałych modułów nie należą do uruchomienia panelu. Rozróżnienie komunikatów logowania opisuje [issue #23](https://github.com/SebMagacy/sportowiada/issues/23).
 
@@ -42,6 +42,7 @@ Istotny fragment konfiguracji w `AdminPanelProvider::panel()`:
 ->path('admin')
 ->login()
 ->sidebarCollapsibleOnDesktop()
+->sidebarWidth('15rem')
 ```
 
 `id()` nadaje panelowi identyfikator używany przez Filament, a `path()` określa prefiks adresów. `login()` włącza standardowy formularz logowania. Provider rejestruje `Dashboard::class`, standardowe widgety oraz middleware sesji, cookies, ochrony żądań i uwierzytelniania. `discoverResources()` umożliwia późniejsze wykrywanie klas w `app/Filament/Resources`; samo jego dodanie nie tworzy modułów CRUD.
@@ -82,6 +83,8 @@ Dotychczasowy formularz `/login` nadal kieruje administratora przez `admin.dashb
 W `AdminPanelProvider::panel()` ustawiono `->sidebarCollapsibleOnDesktop()`. Metoda włącza zwijanie paska na komputerze z pozostawieniem ikon. Alternatywna metoda `->sidebarFullyCollapsibleOnDesktop()` ukrywa pasek w całości; nie jest obecnie wybrana.
 
 Obecność konfiguracji potwierdzono w kodzie. Użytkownik potwierdził 14.11.2026, że zwijanie i rozwijanie paska działa poprawnie.
+
+Następnie użytkownik dodał w `AdminPanelProvider::panel()` ustawienie `->sidebarWidth('15rem')`, zmniejszając szerokość rozwiniętego paska z domyślnych `20rem` do `15rem` (240px przy bazowej wielkości czcionki 16px). Asystent potwierdził zmianę w kodzie. Szerokość zwiniętego paska pozostaje domyślna: `4.5rem`. Użytkownik potwierdził 15.11.2026 poprawny wygląd po zmianie szerokości, w tym mieszczące się nazwy pozycji menu.
 
 Źródło: [Filament 5 — Collapsible sidebar on desktop](https://github.com/filamentphp/filament/blob/5.x/docs/06-navigation/01-overview.md#collapsible-sidebar-on-desktop).
 
@@ -157,12 +160,14 @@ Są to testy HTTP i komponentu Livewire, bez sterowania prawdziwą przeglądark�
 | `2b2e83e` | Lista użytkowników Filamentu — osobny etap funkcjonalny. |
 | `1aed201` | Wygenerowany szkielet przyszłych testów dostępu. |
 | `bbc58fb` | Dokumentacja i kontekst projektu. |
+| `5e3cb98` | Uporządkowanie dokumentacji instalacji i spisu treści. |
+| `079c09d` | Dedykowane testy dostępu do Filamentu i dokumentacja. |
 
-Użytkownik potwierdził wykonanie pushu tych commitów. Jest to jego potwierdzenie, bez niezależnego odczytu zdalnego repozytorium w tej aktualizacji. Niniejsze porządkowanie dokumentacji jest późniejszą zmianą i nie należy do tamtego pushu.
+Użytkownik potwierdził wykonanie pushu pierwszych pięciu wymienionych commitów. Commity `5e3cb98` i `079c09d` potwierdzono w lokalnej historii Git; ich push nie ma osobnego potwierdzenia. Jest to jego potwierdzenie, bez niezależnego odczytu zdalnego repozytorium w tej aktualizacji. Niniejsze porządkowanie dokumentacji jest późniejszą zmianą i nie należy do tamtego pushu.
 
 ## Pozostałe kroki
 
-- Zapisać i opublikować nowe testy oraz aktualizację dokumentacji; wcześniejszy push ich nie obejmuje.
+- Zapisać zmianę szerokości paska i końcową aktualizację dokumentacji oraz wykonać push. Testy są już w lokalnym commicie `079c09d`. Na zakończenie pracy 15.11.2026 użytkownik zapowiedział samodzielne dodanie zmian do Git; wykonania commita i pushu jeszcze nie potwierdzono.
 - Utworzyć issue z poniższego projektu po rozstrzygnięciu blokady publikacji.
 - Listę użytkowników i dalszą migrację prowadzić jako osobne etapy.
 
@@ -191,3 +196,7 @@ Użytkownik potwierdził wykonanie pushu tych commitów. Jest to jego potwierdze
 ### Poza zakresem
 
 Resources, CRUD, migracja całego panelu, przełącznik PL/EN i tłumaczenia własnych etykiet. Zmiana komunikatów logowania pozostaje w issue #23. Etap nie jest ukończony, dopóki pozostałe kryteria nie zostaną sprawdzone.
+
+## Stan na zakończenie pracy — 15.11.2026
+
+Zrealizowano konfigurację dostępu, 11 dedykowanych testów oraz ręczne sprawdzenie zwijania menu i wyglądu paska o szerokości `15rem`. Ostatnie wyniki automatycznej weryfikacji pochodzą z 14.11.2026, sprzed zmiany szerokości: 230 testów / 1223 asercje, Pint i PHPStan poprawne. Po zmianie szerokości nie uruchamiano ponownie tych kontroli. Pozostają zapis i publikacja bieżących zmian przez użytkownika oraz rozstrzygnięcie utworzenia issue. Dalsze funkcje panelu i issue #23 stanowią osobne zadania.
