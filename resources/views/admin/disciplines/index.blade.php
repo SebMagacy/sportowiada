@@ -8,6 +8,17 @@
             {{ __('disciplines.title') }}
         </x-ui.page-heading>
     </x-slot:heading>
+
+    <x-ui.status-message />
+
+    <div class="mb-6 flex flex-wrap items-center gap-3">
+    <a href="{{ route('admin.disciplines.create') }}"
+        class="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">
+        <x-ui.icon name="add-circle" class="size-5" />
+        {{ __('disciplines.create_title') }}
+    </a>
+</div>
+
     <x-lists.panel>
         <x-lists.table>
             <x-slot:head>

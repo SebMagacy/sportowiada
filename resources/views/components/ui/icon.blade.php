@@ -9,6 +9,7 @@
         'logout' => resource_path('svg/logout.svg'),
         'open-in-new' => resource_path('svg/open-in-new.svg'),
         'menu' => resource_path('svg/menu.svg'),
+        'add-circle' => resource_path('svg/add_circle.svg'),
         default => throw new InvalidArgumentException('Nieznana ikona.'),
     };
 

@@ -38,3 +38,9 @@ Route::patch('/admin/users/{user}', [UserController::class, 'update'])
 Route::get('/admin/disciplines', [DisciplineController::class, 'index'])
     ->middleware(['auth', 'can:access-admin'])
     ->name('admin.disciplines.index');
+Route::get('/admin/disciplines/create', [DisciplineController::class, 'create'])
+    ->middleware(['auth', 'can:access-admin'])
+    ->name('admin.disciplines.create');
+Route::post('/admin/disciplines', [DisciplineController::class, 'store'])
+    ->middleware(['auth', 'can:access-admin'])
+    ->name('admin.disciplines.store');

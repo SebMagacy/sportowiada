@@ -9,11 +9,7 @@
         </x-ui.page-heading>
     </x-slot:heading>
 
-    @if (session('status'))
-        <div role="status" class="mb-6 rounded-lg border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-800">
-            {{ session('status') }}
-        </div>
-    @endif
+    <x-ui.status-message />
 
     <x-lists.panel data-row-selection>
         <div class="border-b border-gray-200 p-4">
