@@ -1,5 +1,43 @@
 # Sportowiada — trwałe źródło kontekstu
 
+## Bieżący stan po uruchomieniu Filamentu — 14 listopada 2026 r.
+
+Filament jest zainstalowany (5.11.3, Livewire 4.4.8, Laravel 13.42.0). Panel działa pod `/admin`, provider to `AdminPanelProvider`, identyfikator panelu pozostaje `panel`. Własny panel przeniesiono pod `/legacy-admin`, zachowując nazwy tras `admin.*`. Kontrola dostępu korzysta z `User::canAccessPanel()` i istniejącej bramki `access-admin`.
+
+Użytkownik potwierdził ręcznie gościa, administratora, wylogowanie, odmowę zwykłemu kontu oraz nawigację do obu list własnego panelu. Lista użytkowników Filamentu ma cztery kolumny i ikonę; własne etykiety pozostają polskie. Formularz tworzenia kont we własnym panelu również istnieje. Dyscypliny mają już formularz dodawania opisany w rozdziale 30; jego etap jest częściowy.
+
+Na zlecenie użytkownika zapisano osobne lokalne commity kodu i szkieletu testu. Szczegóły w [rozdziale 31](31-filament-pierwszy-panel.md). Asystent potwierdził 220 testów / 1189 asercji; jeden test jest tylko przykładem generatora. Dedykowane testy Filamentu i tworzenia kont pozostają do napisania. Nie wykonano pushu w tej operacji. Issue uruchomienia Filamentu nadal nie powstało po odrzuceniu publikacji przez automatyczną kontrolę; projekt treści jest w rozdziale 31.
+
+Poniższe zapisy sprzed instalacji zachowują historię decyzji; nie są poleceniem ponownej instalacji. Najbliższa praca implementacyjna: uzupełnić `FilamentPanelAccessTest` o rzeczywiste scenariusze dostępu, małymi krokami z użytkownikiem.
+
+## Aktualizacja zakresu prac — 14 listopada 2026 r.
+
+### Uzgodniony kierunek architektury
+
+Użytkownik zatwierdził wykorzystanie Filamentu jako docelowego, wspólnego zaplecza administracyjnego Sportowiady. Migracja będzie prowadzona stopniowo, z zachowaniem istniejących danych, logowania i kontroli dostępu. Pierwszym obszarem będzie zarządzanie kontami użytkowników. Ta decyzja zastępuje wcześniejsze zapisy o braku zgody na instalację Filamentu i planie rozwijania całego panelu samodzielnie.
+
+Witryna dla odwiedzających pozostaje własną częścią aplikacji. Celem wykorzystania gotowego zaplecza jest przeznaczenie większej części pracy na funkcje sportowe i publiczny interfejs Sportowiady.
+
+### Planowany zakres własnej implementacji
+
+- Projekt danych sportowych: zawodnicy, drużyny, ligi, sezony, edycje i mecze, zgodnie z wymaganiami opisanymi w rozdziale 28.
+- Reguły rozgrywek, obliczanie klasyfikacji oraz statystyk; szczegółowe zasady wymagają dalszych ustaleń.
+- Publiczne strony drużyn i zawodników oraz prezentacja terminarzy, wyników i tabel ligowych.
+- Wyszukiwanie i filtrowanie informacji sportowych oraz responsywny interfejs witryny.
+- Testowanie własnej logiki i integracji z zapleczem administracyjnym.
+
+Szczegółowy zakres statystyk i ewentualnych porównań zostanie ustalony osobno. Filament służy do budowy interfejsu zarządzania danymi; nie zastępuje projektu domeny ani implementacji reguł sportowych.
+
+### Konta użytkowników a zawodnicy
+
+Konta logowania i ich uprawnienia będą zarządzane w Filamencie. Dotychczasowy własny interfejs użytkowników może posłużyć jako punkt wyjścia dla obsługi danych zawodników, po dostosowaniu do ich odrębnego modelu. Nie oznacza to przemianowania istniejących kont na zawodników: zawodnik może istnieć bez konta, a jego dane nie wymagają hasła ani typu konta.
+
+### Stan realizacji i następny etap
+
+Powyższe punkty zapisują zatwierdzony kierunek i plan prac, a nie wykonanie migracji. W tej aktualizacji zmieniono wyłącznie dokumentację; nie instalowano Filamentu, nie zmieniano kodu aplikacji ani danych. Instalację przekazano do osobnego czatu „Instalacja Filamentu w Sportowiadzie” (`01a1da8b-8ca3-7fc2-91f6-68daa1013c6b`). Przed instalacją należy sprawdzić bieżące zależności, zgodność wersji i kolizje z istniejącymi trasami panelu. Nie usuwać dotychczasowych funkcji przed przygotowaniem i sprawdzeniem ich następstwa.
+
+W dokumentacji oddawanego projektu należy opisać rzeczywisty zakres integracji Filamentu oraz własny wkład w model danych, logikę sportową, witrynę publiczną i testy, oddzielając rozwiązania gotowe od planowanych.
+
 ## Aktualny kontekst — 12 listopada 2026 r.
 
 Ta sekcja określa obecny punkt kontynuacji. Sekcje 1–13 poniżej zachowują historię z 3–5 listopada 2026 r.; ich opisy „obecnie”, „aktualnie”, brakujących funkcji, Git i odłożonych testów odnoszą się do tamtych dat. Nie należy ich traktować jako bieżącego planu ani wykonywać dawnych instrukcji startowych. Aktualne instrukcje repozytorium i potwierdzone późniejsze ustalenia mają pierwszeństwo.

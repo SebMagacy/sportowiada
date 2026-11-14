@@ -29,3 +29,7 @@ Dokumentacja tworzenia i rozwoju aplikacji krok po kroku.
 21. [Panel filtrów użytkowników — plan, issue #11](21-panel-filtrow-uzytkownikow.md)
 22. [Czyszczenie wyszukiwania użytkowników — plan, issue #8](22-czyszczenie-wyszukiwania-uzytkownikow.md)
 23. [Wybór liczby użytkowników na stronę — plan, issue #7](23-liczba-uzytkownikow-na-strone.md)
+
+## Filament
+
+- [31. Filament — uruchomienie i dostęp do panelu](31-filament-pierwszy-panel.md)
