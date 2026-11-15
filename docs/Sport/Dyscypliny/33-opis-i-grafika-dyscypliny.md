@@ -113,6 +113,10 @@ Użytkownik wykonał `php artisan test --compact --filter='Discipline|FilamentPa
 
 Użytkownik wykonał `vendor/bin/phpstan analyse --memory-limit=1G`: analiza 16 plików z konfiguracją `phpstan.neon` zakończyła się `[OK] No errors`. Asystent przejrzał diff modelu, formularza, tłumaczeń i deklaracji zależności oraz wykonał `git diff --check` bez błędów. Nowa funkcja została sprawdzona ręcznie w opisanym zakresie; nie dodano jej testów automatycznych. Commit i push pozostają niepotwierdzone.
 
+### 17. Commit i push obsługi grafiki
+
+Użytkownik utworzył commit `8f2a633` — „Dodaj opcjonalną grafikę dyscypliny przez Spatie Media Library”. Kontrola PHPStan w hooku GrumPHP przeszła. Następnie wykonał `git push origin main`; przekazany wynik potwierdza publikację `b72a346..8f2a633` na `main` w repozytorium Sportowiady. Ten commit obejmuje obsługę grafiki i dotychczasową dokumentację, bez pola `description`. Niniejsze potwierdzenie commita i pushu dodano do dokumentacji już po publikacji i pozostaje lokalną zmianą do kolejnego commita. Nie zamykano zgłoszeń GitHub.
+
 ## Sposób pracy
 
 Po polsku, jeden mały krok: cel, mechanizm, konkretna edycja lub polecenie i kryterium sukcesu; następnie oczekiwanie na wynik. Użytkownik wykonuje edycje aplikacji, polecenia i Git. Asystent aktualizuje dokumentację po potwierdzonych krokach. Bez nowych gałęzi i worktree.

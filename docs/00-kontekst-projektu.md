@@ -1,5 +1,28 @@
 # Sportowiada — trwałe źródło kontekstu
 
+## Aktualny punkt kontynuacji — grafika dyscypliny, 15 listopada 2026 r.
+
+Ta sekcja ma pierwszeństwo przed starszymi punktami kontynuacji poniżej. Starsze stwierdzenia o braku zasobu dyscyplin Filamentu i nierozpoczętej implementacji są nieaktualne. Szczegóły prac zapisano w [rozdziale 32](Sport/Dyscypliny/32-dyscypliny-filament.md) i [rozdziale 33](Sport/Dyscypliny/33-opis-i-grafika-dyscypliny.md).
+
+### Wykonane i opublikowane
+
+- Zasób `app/Filament/Resources/Disciplines/DisciplineResource.php` ma listę, tworzenie, edycję i zbiorowe usuwanie; strona edycji umożliwia usunięcie pojedynczego rekordu. Formularz zawiera nazwę i unikalny alias z walidacją formatu. Ręczne sprawdzenia i ich granice opisuje rozdział 32. Zastępowany kod własnego panelu nie został jeszcze usunięty.
+- Ikona sekcji w sidebarze to własny gwizdek `resources/svg/disciplines.svg`, zarejestrowany jako `sportowiada-disciplines`. Jest niezależna od grafiki konkretnej dyscypliny.
+- Użytkownik wybrał wgrywanie własnej grafiki przez administratora i zatwierdził instalację oficjalnej integracji `filament/spatie-laravel-media-library-plugin` 5.11.3 oraz `spatie/laravel-medialibrary` 11.23.13. Media Browser nie został zainstalowany. Sama integracja Spatie nie zapewnia wspólnej strony „Multimedia”; jej ewentualna budowa pozostaje osobnym zakresem do ustalenia.
+- Migracja `2026_11_15_160741_create_media_table.php` została wykonana; Boost potwierdził tabelę `media`. Utworzono i sprawdzono dowiązanie `public/storage` do `storage/app/public`.
+- Model `Discipline` implementuje `HasMedia`, używa `InteractsWithMedia` i rejestruje opcjonalną kolekcję `icon` z `singleFile()`. Formularz używa `SpatieMediaLibraryFileUpload`, kolekcji `icon`, dysku `public`, typów PNG/JPEG/WebP oraz limitu 2 MB. Etykieta ma tłumaczenia PL/EN. Grafika jest powiązaniem mediów, nie kolumną `icon` w tabeli `disciplines`.
+- Użytkownik potwierdził ręcznie zapis i odczyt grafiki po odświeżeniu, zastąpienie przez usunięcie i wgranie innego obrazu oraz usunięcie z zapisem pustego pola. Zrzuty potwierdziły odrzucenie zbyt dużego pliku i niedozwolonego typu w interfejsie. Nie oznacza to osobnego sprawdzenia walidacji serwerowej ani fizycznego usuwania plików.
+- Pint uporządkował importy; istniejące testy `Discipline|FilamentPanelAccess`: **21 passed / 61 assertions**; PHPStan: **bez błędów**, również w hooku GrumPHP. Nie dodano automatycznych testów mediów, nie uruchomiono pełnej suity dla tego fragmentu.
+- Użytkownik utworzył commit **`8f2a633`** („Dodaj opcjonalną grafikę dyscypliny przez Spatie Media Library”) i przekazał udany wynik `git push origin main`: **`b72a346..8f2a633 main -> main`**. To potwierdza publikację obu fragmentów na `main`.
+
+### Następny mały krok i granice
+
+Do wykonania pozostaje opcjonalny opis `description`. Podano polecenie `php artisan make:migration add_description_to_disciplines_table --table=disciplines --no-interaction`, ale użytkownik nie potwierdził wykonania. Przed kontynuacją sprawdzić pliki; nie zakładać istnienia migracji ani pola. `is_active` i `sort_order` nie są zatwierdzonym zakresem. Nie zamykano automatycznie #21, #22 ani #24; bieżące stany zgłoszeń wymagają odczytu przed dalszą pracą z nimi.
+
+Nadal pracujemy po polsku, po jednym małym kroku z celem, mechanizmem, konkretnym działaniem i kryterium sukcesu, potem czekamy na wynik. Użytkownik wykonuje kod, polecenia i Git; asystent aktualizuje dokumentację po potwierdzonych krokach. Bez nowych gałęzi i worktree ani nieuzgodnionych zmian zależności.
+
+Po opublikowaniu `8f2a633` asystent dopisał potwierdzenie pushu do rozdziału 33, a na prośbę użytkownika zaktualizował niniejszy kontekst. Te późniejsze zmiany dokumentacji pozostają lokalne do kolejnego commita.
+
 ## Wybrany następny etap — migracja listy dyscyplin, 15 listopada 2026 r.
 
 Użytkownik zlecił rozpoczęcie listy dyscyplin w Filamencie w nowym czacie, z nowym issue i rozdziałem. Utworzono [issue #24](https://github.com/SebMagacy/sportowiada/issues/24) oraz [rozdział 32](Sport/Dyscypliny/32-dyscypliny-filament.md). Pierwszy zakres obejmuje listę istniejących rekordów. Użytkownik zatwierdził stopniowe usuwanie zastępowanych elementów własnego widoku po sprawdzeniu następstwa w Filamencie; wcześniejszy plan zachowania obu list na stałe jest nieaktualny. Zachować dane i współdzielone elementy, a podczas usuwania starej listy zapewnić działające wejście do formularza dodawania, anulowanie i powrót po zapisie. Migracja formularza wymaga dalszego ustalenia; #22 nie jest automatycznie ukończone. Implementacja i usuwanie kodu jeszcze się nie rozpoczęły.
