@@ -186,6 +186,10 @@ Weryfikacja asystenta: nowy plik **23 passed / 153 assertions**; następnie Pint
 
 Po zgłoszeniu przez użytkownika diagnostyki Intelephense dotyczącej `assertExists()` i `assertMissing()` asystent zmienił testy na użycie `$disk = Storage::fake('public')` i wywołania asercji bezpośrednio na `$disk`. Zwracany adapter udostępnia metody testowe, których ogólny kontrakt `Storage::disk()` nie deklaruje. Zachowano sprawdzane zachowania. Ponowna weryfikacja: Pint `passed`, nowy plik testów **23 passed / 153 assertions**. Zniknięcie komunikatów w edytorze wymaga jeszcze obserwacji użytkownika.
 
+### 32. Publikacja opisu i testów
+
+Użytkownik potwierdził zniknięcie diagnostyki Intelephense po poprawce typu dysku. Następnie utworzył commit `b285d14` — „Dodaj opcjonalny opis i testy obsługi dyscyplin”; PHPStan w GrumPHP przeszedł. Przekazany wynik `git push origin main` potwierdza publikację `e2f6c41..b285d14 main -> main`. Opis, testy i dotychczasowa dokumentacja są opublikowane. Zakres tego rozdziału jest wykonany i sprawdzony w opisanym zakresie. Nie zmieniano stanów zgłoszeń GitHub. Niniejsze potwierdzenie publikacji dodano po pushu i pozostaje lokalne do kolejnego commita dokumentacji.
+
 ## Sposób pracy
 
 Po polsku, jeden mały krok: cel, mechanizm, konkretna edycja lub polecenie i kryterium sukcesu; następnie oczekiwanie na wynik. Użytkownik wykonuje edycje aplikacji, polecenia i Git. Asystent aktualizuje dokumentację po potwierdzonych krokach. Bez nowych gałęzi i worktree.

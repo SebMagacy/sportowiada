@@ -1,5 +1,9 @@
 # Sportowiada — trwałe źródło kontekstu
 
+## Zakończenie rozdziału 33 — potwierdzona publikacja
+
+Użytkownik utworzył commit **`b285d14`** („Dodaj opcjonalny opis i testy obsługi dyscyplin”), z poprawnym PHPStan w GrumPHP, i przekazał udany push **`e2f6c41..b285d14 main -> main`**. Opcjonalny opis i grafika dyscypliny oraz testy są opublikowane. Ostatni pełny zestaw: 253 testy / 1376 asercji; po poprawce typowania dysku ponownie przeszło 23 testy / 153 asercje i Pint. Użytkownik potwierdził zniknięcie ostrzeżeń Intelephense. Zakres rozdziału 33 jest wykonany; kolejny etap wymaga wyboru użytkownika. Nie zamykano zgłoszeń GitHub. Ten zapis zastępuje starsze informacje poniżej o niewdrożonym opisie i nieopublikowanych testach. Potwierdzenie publikacji dopisano po pushu do kontekstu i rozdziału 33; te dwie aktualizacje dokumentacji pozostają lokalne do kolejnego commita.
+
 ## Aktualny punkt kontynuacji — grafika dyscypliny, 15 listopada 2026 r.
 
 Ta sekcja ma pierwszeństwo przed starszymi punktami kontynuacji poniżej. Starsze stwierdzenia o braku zasobu dyscyplin Filamentu i nierozpoczętej implementacji są nieaktualne. Szczegóły prac zapisano w [rozdziale 32](Sport/Dyscypliny/32-dyscypliny-filament.md) i [rozdziale 33](Sport/Dyscypliny/33-opis-i-grafika-dyscypliny.md).
