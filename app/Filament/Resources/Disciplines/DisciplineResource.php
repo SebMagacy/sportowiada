@@ -11,6 +11,7 @@ use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
+use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
@@ -46,6 +47,10 @@ class DisciplineResource extends Resource
                     ->regex('/\A[a-z0-9]+(?:-[a-z0-9]+)*\z/')
                     ->unique()
                     ->helperText(__('disciplines.alias_help')),
+
+                Textarea::make('description')
+                    ->label(__('disciplines.description'))
+                    ->rows(5),
 
                 SpatieMediaLibraryFileUpload::make('icon')
                     ->label(__('disciplines.icon'))

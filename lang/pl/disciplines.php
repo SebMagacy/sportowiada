@@ -11,4 +11,5 @@ return [
     'created' => 'Dyscyplina została dodana.',
     'alias_help' => 'Małe litery bez polskich znaków, cyfry i pojedyncze myślniki, np. pilka-nozna.',
     'icon' => 'Grafika dyscypliny',
+    'description' => 'Opis',
 ];

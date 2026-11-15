@@ -117,6 +117,75 @@ Użytkownik wykonał `vendor/bin/phpstan analyse --memory-limit=1G`: analiza 16 
 
 Użytkownik utworzył commit `8f2a633` — „Dodaj opcjonalną grafikę dyscypliny przez Spatie Media Library”. Kontrola PHPStan w hooku GrumPHP przeszła. Następnie wykonał `git push origin main`; przekazany wynik potwierdza publikację `b72a346..8f2a633` na `main` w repozytorium Sportowiady. Ten commit obejmuje obsługę grafiki i dotychczasową dokumentację, bez pola `description`. Niniejsze potwierdzenie commita i pushu dodano do dokumentacji już po publikacji i pozostaje lokalną zmianą do kolejnego commita. Nie zamykano zgłoszeń GitHub.
 
+### 18. Wygenerowanie migracji opisu
+
+Użytkownik wykonał `php artisan make:migration add_description_to_disciplines_table --table=disciplines --no-interaction`. Polecenie potwierdziło utworzenie `database/migrations/2026_11_15_165556_add_description_to_disciplines_table.php`; asystent odczytał wygenerowany szkielet. Wygenerowanie pliku nie dodaje jeszcze kolumny do bazy. Definicja `description` i uruchomienie migracji pozostają do wykonania.
+
+### 19. Definicja opcjonalnej kolumny opisu
+
+Użytkownik potwierdził edycję migracji `2026_11_15_165556_add_description_to_disciplines_table.php`. Asystent odczytał plik: `up()` dodaje `$table->text('description')->nullable()` w tabeli `disciplines`, a `down()` zawiera `$table->dropColumn('description')`. Typ `text` umożliwia dłuższy opis, a `nullable()` pozwala pozostawić go pustym, także w istniejących rekordach. Cofnięcie migracji usuwa kolumnę wraz z zapisanymi opisami. Potwierdzono definicję w kodzie; wykonanie migracji nie zostało jeszcze potwierdzone.
+
+### 20. Wykonanie migracji opisu
+
+Użytkownik wykonał `php artisan migrate --path=database/migrations/2026_11_15_165556_add_description_to_disciplines_table.php --no-interaction`. Przekazany wynik potwierdza `DONE` w czasie 52,78 ms. Asystent sprawdził schemat przez Boost i potwierdził kolumnę `description` typu `text`, dopuszczającą `NULL`. Nie dodano jeszcze obsługi opisu w modelu ani formularzu; zapis opisu z panelu pozostaje niesprawdzony.
+
+### 21. Zezwolenie na zapis opisu w modelu
+
+Użytkownik potwierdził zmianę modelu `Discipline`. Asystent sprawdził atrybut `#[Fillable(['name', 'alias', 'description'])]`. Dodanie `description` umożliwia zbiorowe przypisanie tego pola podczas zapisu formularza. Nie zastępuje walidacji danych ani autoryzacji; pole formularza opisu nie zostało jeszcze dodane i jego zapis nie został sprawdzony.
+
+### 22. Tłumaczenia etykiety opisu
+
+Użytkownik potwierdził dodanie klucza `description` do tłumaczeń dyscyplin. Asystent potwierdził w plikach wartości `Opis` w `lang/pl/disciplines.php` i `Description` w `lang/en/disciplines.php`. Etykieta będzie odczytywana przez `__('disciplines.description')`; pola opisu w formularzu jeszcze nie dodano.
+
+### 23. Pole opisu w formularzu
+
+Użytkownik potwierdził edycję `DisciplineResource.php`. Asystent odczytał plik i potwierdził import `Textarea` oraz pole `Textarea::make('description')->label(__('disciplines.description'))->rows(5)` między aliasem a grafiką. Pole obsługuje zwykły tekst w wielu wierszach; brak `required()` pozostawia je opcjonalnym. Potwierdzono kod; zapis i ponowny odczyt opisu w panelu nie zostały jeszcze sprawdzone. Formatowanie PHP tego fragmentu pozostaje do wykonania.
+
+### 24. Ręczne sprawdzenie zapisu i odczytu opisu
+
+Użytkownik potwierdził powodzenie próby zapisania opisu i ponownego otwarcia oraz odświeżenia edycji dyscypliny. Przekazany zrzut pokazuje pole „Opis” z tekstem w dwóch wierszach. Wynik potwierdza ręcznie zapis i odczyt wielowierszowego opisu w tym scenariuszu. Widoczny tekst nie zawiera polskich znaków, więc zrzut nie potwierdza osobno ich zachowania. Nie sprawdzono jeszcze wyczyszczenia opisu i zapisania pustego pola ani tworzenia nowej dyscypliny z opisem.
+
+### 25. Ręczne sprawdzenie opcjonalności opisu
+
+Użytkownik potwierdził powodzenie wyczyszczenia pola „Opis”, zapisania formularza i ponownego otwarcia oraz odświeżenia edycji. Zapis przebiegł bez błędu, a pole pozostało puste. Potwierdza to opcjonalność opisu podczas edycji; nie sprawdzano niezależnie wartości `NULL` w bazie ani tworzenia nowego rekordu z pustym opisem.
+
+### 26. Ręczne sprawdzenie tworzenia z opisem i grafiką
+
+Użytkownik potwierdził sukces utworzenia rekordu „Dyscyplina testowa Filament” z aliasem `dyscyplina-testowa-filament`, opisem i grafiką, a następnie otwarcia jego edycji. Przekazany zrzut pokazuje zapisany opis w dwóch wierszach, w tym polskie znaki w słowach „edycję” i „utworzonego”, oraz podgląd grafiki `folder-google` o rozmiarze 701 KB. Wynik potwierdza ręcznie zapis i odczyt obu pól podczas tworzenia oraz zachowanie polskich znaków i podziału na wiersze. Nie potwierdza jeszcze tworzenia rekordu z oboma polami pustymi. Rekord testowy pozostaje do uporządkowania przez użytkownika.
+
+### 27. Ręczne sprawdzenie tworzenia bez opisu i grafiki
+
+Użytkownik potwierdził powodzenie utworzenia dyscypliny z pustym opisem i bez grafiki oraz ponownego otwarcia jej edycji. Rekord powstał bez błędu, a oba pola pozostały puste. Wynik potwierdza opcjonalność obu pól podczas tworzenia w sprawdzonym scenariuszu. Nie wykonano niezależnego odczytu wartości w bazie. Rekordy utworzone podczas prób pozostają do uporządkowania przez użytkownika.
+
+### 28. Formatowanie zmian opisu
+
+Użytkownik uruchomił `vendor/bin/pint --dirty --format agent` po dodaniu opisu. Wynik `fixed` potwierdza uporządkowanie importów (`ordered_imports`) w `DisciplineResource.php`, bez zgłoszonych błędów. Testy i analiza statyczna wykonane wcześniej dla commita grafiki nie stanowią weryfikacji późniejszych zmian opisu; kontrole tego fragmentu pozostają do wykonania.
+
+### 29. Uporządkowanie rekordów po próbach
+
+Użytkownik potwierdził usunięcie rekordów „Dyscyplina testowa Filament” i „Test bez opisu i grafiki” z zachowaniem właściwych dyscyplin. Wynik pochodzi od użytkownika; nie wykonywano niezależnego odczytu bazy ani kontroli plików na dysku. Użytkownik ustalił wykonanie testów regresji i analizy statycznej na koniec rozdziału, przed commitem. Implementacja opisu i grafiki oraz opisane próby ręczne są wykonane; końcowe kontrole późniejszych zmian opisu i ich publikacja pozostają do wykonania.
+
+### 30. Automatyczne testy dyscyplin
+
+Na wyraźne zlecenie użytkownika asystent dodał `tests/Feature/FilamentDisciplineTest.php`, wygenerowany przez `php artisan make:test --phpunit FilamentDisciplineTest --no-interaction`. Zachowano istniejące testy własnej listy, unikalności aliasu i seedera. Nowy plik zawiera 23 przypadki, wliczając zestawy danych walidacji:
+
+- dostęp gościa, zwykłego konta i administratora do listy, tworzenia i edycji;
+- domyślna kolejność listy po ID i wyszukiwanie nazwy;
+- tworzenie bez pól opcjonalnych oraz z wielowierszowym opisem zawierającym polskie znaki i grafiką; odczyt opisu po ponownym otwarciu edycji;
+- wymagane pola, długości nazwy i aliasu, format aliasu (polskie/wielkie litery, spacje, podwójne i skrajne myślniki), unikalność podczas tworzenia i edycji, zachowanie własnego aliasu;
+- zmiana nazwy i wyczyszczenie opisu podczas edycji;
+- zastąpienie i usunięcie grafiki przez formularz, w tym usunięcie starego pliku; osobno ograniczenie `singleFile()` przez operacje modelu;
+- usunięcie rekordu wraz z mediami i plikiem oraz zbiorowe usunięcie wyłącznie zaznaczonych rekordów;
+- odrzucenie PDF i obrazu przekraczającego 2 MB przez walidację serwerową formularza, bez zapisania dyscypliny, mediów i plików na dysku publicznym.
+
+Testy używają bazy SQLite w pamięci zgodnie z `phpunit.xml`, fabryk, `LazilyRefreshDatabase` i `Storage::fake('public')`; nie operują na rzeczywistych grafikach użytkownika. Testy Livewire nie sprawdzają wyglądu ani działania JavaScript w przeglądarce.
+
+Weryfikacja asystenta: nowy plik **23 passed / 153 assertions**; następnie Pint `passed`, PHPStan **0 błędów** i pełny zestaw **253 passed / 1376 assertions**, czas 9,102 s. Standardowy PHPStan napotkał blokadę lokalnego portu w środowisku, więc zakończoną analizę wykonano przez `vendor/bin/phpstan analyse --memory-limit=1G --debug` (bez pracy równoległej). Nie zmieniano konfiguracji analizy. Nie wykonano commita ani pushu tych testów i późniejszych zmian opisu.
+
+### 31. Doprecyzowanie typu dysku w testach
+
+Po zgłoszeniu przez użytkownika diagnostyki Intelephense dotyczącej `assertExists()` i `assertMissing()` asystent zmienił testy na użycie `$disk = Storage::fake('public')` i wywołania asercji bezpośrednio na `$disk`. Zwracany adapter udostępnia metody testowe, których ogólny kontrakt `Storage::disk()` nie deklaruje. Zachowano sprawdzane zachowania. Ponowna weryfikacja: Pint `passed`, nowy plik testów **23 passed / 153 assertions**. Zniknięcie komunikatów w edytorze wymaga jeszcze obserwacji użytkownika.
+
 ## Sposób pracy
 
 Po polsku, jeden mały krok: cel, mechanizm, konkretna edycja lub polecenie i kryterium sukcesu; następnie oczekiwanie na wynik. Użytkownik wykonuje edycje aplikacji, polecenia i Git. Asystent aktualizuje dokumentację po potwierdzonych krokach. Bez nowych gałęzi i worktree.
