@@ -1,5 +1,13 @@
 # Sportowiada — trwałe źródło kontekstu
 
+## Potwierdzona publikacja — 0305cda
+
+Użytkownik przekazał udany wynik `git push origin main`: `f598009..0305cda main -> main`. Grafiki na liście dyscyplin, edytor opisu z normalizacją pustej treści do `NULL` oraz style podglądu są opublikowane. Potwierdzone kontrole: 23 testy / 153 asercje, PHPStan bez błędów (także w hooku), końcowy Pint `passed`; ręcznie sprawdzono zapis i odczyt pogrubienia oraz jasne tło podglądu. Ten zapis zastępuje starsze informacje o niepotwierdzonym commicie lub pushu. Nie zmieniano stanów zgłoszeń GitHub. Potwierdzenia commita i publikacji dopisano do kontekstu oraz rozdziału 34 po commicie; pozostają lokalnymi zmianami dokumentacji do kolejnego zapisu w Git.
+
+## Commit rozdziału 34 i późniejszych zmian
+
+Użytkownik utworzył `0305cda` — „Dodaj grafiki na liście dyscyplin i edytor opisu”, z poprawnym PHPStan w hooku GrumPHP. Asystent potwierdził lokalny commit i czysty stan przed dopisaniem tego wyniku. Grafiki na liście, edytor opisu i style podglądu są zapisane w commicie. Następny krok: `git push origin main` przez użytkownika. Push nadal nie ma potwierdzenia. Ten wpis i potwierdzenie w rozdziale 34 dopisano po commicie, więc pozostają lokalne; zastępują starsze stwierdzenia poniżej o niewykonanym commicie.
+
 ## Kolejny fragment — edytor opisu dyscypliny
 
 Przygotowanie do commita: użytkownik dodał `/public/css/app/sportowiada-filament.css` do `.gitignore`. Asystent potwierdził wpis, działanie `git check-ignore` oraz `git diff --check` bez błędów. Źródłowy `resources/css/filament.css` pozostaje do zapisania w Git, a publiczna kopia jest odtwarzana przez `php artisan filament:assets --no-interaction`. Kontrole kodu zakończone: 23 testy / 153 asercje, PHPStan bez błędów, końcowy Pint `passed`. Commit i push pozostają niepotwierdzone.

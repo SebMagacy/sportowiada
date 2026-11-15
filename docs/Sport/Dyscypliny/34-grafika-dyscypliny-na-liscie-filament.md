@@ -96,4 +96,12 @@ Trzy powyższe PNG są zgodne z formatem przyjmowanym przez istniejący formular
 
 ## Sposób pracy
 
+## Commit zmian
+
+### Potwierdzony push
+
+Użytkownik przekazał udany wynik `git push origin main`: `f598009..0305cda main -> main`. Potwierdza to publikację commita `0305cda` na `main`. Poniższe stwierdzenie o niepotwierdzonym pushu opisuje stan wcześniejszy. Nie zmieniano zgłoszeń GitHub. Potwierdzenia commita i pushu w tym rozdziale oraz kontekście projektu dopisano po commicie i pozostają lokalne do kolejnego zapisu dokumentacji w Git.
+
+Użytkownik utworzył commit `0305cda` — „Dodaj grafiki na liście dyscyplin i edytor opisu”. PHPStan w hooku GrumPHP przeszedł. Asystent potwierdził commit w lokalnym Git; obejmuje 6 plików, również późniejszy edytor opisu, normalizację pustej treści do `NULL`, jasne tło podglądu i rejestrację CSS. Weryfikacja późniejszych zmian: użytkownik potwierdził zapis i odczyt pogrubienia, testy panelu przeszły 23 / 153, PHPStan bez błędów, końcowy Pint `passed`. Szczegóły tych późniejszych prac zapisano w `docs/00-kontekst-projektu.md`. Push pozostaje niepotwierdzony. Niniejsze potwierdzenie dopisano po commicie i pozostaje lokalną zmianą dokumentacji.
+
 Po polsku, po jednym małym kroku z celem, mechanizmem, konkretną edycją lub poleceniem i kryterium sukcesu. Użytkownik wykonuje kod, polecenia i Git; asystent uzupełnia dokumentację po potwierdzonych krokach.
