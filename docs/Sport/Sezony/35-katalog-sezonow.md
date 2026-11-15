@@ -207,6 +207,10 @@ Podczas przeglądu przed commitem asystent wykrył pusty `lang/en/seasons.php`. 
 
 Użytkownik wykonał `vendor/bin/pint --dirty --format agent`. Wynik `fixed` wskazał wyłącznie `single_blank_line_at_eof` w `lang/en/seasons.php`. Poprawiono zakończenie pliku, bez zmiany wpisów tłumaczeń. Następny krok to przygotowanie plików do commita i przegląd indeksu przez użytkownika. Nie potwierdzono jeszcze commita ani pushu.
 
+### 37. Lokalny commit etapu
+
+Użytkownik wykonał `git commit -m "Dodaj katalog sezonów i grupę Sport w panelu"`. Git potwierdził commit `1b6e5ef`, obejmujący 15 plików, 658 dodanych i 2 usunięte linie. PHPStan uruchomiony przez GrumPHP w hooku przeszedł poprawnie. To potwierdzenie lokalnego zapisu; push nie został jeszcze potwierdzony. Niniejszy wpis dopisano po commicie i wymaga osobnego zapisu w Git.
+
 ## Sposób pracy
 
 Pracujemy po polsku, po jednym małym kroku: cel, mechanizm, konkretna edycja lub polecenie i kryterium sukcesu, potem oczekiwanie na wynik. Użytkownik wykonuje edycje aplikacji, polecenia i Git. Asystent aktualizuje ten rozdział po potwierdzonych krokach, oddzielając plany od wykonania i weryfikacji. Bez nowych gałęzi, worktree i zmian zależności.
