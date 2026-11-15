@@ -10,4 +10,5 @@ return [
     'cancel' => 'Cancel',
     'created' => 'Discipline added successfully.',
     'alias_help' => 'Lowercase ASCII letters, digits and single hyphens, e.g. pilka-nozna.',
+    'icon' => 'Discipline image',
 ];
