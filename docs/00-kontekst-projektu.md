@@ -1,5 +1,34 @@
 # Sportowiada — trwałe źródło kontekstu
 
+## Aktualny kierunek — katalog sezonów i przyszłe projekty
+
+Poniższe ustalenia pochodzą z bieżącej rozmowy i mają pierwszeństwo przed wcześniejszą propozycją ręcznego wpisywania sezonu. To zatwierdzone założenia, nie opis wdrożonych funkcji.
+
+### Projekty rozgrywek
+
+- Projekt obejmuje jedną dyscyplinę i jeden sezon rozgrywek; kolejny sezon oznacza osobny projekt. Przykład: „Liga trampkarzy powiatu”, sezon „2026/2027”.
+- Projekt może utworzyć zwykły zalogowany użytkownik, który automatycznie zostaje jego właścicielem i organizatorem. Zarządza własnymi projektami; administrator ma dostęp do wszystkich. Uprawnienia organizatora dotyczą konkretnego projektu i nie wymagają roli administratora. Na początek jeden właściciel; współorganizatorzy pozostają przyszłym rozszerzeniem.
+- Nowy projekt jest szkicem dostępnym właścicielowi i administratorowi. Organizator decyduje o publikacji na publicznej liście. Daty nie publikują ani nie ukrywają projektu automatycznie.
+- Konkretne daty rozpoczęcia i zakończenia należą do projektu/edycji, nie do wspólnego sezonu. Są opcjonalne także przy publikacji. Jeśli podano obie, zakończenie nie może poprzedzać rozpoczęcia.
+- W przyszłości osobne projekty można grupować we wspólny cykl lub wydarzenie, a kolejne edycje łączyć w historię ligi. Nie wdrażamy tych rozszerzeń w ramach katalogu sezonów. Rozróżnienie ligi, sezonu i edycji pozostaje zgodne z [rozdziałem 28](28-definiowanie-dyscyplin-sportowych.md).
+
+### Wspólny katalog sezonów — zatwierdzony następny etap
+
+Na prośbę użytkownika otwarto [rozdział 35 — Wspólny katalog sezonów](Sport/Sezony/35-katalog-sezonow.md). Dalsze wykonane kroki i wyniki weryfikacji zapisujemy w tym rozdziale; użytkownik potwierdził wygenerowanie modelu, migracji, fabryki i seedera `Season`, a asystent odczytał te cztery pliki. Szczegóły wykonania i dalszy krok zapisano w rozdziale 35.
+
+- Administrator zarządza listą sezonów, z której organizator wybierze sezon przy tworzeniu projektu. Jeden sezon może być współdzielony przez wiele projektów i dyscyplin.
+- Oznaczenie sezonu ma być tekstowe, bez ograniczenia do układu jesień–wiosna: np. „2026/2027”, „2027”, „Wiosna 2027” lub „Edycja 3”. Projekt ma wskazywać jeden sezon z katalogu zamiast przechowywać ręcznie wpisane oznaczenie.
+- Sezon używany przez projekt nie może zostać usunięty. Zabezpieczenie powiązań będzie realizowane wraz z modelem projektów; obecnie nie ma takiej relacji.
+- Najpierw budujemy katalog sezonów; projekty, drużyny, terminarze, mecze i tabele wyników są późniejszym zakresem. Szczegóły pól katalogu, walidacji i sortowania pozostają do dopracowania.
+
+### Stan sprawdzony i punkt kontynuacji
+
+Asystent odczytał instrukcje i właściwe reguły oraz skille, sprawdził kod i schemat przez Boost. W chwili przeglądu Git był czysty, brakowało modeli i migracji sezonów oraz projektów, a baza nie miała tabel `seasons` ani `projects`. Laravel: `13.42.0`. Dokumentacja rozdziału 28 już przewidywała osobną encję współdzielonego sezonu. Potwierdzono składnię generatora przez Boost i `php artisan make:model --help`.
+
+Podano użytkownikowi polecenie `php artisan make:model Season --migration --factory --seed --no-interaction`, ale wykonanie nie zostało potwierdzone; ponowny przegląd nadal nie wykazał plików `Season`. Nie uruchomiono migracji ani nie utworzono rekordów. Użytkownik poprosił najpierw o zapis założeń do kontekstu. Następny krok: wygenerowanie modelu, migracji, fabryki i seedera przez użytkownika, następnie przegląd plików. Nie utworzono nowego rozdziału dokumentacji ani zgłoszenia GitHub dla sezonów.
+
+Nadal pracujemy po polsku, po jednym małym kroku z celem, mechanizmem, konkretną edycją lub poleceniem i kryterium sukcesu. Użytkownik wykonuje edycje aplikacji, polecenia i Git; asystent uzupełnia istniejącą dokumentację po potwierdzonych krokach. Bez nowych gałęzi, worktree i zmian zależności.
+
 ## Uzupełnianie opisów dyscyplin
 
 Zakończenie uzupełniania: użytkownik potwierdził „ok. mamy wszyskto” po kroku zapisu i ponownego otwarcia opisu tenisa stołowego. Opis obejmuje różne kategorie wiekowe, grę pojedynczą, podwójną i drużynową oraz odróżnia tenis stołowy od tenisa na korcie. Użytkownik potwierdził zakończenie opisów wszystkich pięciu dyscyplin (piłka nożna, siatkówka, koszykówka, futsal, tenis stołowy). Wyniki pochodzą z jego ręcznych prób; nie wykonywano niezależnego odczytu bazy. Treści zmieniono w panelu, nie w seederze; Git nie przenosi tych danych do innej bazy. Do zapisania w Git pozostają lokalne aktualizacje dokumentacji.

@@ -42,6 +42,7 @@ Zacznij od [bieżącego kontekstu](00-kontekst-projektu.md). Starsze rozdziały 
 28. [Wymagania dyscyplin sportowych](28-definiowanie-dyscyplin-sportowych.md)
 29. [Lista dyscyplin](Sport/Dyscypliny/29-widok-dyscyplin.md)
 30. [Dodawanie dyscypliny — etap częściowy](Sport/Dyscypliny/30-dodawanie-dyscypliny.md)
+35. [Wspólny katalog sezonów](Sport/Sezony/35-katalog-sezonow.md)
 
 ## Filament
 

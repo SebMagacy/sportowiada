@@ -18,12 +18,15 @@ use Filament\Schemas\Schema;
 use Filament\Tables\Columns\SpatieMediaLibraryImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use UnitEnum;
 
 class DisciplineResource extends Resource
 {
     protected static ?string $model = Discipline::class;
 
     protected static string|BackedEnum|null $navigationIcon = 'sportowiada-disciplines';
+
+    protected static string|UnitEnum|null $navigationGroup = 'Sport';
 
     protected static ?string $recordTitleAttribute = 'name';
 
