@@ -10,11 +10,12 @@ use BackedEnum;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
-use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
+use Filament\Tables\Columns\SpatieMediaLibraryImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
@@ -48,15 +49,34 @@ class DisciplineResource extends Resource
                     ->unique()
                     ->helperText(__('disciplines.alias_help')),
 
-                Textarea::make('description')
+                RichEditor::make('description')
                     ->label(__('disciplines.description'))
-                    ->rows(5),
+                    ->fileAttachments(false)
+                    ->dehydrateStateUsing(function (?string $state): ?string {
+                        $text = html_entity_decode(
+                            strip_tags($state ?? ''),
+                            ENT_QUOTES | ENT_HTML5,
+                            'UTF-8',
+                        );
+
+                        return blank(str_replace("\u{00A0}", ' ', $text))
+                            ? null
+                            : $state;
+                    })
+                    ->toolbarButtons([
+                        ['bold', 'italic', 'underline', 'link'],
+                        ['alignStart', 'alignCenter', 'alignEnd'],
+                        ['bulletList', 'orderedList'],
+                        ['undo', 'redo'],
+                    ]),
 
                 SpatieMediaLibraryFileUpload::make('icon')
                     ->label(__('disciplines.icon'))
                     ->collection('icon')
                     ->disk('public')
                     ->image()
+                    ->imagePreviewHeight('150')
+                    ->extraAttributes(['class' => 'discipline-icon-upload'])
                     ->acceptedFileTypes(['image/png', 'image/jpeg', 'image/webp'])
                     ->maxSize(2048),
             ]);
@@ -67,6 +87,12 @@ class DisciplineResource extends Resource
         return $table
             ->recordTitleAttribute('name')
             ->columns([
+                SpatieMediaLibraryImageColumn::make('icon')
+                    ->label('')
+                    ->collection('icon')
+                    ->visibility('public')
+                    ->imageSize(40)
+                    ->width('1%'),
                 TextColumn::make('name')
                     ->label(__('disciplines.name'))
                     ->searchable(),
