@@ -13,7 +13,6 @@ use Filament\Actions\EditAction;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
-use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
@@ -21,17 +20,31 @@ class DisciplineResource extends Resource
 {
     protected static ?string $model = Discipline::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = 'sportowiada-disciplines';
 
     protected static ?string $recordTitleAttribute = 'name';
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('disciplines.title');
+    }
 
     public static function form(Schema $schema): Schema
     {
         return $schema
             ->components([
                 TextInput::make('name')
+                    ->label(__('disciplines.name'))
                     ->required()
                     ->maxLength(255),
+
+                TextInput::make('alias')
+                    ->label(__('disciplines.alias'))
+                    ->required()
+                    ->maxLength(255)
+                    ->regex('/\A[a-z0-9]+(?:-[a-z0-9]+)*\z/')
+                    ->unique()
+                    ->helperText(__('disciplines.alias_help')),
             ]);
     }
 
@@ -41,8 +54,15 @@ class DisciplineResource extends Resource
             ->recordTitleAttribute('name')
             ->columns([
                 TextColumn::make('name')
+                    ->label(__('disciplines.name'))
                     ->searchable(),
+                TextColumn::make('alias')
+                    ->label(__('disciplines.alias')),
+                TextColumn::make('id')
+                    ->label('ID'),
             ])
+            ->defaultSort('id')
+
             ->filters([
                 //
             ])

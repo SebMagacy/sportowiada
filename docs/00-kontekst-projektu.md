@@ -1,5 +1,62 @@
 # Sportowiada — trwałe źródło kontekstu
 
+## Wybrany następny etap — migracja listy dyscyplin, 15 listopada 2026 r.
+
+Użytkownik zlecił rozpoczęcie listy dyscyplin w Filamencie w nowym czacie, z nowym issue i rozdziałem. Utworzono [issue #24](https://github.com/SebMagacy/sportowiada/issues/24) oraz [rozdział 32](Sport/Dyscypliny/32-dyscypliny-filament.md). Pierwszy zakres obejmuje listę istniejących rekordów. Użytkownik zatwierdził stopniowe usuwanie zastępowanych elementów własnego widoku po sprawdzeniu następstwa w Filamencie; wcześniejszy plan zachowania obu list na stałe jest nieaktualny. Zachować dane i współdzielone elementy, a podczas usuwania starej listy zapewnić działające wejście do formularza dodawania, anulowanie i powrót po zapisie. Migracja formularza wymaga dalszego ustalenia; #22 nie jest automatycznie ukończone. Implementacja i usuwanie kodu jeszcze się nie rozpoczęły.
+
+## Punkt kontynuacji po uporządkowaniu czatów — 15 listopada 2026 r.
+
+Ten plik jest trwałym punktem startowym kolejnych rozmów. Zachowuje decyzje i odnośniki do dokumentacji, aby kontynuacja nie wymagała starych czatów. Poniższa sekcja ma pierwszeństwo przed historycznymi instrukcjami i planami w dalszej części pliku. Zapisanie kontekstu nie oznacza usunięcia ani archiwizacji rozmów.
+
+### Zasady współpracy
+
+- Pracujemy po polsku. Użytkownik uczy się Laravel: jeden mały krok naraz, z celem, wyjaśnieniem mechanizmu, konkretnym działaniem i kryterium sukcesu; potem czekamy na wynik.
+- Użytkownik wykonuje zmiany aplikacji, polecenia i Git, chyba że wyraźnie zleci daną pracę asystentowi. Wcześniejsze jednorazowe zlecenia samodzielnych testów lub porządkowania Git nie są stałą zgodą na dalszą implementację.
+- Asystent sam uzupełnia istniejącą dokumentację po potwierdzonych krokach. Osobne etapy mają osobne rozdziały; nowe pliki dokumentacji powstają na prośbę. Rozróżniamy plan, kod, weryfikację ręczną, testy i publikację.
+- Przed zmianami czytamy `AGENTS.md`, `.ai/rules/index.md`, wszystkie pasujące reguły i reguły tematyczne; aktywujemy właściwe skille. Sprawdzamy aktualne wersje i dokumentację Boost przed użyciem API. Zmiany zależności wymagają uzgodnienia.
+- Jedno wybrane issue naraz. Nie rozszerzamy automatycznie zakresu na cały panel ani domenę sportową. Zachowujemy zastane zmiany; nie tworzymy samodzielnie gałęzi ani worktree.
+
+### Co faktycznie istnieje
+
+- Filament: `/admin`, logowanie `/admin/login`, lista kont `/admin/users`. Provider: `app/Providers/Filament/AdminPanelProvider.php`, identyfikator `panel`, nazwy tras `filament.panel.*`. Dostęp: `User::canAccessPanel()` deleguje do Gate `access-admin`, opartego na `is_admin`.
+- Własny panel: `/legacy-admin`, konta `/legacy-admin/users`, dyscypliny `/legacy-admin/disciplines`. Zachowano nazwy tras `admin.*`, kontrolery, dane i funkcje. Własny `/login` nadal kieruje administratora przez `admin.dashboard` do własnego panelu.
+- Lista kont Filamentu: `app/Filament/Resources/Users/UserResource.php` i `Pages/ListUsers.php`; kolumny Nazwa, E-mail, Typ konta, ID, domyślne sortowanie po ID, ikona użytkowników i polskie etykiety. Jest tylko strona listy. Nie przeniesiono do niej formularzy ani funkcji wyszukiwania, filtrów i edycji własnego panelu.
+- Własny panel ma listę kont, wyszukiwanie, filtry, sortowanie, paginację, zaznaczanie bieżącej strony, edycję imienia/e-maila/typu konta oraz formularz tworzenia kont. Nie potwierdzono osobno pełnego procesu tworzenia kont i jego dedykowanych testów. Zmiana hasła, usuwanie i operacje zbiorcze nie są ukończonym zakresem.
+- Dyscypliny mają model `Discipline`, tabelę `disciplines`, seeder, listę z bazy i formularz dodawania we własnym panelu. Nie ma zasobu dyscyplin w `app/Filament/Resources`. Dawny zapis o braku jakichkolwiek modeli sportowych jest nieaktualny dla dyscyplin; pozostała domena rozgrywek nadal wymaga projektu i implementacji.
+- Pasek Filamentu zwija się do ikon; użytkownik potwierdził działanie i wygląd przy `sidebarWidth('15rem')`.
+- Publiczna witryna pozostaje własną częścią aplikacji. W osobnym czacie wygenerowano wizualną makietę sportowego portalu informacyjnego z przykładowymi treściami. Nie wdrożono jej do aplikacji ani nie zatwierdzono jako ostatecznego projektu. Obraz pozostał w tamtym czacie, nie jest zachowany w repozytorium.
+
+### Decyzje architektoniczne
+
+Filament jest zatwierdzonym docelowym zapleczem administracyjnym, wdrażanym stopniowo. Wcześniejsze zakazy jego instalacji w historycznych rozdziałach odnoszą się do dawnego stanu. Własny panel był etapem nauki i pozostaje dostępny; nie usuwamy funkcji przed przygotowaniem i sprawdzeniem ich następstwa. Konta i uprawnienia są pierwszym obszarem migracji. Publiczny interfejs, model sportowy, reguły rozgrywek i statystyki stanowią własną część projektu.
+
+Konto logowania i zawodnik są odrębnymi pojęciami. Zawodnik może istnieć bez konta; przyszłe wykorzystanie własnego interfejsu dla zawodników wymaga osobnego modelu i dostosowania, a nie przemianowania kont. Uzgodnione definicje klubów, drużyn, osób, lig, sezonów, edycji i historii udziału są zebrane w [rozdziale 28](28-definiowanie-dyscyplin-sportowych.md). To wymagania, nie gotowy schemat całej domeny. Początkowo ligi w piłce nożnej, siatkówce i koszykówce; puchary i fazy grupowe odłożono. Brak danych historycznych oznacza „nie wiadomo”, a nie zero.
+
+### Zadania do wyboru, bez automatycznego rozpoczęcia
+
+| Obszar | Zachowany zakres i punkt startowy |
+| --- | --- |
+| Lista dyscyplin Filamentu | Uzgodniona wyłącznie lista istniejących rekordów, bez dodawania, edycji i usuwania, z zachowaniem własnego panelu. Podano polecenie generatora, lecz nie potwierdzono jego wykonania; obecnie brak zasobu. Nie uruchamiać go bez rozpoczęcia tego etapu. |
+| Issue #23 | Rozróżnić błędny e-mail/hasło od poprawnych danych konta bez dostępu; komunikat braku uprawnień z prośbą o kontakt z administratorem, PL/EN, testy i zachowanie ograniczania prób logowania. Brak potwierdzonej implementacji. |
+| Issue #22 | Dodawanie dyscyplin — etap częściowy, [rozdział 30](Sport/Dyscypliny/30-dodawanie-dyscypliny.md). Formularz i kluczowe scenariusze ręczne istnieją; dedykowane testy zapisu, sprawdzenie błędu nazwy i responsywności pozostają do wykonania. Alias: małe litery ASCII, cyfry i pojedyncze myślniki, unikalny, bez automatycznej numeracji; podpowiadanie do pierwszej ręcznej edycji. |
+| Issue #21 | Dalsze wymagania sportowe: szczegóły wyników, punktacji, klasyfikacji, statystyk i minimalnych danych; rozdział 28. |
+| Odłożone funkcje | Operacje zbiorcze #19, wybór wszystkich wyników #20, mobilny panel i nagłówki (#18), wielojęzyczne dane dyscyplin. Nie rozszerzać o nie bieżącej pracy. |
+| Środowisko | Wcześniej występował problem praw zapisu do logu Laravel; brak potwierdzenia jego ostatecznego rozwiązania. W razie powrotu błędu sprawdzić bieżące uprawnienia. |
+
+Numery issue identyfikują zgłoszenia w `SebMagacy/sportowiada`. Ich aktualnych opisów i stanów na GitHubie nie odświeżano w tej aktualizacji; przed realizacją trzeba je przeczytać. Issue uruchomienia Filamentu nie zostało utworzone; projekt treści zachowuje rozdział 31.
+
+### Git i wiarygodność sprawdzeń
+
+Odczyt lokalny 15.11.2026 przed tą aktualizacją: gałąź `main`, czysty katalog roboczy; `HEAD` oraz lokalny `origin/main` wskazują `c291985762ff28c1812a115d1005889763be05db` (szerokość paska i dokumentacja). Commit zawiera również wcześniejsze `079c09d` (testy) i `5e3cb98` (dokumentacja). Nie wykonano fetch ani odczytu zdalnego GitHuba: zgodność refów nie jest nowym potwierdzeniem publikacji. Niniejsza aktualizacja kontekstu tworzy nową zmianę lokalną; commit i push pozostają użytkownikowi.
+
+Ostatnia udokumentowana weryfikacja aplikacji: 11 testów dostępu Filamentu / 35 asercji; cały zestaw PHP 230 testów / 1223 asercje, Pint i PHPStan poprawne. To wcześniejsze wyniki etapu 31, nie ponowne uruchomienie dzisiaj i nie dowód ukończenia formularzy dodawania kont lub dyscyplin. Po zmianie szerokości paska potwierdzono wygląd ręcznie. Przy zapisywaniu tego kontekstu nie zmieniano kodu aplikacji i nie uruchamiano testów.
+
+### Jak zacząć nowy czat
+
+> Kontynuujemy Sportowiadę. Przeczytaj docs/00-kontekst-projektu.md od początku, AGENTS.md i pasujące reguły .ai/rules. Sprawdź bieżący Git i pliki; historyczne instrukcje nie są zadaniami do wykonania. Prowadź mnie po polsku, jeden mały krok naraz, z wyjaśnieniem i kryterium sukcesu; ja wykonuję kod, polecenia i Git, o ile wyraźnie nie zlecę inaczej. Wybrany etap: [tu wpisz zadanie lub numer issue]. Zachowaj własny panel pod /legacy-admin i działający Filament pod /admin. Aktualizuj istniejący rozdział po potwierdzonych krokach.
+
+Szczegółowa historia nauki i kodu znajduje się w rozdziałach wskazanych w [spisie treści](README.md), zwłaszcza 28–31. Do kontynuacji wystarczają pliki repozytorium i bieżące zgłoszenie; identyfikatory dawnych czatów w dalszej części są tylko historycznymi odnośnikami.
+
 ## Bieżący stan po uruchomieniu Filamentu — 15 listopada 2026 r.
 
 Filament jest zainstalowany (5.11.3, Livewire 4.4.8, Laravel 13.42.0). Panel działa pod `/admin`, provider to `AdminPanelProvider`, identyfikator panelu pozostaje `panel`. Własny panel przeniesiono pod `/legacy-admin`, zachowując nazwy tras `admin.*`. Kontrola dostępu korzysta z `User::canAccessPanel()` i istniejącej bramki `access-admin`.
@@ -10,7 +67,7 @@ Dedykowane testy dostępu do Filamentu są gotowe: **11 testów / 35 asercji**. 
 
 Użytkownik potwierdził zwijanie i rozwijanie paska. Następnie ustawił `->sidebarWidth('15rem')`; 15.11.2026 potwierdził poprawny wygląd węższego menu. Po tej zmianie szerokości nie powtarzano kontroli automatycznych.
 
-Użytkownik wcześniej potwierdził push pięciu commitów do `bbc58fb` włącznie. Późniejsze commity `5e3cb98` (dokumentacja) i `079c09d` (testy) potwierdzono lokalnie; ich publikacja nie ma osobnego potwierdzenia. Na zakończenie pracy 15.11.2026 pozostają zmiana szerokości paska i aktualizacja dokumentacji, które użytkownik zamierza sam zapisać w Git i opublikować. Nie oznaczamy tego jako wykonanego. Issue uruchomienia Filamentu nadal nie powstało po odrzuceniu publikacji przez automatyczną kontrolę; projekt treści i szczegóły etapu są w [rozdziale 31](31-filament-pierwszy-panel.md).
+Historyczny zapis publikacji: użytkownik potwierdził push pięciu commitów do `bbc58fb` włącznie. Późniejsze testy, dokumentacja i szerokość paska są już zapisane lokalnie do `c291985`; bieżący stan refów i granice potwierdzenia publikacji opisano w punkcie kontynuacji powyżej. Projekt issue uruchomienia Filamentu oraz szczegóły etapu pozostają w [rozdziale 31](31-filament-pierwszy-panel.md).
 
 Poniższe zapisy sprzed instalacji zachowują historię decyzji; nie są poleceniem ponownej instalacji. Testy dostępu i ręczna weryfikacja paska są zakończone. Dalsze funkcje panelu oraz komunikaty logowania z issue #23 wymagają osobnego wyboru zakresu.
 

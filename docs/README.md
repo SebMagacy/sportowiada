@@ -46,3 +46,5 @@ Zacznij od [bieżącego kontekstu](00-kontekst-projektu.md). Starsze rozdziały 
 ## Filament
 
 - [31. Filament — uruchomienie i dostęp do panelu](31-filament-pierwszy-panel.md)
+
+- [32. Dyscypliny w Filamencie — migracja listy](Sport/Dyscypliny/32-dyscypliny-filament.md)
