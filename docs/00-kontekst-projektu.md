@@ -1,5 +1,15 @@
 # Sportowiada — trwałe źródło kontekstu
 
+## Uzupełnianie opisów dyscyplin
+
+Zakończenie uzupełniania: użytkownik potwierdził „ok. mamy wszyskto” po kroku zapisu i ponownego otwarcia opisu tenisa stołowego. Opis obejmuje różne kategorie wiekowe, grę pojedynczą, podwójną i drużynową oraz odróżnia tenis stołowy od tenisa na korcie. Użytkownik potwierdził zakończenie opisów wszystkich pięciu dyscyplin (piłka nożna, siatkówka, koszykówka, futsal, tenis stołowy). Wyniki pochodzą z jego ręcznych prób; nie wykonywano niezależnego odczytu bazy. Treści zmieniono w panelu, nie w seederze; Git nie przenosi tych danych do innej bazy. Do zapisania w Git pozostają lokalne aktualizacje dokumentacji.
+
+Futsal: użytkownik potwierdził krok odpowiedzią „ok. dalej” po poleceniu zapisu opisu i ponownego otwarcia edycji. Opis wskazuje treningi, turnieje, ligi i rekreację futsalową dla wszystkich kategorii wiekowych oraz wyjaśnia, że sama lokalizacja w hali nie przesądza o wyborze futsalu zamiast piłki nożnej. Wynik pochodzi od użytkownika, bez niezależnego odczytu bazy. Następna pozycja: tenis stołowy.
+
+Koszykówka: po podaniu opisu obejmującego treningi, turnieje, ligi, rekreację w hali i na boisku zewnętrznym, wszystkie kategorie wiekowe, minikoszykówkę oraz pomniejszone składy użytkownik potwierdził wykonanie kroku odpowiedzią „ok. dalej”. Zalecony krok obejmował zapis i ponowne otwarcie edycji; nie wykonywano niezależnego odczytu bazy. Następna pozycja: futsal.
+
+Po publikacji `0305cda` użytkownik zatwierdził uporządkowanie opisów pięciu dyscyplin, aby ułatwiały wybór przy tworzeniu przyszłych projektów. Dla siatkówki podano opis obejmujący treningi, turnieje, ligi i rekreację, wszystkie kategorie wiekowe oraz pomniejszone składy i minisiatkówkę, z rozróżnieniem od siatkówki plażowej. Po poleceniu zapisu i ponownego otwarcia edycji użytkownik odpowiedział „ok. dalej”; jest to potwierdzenie użytkownika, bez niezależnego odczytu bazy. Następna pozycja: koszykówka. Nie zmieniano kodu ani seedera w ramach uzupełniania treści.
+
 ## Potwierdzona publikacja — 0305cda
 
 Użytkownik przekazał udany wynik `git push origin main`: `f598009..0305cda main -> main`. Grafiki na liście dyscyplin, edytor opisu z normalizacją pustej treści do `NULL` oraz style podglądu są opublikowane. Potwierdzone kontrole: 23 testy / 153 asercje, PHPStan bez błędów (także w hooku), końcowy Pint `passed`; ręcznie sprawdzono zapis i odczyt pogrubienia oraz jasne tło podglądu. Ten zapis zastępuje starsze informacje o niepotwierdzonym commicie lub pushu. Nie zmieniano stanów zgłoszeń GitHub. Potwierdzenia commita i publikacji dopisano do kontekstu oraz rozdziału 34 po commicie; pozostają lokalnymi zmianami dokumentacji do kolejnego zapisu w Git.
