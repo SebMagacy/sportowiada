@@ -1,5 +1,21 @@
 # Sportowiada — trwałe źródło kontekstu
 
+## Katalog lig — ustalenia z 16 listopada 2026 r.
+
+Dokumentacja pierwszej z ośmiu uzgodnionych części znajduje się w [rozdziale 36 — Założenia katalogu lig](Sport/03.%20Ligi/36-zalozenia-katalogu-lig.md). Użytkownik zaakceptował osiem rozdziałów i odpowiadające im commity. Rozdział 36 zapisuje wymagania i plan; nie potwierdza implementacji ligi. Commit i push tej części pozostają do wykonania przez użytkownika.
+
+Bieżący etap dotyczy [issue #25](https://github.com/SebMagacy/sportowiada/issues/25). Liga należy do jednej dyscypliny, a projekt jest edycją ligi w jednym wspólnym sezonie: `Discipline -> League -> Project <- Season`. Dyscyplina projektu wynika z ligi. To zastępuje wcześniejsze odłożenie katalogu lig na później.
+
+Użytkownik zatwierdził, że ligę tworzy zalogowany użytkownik, któremu administrator nadał uprawnienie do tworzenia lig. Samo zalogowanie nie wystarcza. Twórca automatycznie zostaje właścicielem ligi i zarządza własną ligą; administrator zarządza wszystkimi. Techniczny sposób nadawania uprawnienia pozostaje do uzgodnienia. Nie wdrożono jeszcze tego uprawnienia.
+
+Zatwierdzone podstawowe dane ligi: wymagana nazwa do 255 znaków, jedna wymagana dyscyplina i opcjonalny opis. Właściciela przypisuje automatycznie system. Ten sam właściciel nie może mieć dwóch lig o tej samej nazwie w tej samej dyscyplinie; różni właściciele mogą używać jednakowej nazwy. To potwierdzone decyzje użytkownika, nie wdrożone pola ani formularz.
+
+Użytkownik zatwierdził ochronę historii edycji: dyscyplinę ligi można zmienić tylko wtedy, gdy liga nie ma żadnego projektu. Po utworzeniu pierwszego projektu zmiana dyscypliny jest blokowana. Zabezpieczenie nie zostało jeszcze zaimplementowane ani przetestowane.
+
+Użytkownik zatwierdził również, że ligę można usunąć tylko wtedy, gdy nie ma żadnych projektów. Liga powiązana z projektami nie może zostać usunięta. Ta ochrona nie została jeszcze zaimplementowana ani przetestowana.
+
+Przegląd asystenta tylko do odczytu potwierdził Laravel `13.42.0`, Filament `5.11.3`, istniejące katalogi dyscyplin i sezonów oraz brak modeli, migracji i tabel lig oraz projektów. Gałąź: `main`; zastaną lokalną zmianę w `app/Filament/Resources/Users/UserResource.php` zachowano. Nie zmieniono kodu aplikacji ani zależności i nie uruchamiano testów.
+
 ## Aktualny kierunek — katalog sezonów i przyszłe projekty
 
 Poniższe ustalenia pochodzą z bieżącej rozmowy i mają pierwszeństwo przed wcześniejszą propozycją ręcznego wpisywania sezonu. To zatwierdzone założenia, nie opis wdrożonych funkcji.
@@ -14,7 +30,7 @@ Poniższe ustalenia pochodzą z bieżącej rozmowy i mają pierwszeństwo przed 
 
 ### Wspólny katalog sezonów — zatwierdzony następny etap
 
-Na prośbę użytkownika otwarto [rozdział 35 — Wspólny katalog sezonów](Sport/Sezony/35-katalog-sezonow.md). Dalsze wykonane kroki i wyniki weryfikacji zapisujemy w tym rozdziale; użytkownik potwierdził wygenerowanie modelu, migracji, fabryki i seedera `Season`, a asystent odczytał te cztery pliki. Szczegóły wykonania i dalszy krok zapisano w rozdziale 35.
+Na prośbę użytkownika otwarto [rozdział 35 — Wspólny katalog sezonów](35-katalog-sezonow.md). Dalsze wykonane kroki i wyniki weryfikacji zapisujemy w tym rozdziale; użytkownik potwierdził wygenerowanie modelu, migracji, fabryki i seedera `Season`, a asystent odczytał te cztery pliki. Szczegóły wykonania i dalszy krok zapisano w rozdziale 35.
 
 - Administrator zarządza listą sezonów, z której organizator wybierze sezon przy tworzeniu projektu. Jeden sezon może być współdzielony przez wiele projektów i dyscyplin.
 - Oznaczenie sezonu ma być tekstowe, bez ograniczenia do układu jesień–wiosna: np. „2026/2027”, „2027”, „Wiosna 2027” lub „Edycja 3”. Projekt ma wskazywać jeden sezon z katalogu zamiast przechowywać ręcznie wpisane oznaczenie.
@@ -75,7 +91,7 @@ Użytkownik zatwierdził edytor wizualny wyłącznie dla pola `description`. W `
 
 ## Aktualny etap — rozdział 34, grafika na liście Filamentu
 
-Ten punkt ma pierwszeństwo przed starszymi punktami kontynuacji poniżej. W `DisciplineResource.php` użytkownik dodał `SpatieMediaLibraryImageColumn` przed nazwą: kolekcja `icon`, publiczna widoczność, miniatura 40 px, pusta etykieta i szerokość `1%`. Opis pozostaje w formularzu, gwizdek nawigacji bez zmian. Szczegóły: [rozdział 34](Sport/Dyscypliny/34-grafika-dyscypliny-na-liscie-filament.md).
+Ten punkt ma pierwszeństwo przed starszymi punktami kontynuacji poniżej. W `DisciplineResource.php` użytkownik dodał `SpatieMediaLibraryImageColumn` przed nazwą: kolekcja `icon`, publiczna widoczność, miniatura 40 px, pusta etykieta i szerokość `1%`. Opis pozostaje w formularzu, gwizdek nawigacji bez zmian. Szczegóły: [rozdział 34](34-grafika-dyscypliny-na-liscie-filament.md).
 
 Zrzut użytkownika potwierdził grafikę i puste komórki przed zwężeniem. Istniejące testy panelu: 23 / 153 przed zmianą szerokości; PHPStan po niej: bez błędów; końcowy Pint: `passed`. Debugbar dla żądania `01M7G4MSQDCZZB1VHPT4FNVZ1W` potwierdził jedno zapytanie mediów dla dyscyplin 1, 2, 3, bez N+1 dla grafik w tym żądaniu. Nie dodano testów ani nie uruchamiano pełnej suity tego etapu. Następny krok: commit i push przez użytkownika. Zmiany pozostają lokalne. Nie zmieniano zgłoszeń GitHub. Potwierdzenie publikacji rozdziału 33 jest już w commicie `f598009`; starsze stwierdzenia poniżej o jego lokalnym stanie są historyczne.
 
@@ -87,7 +103,7 @@ Użytkownik utworzył commit **`b285d14`** („Dodaj opcjonalny opis i testy obs
 
 ## Aktualny punkt kontynuacji — grafika dyscypliny, 15 listopada 2026 r.
 
-Ta sekcja ma pierwszeństwo przed starszymi punktami kontynuacji poniżej. Starsze stwierdzenia o braku zasobu dyscyplin Filamentu i nierozpoczętej implementacji są nieaktualne. Szczegóły prac zapisano w [rozdziale 32](Sport/Dyscypliny/32-dyscypliny-filament.md) i [rozdziale 33](Sport/Dyscypliny/33-opis-i-grafika-dyscypliny.md).
+Ta sekcja ma pierwszeństwo przed starszymi punktami kontynuacji poniżej. Starsze stwierdzenia o braku zasobu dyscyplin Filamentu i nierozpoczętej implementacji są nieaktualne. Szczegóły prac zapisano w [rozdziale 32](32-dyscypliny-filament.md) i [rozdziale 33](33-opis-i-grafika-dyscypliny.md).
 
 ### Wykonane i opublikowane
 
@@ -112,7 +128,7 @@ Po opublikowaniu `8f2a633` asystent dopisał potwierdzenie pushu do rozdziału 3
 
 ## Wybrany następny etap — migracja listy dyscyplin, 15 listopada 2026 r.
 
-Użytkownik zlecił rozpoczęcie listy dyscyplin w Filamencie w nowym czacie, z nowym issue i rozdziałem. Utworzono [issue #24](https://github.com/SebMagacy/sportowiada/issues/24) oraz [rozdział 32](Sport/Dyscypliny/32-dyscypliny-filament.md). Pierwszy zakres obejmuje listę istniejących rekordów. Użytkownik zatwierdził stopniowe usuwanie zastępowanych elementów własnego widoku po sprawdzeniu następstwa w Filamencie; wcześniejszy plan zachowania obu list na stałe jest nieaktualny. Zachować dane i współdzielone elementy, a podczas usuwania starej listy zapewnić działające wejście do formularza dodawania, anulowanie i powrót po zapisie. Migracja formularza wymaga dalszego ustalenia; #22 nie jest automatycznie ukończone. Implementacja i usuwanie kodu jeszcze się nie rozpoczęły.
+Użytkownik zlecił rozpoczęcie listy dyscyplin w Filamencie w nowym czacie, z nowym issue i rozdziałem. Utworzono [issue #24](https://github.com/SebMagacy/sportowiada/issues/24) oraz [rozdział 32](32-dyscypliny-filament.md). Pierwszy zakres obejmuje listę istniejących rekordów. Użytkownik zatwierdził stopniowe usuwanie zastępowanych elementów własnego widoku po sprawdzeniu następstwa w Filamencie; wcześniejszy plan zachowania obu list na stałe jest nieaktualny. Zachować dane i współdzielone elementy, a podczas usuwania starej listy zapewnić działające wejście do formularza dodawania, anulowanie i powrót po zapisie. Migracja formularza wymaga dalszego ustalenia; #22 nie jest automatycznie ukończone. Implementacja i usuwanie kodu jeszcze się nie rozpoczęły.
 
 ## Punkt kontynuacji po uporządkowaniu czatów — 15 listopada 2026 r.
 
@@ -148,7 +164,7 @@ Konto logowania i zawodnik są odrębnymi pojęciami. Zawodnik może istnieć be
 | --- | --- |
 | Lista dyscyplin Filamentu | Uzgodniona wyłącznie lista istniejących rekordów, bez dodawania, edycji i usuwania, z zachowaniem własnego panelu. Podano polecenie generatora, lecz nie potwierdzono jego wykonania; obecnie brak zasobu. Nie uruchamiać go bez rozpoczęcia tego etapu. |
 | Issue #23 | Rozróżnić błędny e-mail/hasło od poprawnych danych konta bez dostępu; komunikat braku uprawnień z prośbą o kontakt z administratorem, PL/EN, testy i zachowanie ograniczania prób logowania. Brak potwierdzonej implementacji. |
-| Issue #22 | Dodawanie dyscyplin — etap częściowy, [rozdział 30](Sport/Dyscypliny/30-dodawanie-dyscypliny.md). Formularz i kluczowe scenariusze ręczne istnieją; dedykowane testy zapisu, sprawdzenie błędu nazwy i responsywności pozostają do wykonania. Alias: małe litery ASCII, cyfry i pojedyncze myślniki, unikalny, bez automatycznej numeracji; podpowiadanie do pierwszej ręcznej edycji. |
+| Issue #22 | Dodawanie dyscyplin — etap częściowy, [rozdział 30](30-dodawanie-dyscypliny.md). Formularz i kluczowe scenariusze ręczne istnieją; dedykowane testy zapisu, sprawdzenie błędu nazwy i responsywności pozostają do wykonania. Alias: małe litery ASCII, cyfry i pojedyncze myślniki, unikalny, bez automatycznej numeracji; podpowiadanie do pierwszej ręcznej edycji. |
 | Issue #21 | Dalsze wymagania sportowe: szczegóły wyników, punktacji, klasyfikacji, statystyk i minimalnych danych; rozdział 28. |
 | Odłożone funkcje | Operacje zbiorcze #19, wybór wszystkich wyników #20, mobilny panel i nagłówki (#18), wielojęzyczne dane dyscyplin. Nie rozszerzać o nie bieżącej pracy. |
 | Środowisko | Wcześniej występował problem praw zapisu do logu Laravel; brak potwierdzenia jego ostatecznego rozwiązania. W razie powrotu błędu sprawdzić bieżące uprawnienia. |
@@ -250,7 +266,7 @@ To zaakceptowane pojęcia i wymagania, nie wykonany schemat bazy. Szczegóły wy
 
 ### Aktualny punkt kontynuacji: pierwszy widok dyscyplin
 
-Użytkownik wstrzymał dalszą analizę i poprosił o rozpoczęcie widoku dyscyplin w nowym czacie oraz nowym folderze dokumentacji. Utworzono [rozdział 29 — Pierwszy widok dyscyplin](Sport/Dyscypliny/29-widok-dyscyplin.md), z tagiem `sport`, i czat „Etap 29 — Widok dyscyplin” (`01a1cf79-4300-74a0-b4b6-646f90818013`) w tym samym lokalnym projekcie.
+Użytkownik wstrzymał dalszą analizę i poprosił o rozpoczęcie widoku dyscyplin w nowym czacie oraz nowym folderze dokumentacji. Utworzono [rozdział 29 — Pierwszy widok dyscyplin](29-widok-dyscyplin.md), z tagiem `sport`, i czat „Etap 29 — Widok dyscyplin” (`01a1cf79-4300-74a0-b4b6-646f90818013`) w tym samym lokalnym projekcie.
 
 Propozycja do potwierdzenia przed implementacją: strona „Dyscypliny” w panelu administratora, odnośnik w bocznym menu, istniejący układ i nagłówek oraz stała lista trzech dyscyplin. Bez bazy danych i formularzy w pierwszym kroku. Nie dodano jeszcze trasy, widoku ani pozycji menu. Rozpoczęcie widoku nie oznacza ukończenia analizy issue #21.
 
