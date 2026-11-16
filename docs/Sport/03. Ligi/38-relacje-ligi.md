@@ -138,6 +138,14 @@ Własne wyniki asystenta:
 
 Testy korzystają z SQLite w pamięci zgodnie z `phpunit.xml`; nie zmieniają danych lokalnej bazy MySQL. Asystent nie zmieniał w tym kroku logiki modeli, nie dodawał zależności i nie wykonywał operacji zapisu Git. Nie uruchamiano pełnej regresji aplikacji. Wszystkie cztery relacje oraz osiem wcześniejszych scenariuszy ograniczeń lig przeszły sprawdzenie.
 
+## 9. Lokalny commit trzeciej części
+
+Użytkownik przejrzał zestawienie pięciu plików i wykonał `git commit -m "Dodaj relacje ligi z dyscypliną i właścicielem — Refs #25"`. Git potwierdził commit `079a46e`: 5 plików, 214 dodanych i 4 usunięte linie. PHPStan uruchomiony przez GrumPHP w hooku przeszedł poprawnie. Asystent niezależnie potwierdził identyfikator i tytuł odczytem historii Git. Push pozostaje niepotwierdzony. Ten wpis dopisano po commicie i pozostaje lokalną zmianą dokumentacji do kolejnego zapisu.
+
+## 10. Potwierdzona publikacja
+
+Użytkownik przekazał udany wynik `git push origin main`: `388c44f..079a46e main -> main`. Potwierdza to publikację commita `079a46e` na GitHubie. Wpisy o commicie i publikacji dopisano po commicie; pozostają lokalnymi zmianami dokumentacji do kolejnego zapisu.
+
 ## Stan części 3
 
-Relacje i ich cztery testy są przygotowane. Formatowanie, testy relacji wraz z regresją zapisu lig oraz analiza statyczna przeszły poprawnie. Przed trzecim commitem pozostaje przegląd i przygotowanie plików do indeksu przez użytkownika. Commit i push części 3 nie zostały jeszcze wykonane. Uprawnienia i formularze pozostają kolejnym zakresem.
+Relacje i ich cztery testy są przygotowane. Formatowanie, testy relacji wraz z regresją zapisu lig oraz analiza statyczna przeszły poprawnie. Użytkownik zapisał i opublikował część 3 w commicie `079a46e`. Uprawnienia i formularze pozostają kolejnym zakresem.
