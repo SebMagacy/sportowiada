@@ -224,6 +224,14 @@ Własne wyniki asystenta:
 
 Testy działają na SQLite w pamięci według `phpunit.xml`. Nie zmieniają lokalnych danych MySQL i nie zastępują testów formularzy ani przyszłych zasad dostępu. Nie uruchamiano pełnej regresji aplikacji; wykonano testy ograniczeń lig oraz powiązanych katalogów sezonów i dyscyplin. Nie dodawano zależności, nie zmieniano logiki aplikacji ani nie wykonywano commita lub pushu.
 
+## 16. Lokalny commit drugiej części
+
+Użytkownik przejrzał zestawienie siedmiu przygotowanych plików i wykonał `git commit -m "Dodaj model i tabelę lig z testami — Refs #25"`. Git potwierdził commit `d4e0109`: 7 plików i 468 dodanych linii. PHPStan uruchomiony przez GrumPHP w hooku przeszedł poprawnie. Asystent niezależnie potwierdził identyfikator i tytuł przez odczyt historii Git. Push nie został jeszcze potwierdzony. Ten wpis dopisano po commicie i pozostaje lokalną zmianą do kolejnego zapisu dokumentacji.
+
+## 17. Potwierdzona publikacja
+
+Użytkownik przekazał udany wynik `git push origin main`: `caf894f..d4e0109 main -> main`. To potwierdzenie publikacji drugiej części na GitHubie. Potwierdzenia commita i pushu dopisano do tego rozdziału po commicie; pozostają lokalnymi zmianami dokumentacji do kolejnego zapisu.
+
 ## Stan weryfikacji
 
-Potwierdzono wygenerowanie szkieletów, wykonanie migracji, schemat tabeli, listę pól masowego przypisania, kod fabryki oraz osiem zaplanowanych testów ograniczeń lig. Testy regresji zapisu sezonów i dyscyplin, Pint oraz PHPStan przeszły poprawnie. Przed drugim commitem pozostają przegląd zakresu zmian i przygotowanie indeksu przez użytkownika; commit i push nie są wykonane. Relacje Eloquent, uprawnienia, formularze i projekty należą do kolejnych części.
+Potwierdzono wygenerowanie szkieletów, wykonanie migracji, schemat tabeli, listę pól masowego przypisania, kod fabryki oraz osiem zaplanowanych testów ograniczeń lig. Testy regresji zapisu sezonów i dyscyplin, Pint oraz PHPStan przeszły poprawnie. Użytkownik zapisał i opublikował drugą część w commicie `d4e0109`. Relacje Eloquent, uprawnienia, formularze i projekty należą do kolejnych części.
