@@ -25,10 +25,12 @@ class UserResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('name')
-                    ->label('Nazwa'),
+                    ->label('Nazwa')
+                    ->searchable(),
 
                 TextColumn::make('email')
-                    ->label('E-mail'),
+                    ->label('E-mail')
+                    ->searchable(),
 
                 TextColumn::make('is_admin')
                     ->label('Typ konta')
