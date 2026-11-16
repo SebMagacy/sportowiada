@@ -69,6 +69,10 @@ Użytkownik utworzył katalog `docs/Sport/03. Ligi/`; asystent potwierdził jego
 
 Podano wcześniej polecenie wygenerowania `League` z migracją, fabryką i seederem, ale użytkownik nie potwierdził wykonania. Nie zapisujemy go jako wykonanego kroku. W tej części zmieniono dokumentację, nie kod aplikacji; nie uruchamiano migracji ani testów aplikacji. Commit i push pozostają do wykonania przez użytkownika.
 
+### Lokalny commit pierwszej części
+
+Użytkownik przekazał wynik udanego `git commit`: `caf894f` — „Zapisz założenia katalogu lig — Refs #25”. Commit obejmuje dwa pliki dokumentacji: kontekst projektu i ten rozdział (96 dodanych i 6 usuniętych linii). PHPStan uruchomiony przez GrumPHP w hooku przeszedł poprawnie. Nie jest to test działania katalogu lig. Push nie został jeszcze potwierdzony. Ten wpis dopisano po commicie i pozostaje lokalną zmianą dokumentacji do następnego zapisu.
+
 ## Sposób pracy
 
 Po polsku, jeden mały krok naraz: cel, mechanizm, konkretna edycja lub polecenie, kryterium sukcesu, następnie oczekiwanie na wynik. Użytkownik wykonuje kod aplikacji, polecenia i Git. Asystent aktualizuje dokumentację po potwierdzonych krokach. Zachowujemy lokalne zmiany, bez nowych gałęzi, worktree i zmian zależności.
