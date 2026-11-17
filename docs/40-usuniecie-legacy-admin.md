@@ -72,10 +72,21 @@ Asystent wykonał końcowe kontrole:
 
 Testy używają SQLite w pamięci; nie zmieniają lokalnych kont. Mniejsza liczba testów niż historycznie wynika z usunięcia testów wycofanego panelu, a nie z potwierdzenia wszystkich dawnych funkcji w Filamencie. Filament nie otrzymał automatycznie funkcji dawnego CRUD kont, filtrów czy sortowania.
 
-Nie wykonano nowego ręcznego sprawdzenia w przeglądarce po tym porządkowaniu. Wcześniejsze ręczne próby użytkownika są opisane w rozmowie i rozdziale 39; nie zastępują testów obecnej zmiany.
+Po porządkowaniu i publikacji commita użytkownik potwierdził dwa nowe sprawdzenia ręczne:
+
+- Konto `super_admin`: logowanie przez publiczny `/login` kieruje do pulpitu Filamentu; lista użytkowników pokazuje kolumnę „Role” i akcję przypisywania ról (odpowiedź „ok. działa”).
+- Rysiek z rolą `panel_user`: logowanie przez publiczny `/login` w oknie prywatnym kieruje do pulpitu Filamentu; w menu nie ma ról, użytkowników, dyscyplin ani sezonów (odpowiedź „ok. sukces”).
+
+Wcześniejsze ręczne próby przypisywania ról opisuje rozdział 39. Nie powtarzano po porządkowaniu wszystkich prób bezpośrednich adresów w przeglądarce; odmowy dostępu obejmują testy automatyczne opisane powyżej.
 
 ## Dokumentacja i status
 
 Historyczne rozdziały zachowano z oznaczeniem archiwalnych odwołań do legacy-admin. Rozdział 31 otrzymał informację o zmianie, a na początku bieżącego kontekstu zapisano aktualny stan mający pierwszeństwo przed dawnymi wpisami. Usunięto z instrukcji kontynuacji wymóg zachowania starego panelu.
 
 Issue #26 pozostaje otwarte. Status commita i publikacji należy sprawdzać w historii Git; wyniki kontroli powyżej dotyczą lokalnej implementacji. Ta zmiana nie oznacza implementacji uprawnień przyszłych lig i projektów ani ukończenia wszystkich kryteriów całego etapu.
+
+## Commit i publikacja
+
+Utworzono commit `447ea47` — „Wdroż role i uprawnienia Filamentu oraz usuń legacy-admin”, z odniesieniem `Refs #26`. Kontrola PHPStan uruchomiona przez hook przed commitem zakończyła się poprawnie; po commicie katalog roboczy był czysty.
+
+Użytkownik potwierdził publikację wynikiem `git push origin main`: `11f024e..447ea47 main -> main`. Potwierdza to push tego commita, nie zamknięcie issue #26. Niniejszy dopisek dokumentacyjny powstał po publikacji i wymaga osobnego commita oraz pushu.
