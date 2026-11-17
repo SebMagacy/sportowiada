@@ -4,7 +4,6 @@ namespace Database\Factories;
 
 use App\Models\Discipline;
 use App\Models\League;
-use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -23,7 +22,6 @@ class LeagueFactory extends Factory
             'name' => fake()->words(3, true),
             'description' => null,
             'discipline_id' => Discipline::factory(),
-            'owner_id' => User::factory(),
         ];
     }
 }

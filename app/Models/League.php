@@ -20,10 +20,4 @@ class League extends Model
     {
         return $this->belongsTo(Discipline::class);
     }
-
-    /** @return BelongsTo<User, $this> */
-    public function owner(): BelongsTo
-    {
-        return $this->belongsTo(User::class);
-    }
 }
