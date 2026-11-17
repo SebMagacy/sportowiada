@@ -274,6 +274,6 @@ Asystent wykonał dodatkowo `git diff --check`: bez błędów. PHPStan w obecnej
 - Polski interfejs i formularze sprawdzono ręcznie w opisanych scenariuszach. Angielskie tłumaczenia przygotowano i odczytano; przełączenia całego panelu na angielski nie potwierdzono.
 - Projekty, ochrona lig powiązanych z projektami i delegowanie zarządzania organizatorom/redaktorom pozostają poza zakresem #28, w dalszym etapie #25.
 
-Pozostają przygotowanie commita, publikacja i aktualizacja zgłoszenia #28 po potwierdzeniu publikacji. Nie wykonano ich na podstawie samych wyników testów. Ten rozdział nadal jest nieśledzonym plikiem przed dodaniem do Git.
+Użytkownik utworzył commit `f50c672` — „Dodaj katalog lig w Filamencie”, z odwołaniem `Refs #28`. Commit obejmuje 10 plików, w tym ten rozdział i oba pliki tłumaczeń lig. GrumPHP uruchomił PHPStan przed commitem; kontrola przeszła poprawnie. Asystent potwierdził commit w lokalnym Git. Publikacja i aktualizacja zgłoszenia #28 pozostają do wykonania po potwierdzeniu push. Informację o numerze commita dopisano do dokumentacji już po jego utworzeniu.
 
 Prowadzimy po polsku, po jednym małym kroku. Użytkownik wykonuje kod, polecenia i Git; wyjątkiem było wyraźne zlecenie asystentowi rozszerzenia testów. Asystent aktualizuje istniejącą dokumentację po potwierdzonych krokach. Nie utworzono nowej gałęzi ani worktree i nie zmieniono zależności.
