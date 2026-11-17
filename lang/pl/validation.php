@@ -189,7 +189,7 @@ return [
     'starts_with' => 'Pole :attribute musi zaczynać się jedną z następujących wartości: :values.',
     'string' => 'Pole :attribute musi być ciągiem znaków.',
     'timezone' => 'Pole :attribute musi być prawidłową strefą czasową.',
-    'unique' => 'Taki :attribute już występuje.',
+    'unique' => 'W bazie istnieje już taki wpis.',
     'uploaded' => 'Nie udało się wgrać pliku :attribute.',
     'uppercase' => 'Pole :attribute musi być zapisane wielkimi literami.',
     'url' => 'Format pola :attribute jest nieprawidłowy.',

@@ -4,7 +4,6 @@ namespace App\Policies;
 
 use App\Models\League;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class LeaguePolicy
 {
@@ -13,7 +12,7 @@ class LeaguePolicy
      */
     public function viewAny(User $user): bool
     {
-        return false;
+        return $user->hasRole('super_admin');
     }
 
     /**
@@ -21,7 +20,7 @@ class LeaguePolicy
      */
     public function view(User $user, League $league): bool
     {
-        return false;
+        return $user->hasRole('super_admin');
     }
 
     /**
@@ -29,7 +28,7 @@ class LeaguePolicy
      */
     public function create(User $user): bool
     {
-        return false;
+        return $user->hasRole('super_admin');
     }
 
     /**
@@ -37,7 +36,7 @@ class LeaguePolicy
      */
     public function update(User $user, League $league): bool
     {
-        return false;
+        return $user->hasRole('super_admin');
     }
 
     /**
@@ -45,7 +44,7 @@ class LeaguePolicy
      */
     public function delete(User $user, League $league): bool
     {
-        return false;
+        return $user->hasRole('super_admin');
     }
 
     /**

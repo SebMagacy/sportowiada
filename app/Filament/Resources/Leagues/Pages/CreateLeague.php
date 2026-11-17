@@ -8,4 +8,9 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateLeague extends CreateRecord
 {
     protected static string $resource = LeagueResource::class;
+
+    public function getTitle(): string
+    {
+        return __('leagues.create');
+    }
 }
