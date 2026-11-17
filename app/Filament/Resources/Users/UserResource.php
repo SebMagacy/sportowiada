@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Users;
 
+use App\Filament\Actions\AssignUserRolesAction;
 use App\Filament\Resources\Users\Pages\ListUsers;
 use App\Models\User;
 use BackedEnum;
@@ -32,18 +33,18 @@ class UserResource extends Resource
                     ->label('E-mail')
                     ->searchable(),
 
-                TextColumn::make('is_admin')
-                    ->label('Typ konta')
-                    ->formatStateUsing(
-                        fn (bool $state): string => $state
-                            ? 'Administrator'
-                            : 'Użytkownik'
-                    ),
+                TextColumn::make('roles.name')
+                    ->label('Role')
+                    ->badge()
+                    ->placeholder('Brak ról'),
 
                 TextColumn::make('id')
                     ->label('ID'),
             ])
-            ->defaultSort('id');
+            ->defaultSort('id')
+            ->recordActions([
+                AssignUserRolesAction::make(),
+            ]);
     }
 
     public static function getPages(): array

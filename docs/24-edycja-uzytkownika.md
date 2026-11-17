@@ -3,6 +3,8 @@ tags:
   - edycja-uzytkownika
 ---
 
+> **Archiwum legacy-admin (17.11.2026).** Ten rozdział zachowuje historię nauki. Odwołania do własnego panelu, `is_admin`, jego komponentów i testów są historyczne: legacy-admin został usunięty. Zachowane funkcje publicznego logowania, rejestracji i seedery działają dalej; aktualny panel to Filament z rolami i Policies. Szczegóły: [[40-usuniecie-legacy-admin]].
+
 # Edycja użytkownika
 
 ## Uzgodniony zakres

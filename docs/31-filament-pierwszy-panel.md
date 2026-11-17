@@ -1,3 +1,5 @@
+> **Aktualizacja 17.11.2026:** opisy zachowania legacy-admin i autoryzacji przez `is_admin`/`access-admin` poniżej są historyczne. Legacy-admin usunięto; Filament korzysta teraz z ról i Policies. Zobacz [rozdział 40](40-usuniecie-legacy-admin.md).
+
 # 31. Filament — uruchomienie i dostęp do panelu
 
 ## Cel i aktualny stan

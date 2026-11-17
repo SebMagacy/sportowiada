@@ -1,3 +1,5 @@
+> **Aktualizacja 17.11.2026:** logowanie, rejestracja i wylogowanie pozostają aktywne. Fragmenty o `is_admin`, `access-admin` i własnym panelu są historyczne. Bieżący przepływ i wyniki testów opisuje [rozdział 40](40-usuniecie-legacy-admin.md).
+
 # Logowanie użytkowników
 
 Opis budowy logowania od trasy i formularza po kontroler oraz ręczne sprawdzenia. Fragmenty pośrednie uzupełniamy w kolejnych podsekcjach. Testy automatyczne pozostają odłożone zgodnie z ustaleniem użytkownika.

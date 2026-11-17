@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Illuminate\Support\Facades\RateLimiter;
 use PHPUnit\Framework\Attributes\DataProvider;
+use Spatie\Permission\Models\Role;
 use Tests\TestCase;
 
 class LoginControllerTest extends TestCase
@@ -26,9 +27,12 @@ class LoginControllerTest extends TestCase
      * Zmiana identyfikatora sesji chroni przed utrwaleniem sesji, a jej dane pozostają zachowane.
      */
     #[DataProvider('roles')]
-    public function test_valid_credentials_authenticate_and_redirect_by_role(bool $isAdmin, string $destination): void
+    public function test_valid_credentials_authenticate_and_redirect_by_role(?string $role, string $destination): void
     {
-        $user = User::factory()->create(['is_admin' => $isAdmin]);
+        $user = User::factory()->create();
+        if ($role !== null) {
+            $user->assignRole(Role::findOrCreate($role, 'web'));
+        }
         $this->withSession(['marker' => 'preserved']);
         $oldSessionId = session()->getId();
 
@@ -45,7 +49,7 @@ class LoginControllerTest extends TestCase
      */
     public static function roles(): array
     {
-        return ['administrator' => [true, 'admin.dashboard'], 'user' => [false, '/']];
+        return ['administrator' => ['super_admin', 'filament.panel.pages.dashboard'], 'panel user' => ['panel_user', 'filament.panel.pages.dashboard'], 'user' => [null, '/']];
     }
 
     /**

@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\User;
 use Database\Seeders\ExampleUsersSeeder;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
+use Spatie\Permission\Models\Role;
 use Tests\TestCase;
 
 class ExampleUsersSeederTest extends TestCase
@@ -19,9 +20,7 @@ class ExampleUsersSeederTest extends TestCase
         $this->seed(ExampleUsersSeeder::class);
 
         $this->assertDatabaseCount('users', 25);
-        $this->assertDatabaseMissing('users', [
-            'is_admin' => true,
-        ]);
+        $this->assertDatabaseCount('model_has_roles', 0);
     }
 
     /**
@@ -43,13 +42,13 @@ class ExampleUsersSeederTest extends TestCase
     {
         $administrator = User::factory()->create([
             'email' => 'example-user-1@example.com',
-            'is_admin' => true,
         ]);
 
         $regularUser = User::factory()->create([
             'email' => 'existing-user@example.com',
-            'is_admin' => false,
         ]);
+
+        $administrator->assignRole(Role::findOrCreate('super_admin', 'web'));
 
         $administratorAttributes = $administrator->getAttributes();
         $regularUserAttributes = $regularUser->getAttributes();
@@ -58,6 +57,7 @@ class ExampleUsersSeederTest extends TestCase
 
         $this->assertDatabaseCount('users', 26);
         $this->assertDatabaseHas('users', $administratorAttributes);
+        $this->assertTrue($administrator->fresh()->hasRole('super_admin'));
         $this->assertDatabaseHas('users', $regularUserAttributes);
     }
 }

@@ -1,3 +1,5 @@
+> **Aktualizacja 17.11.2026:** logowanie, rejestracja i wylogowanie pozostają aktywne. Fragmenty o `is_admin`, `access-admin` i własnym panelu są historyczne. Bieżący przepływ i wyniki testów opisuje [rozdział 40](40-usuniecie-legacy-admin.md).
+
 # Rejestracja użytkowników
 
 Rejestrację budujemy od początku, małymi krokami. Poniżej opisano trasy GET i POST, formularz, kontroler, wyświetlanie błędów oraz przywracanie imienia i adresu e-mail. Ręcznie potwierdzono podstawowy przepływ rejestracji i logowania, komunikaty dla zajętego adresu, niezgodnego potwierdzenia i zbyt krótkiego hasła oraz zachowanie danych formularza po błędzie. Nie oznacza to ukończenia wszystkich funkcji kont ani wykonania testów automatycznych.

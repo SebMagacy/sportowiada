@@ -40,7 +40,7 @@ class FilamentDisciplineTest extends TestCase
     public function test_regular_user_cannot_open_any_discipline_page(): void
     {
         $discipline = Discipline::factory()->create();
-        $this->actingAs(User::factory()->create(['is_admin' => false]));
+        $this->actingAs(User::factory()->create());
 
         foreach (['index', 'create', 'edit'] as $page) {
             $this->get(DisciplineResource::getUrl($page, ['record' => $discipline]))->assertForbidden();
@@ -277,6 +277,6 @@ class FilamentDisciplineTest extends TestCase
 
     private function signInAdmin(): void
     {
-        $this->actingAs(User::factory()->create(['is_admin' => true]));
+        $this->actingAs($this->createPanelAdministrator());
     }
 }

@@ -39,7 +39,7 @@ class FilamentSeasonTest extends TestCase
     public function test_regular_user_cannot_open_any_season_page(): void
     {
         $season = Season::factory()->create();
-        $this->actingAs(User::factory()->create(['is_admin' => false]));
+        $this->actingAs(User::factory()->create());
 
         foreach (['index', 'create', 'edit'] as $page) {
             $this->get(SeasonResource::getUrl($page, ['record' => $season]))->assertForbidden();
@@ -219,6 +219,6 @@ class FilamentSeasonTest extends TestCase
 
     private function signInAdmin(): void
     {
-        $this->actingAs(User::factory()->create(['is_admin' => true]));
+        $this->actingAs($this->createPanelAdministrator());
     }
 }

@@ -24,13 +24,13 @@ class FilamentPanelAccessTest extends TestCase
 
     public function test_regular_user_is_forbidden(): void
     {
-        $this->actingAs(User::factory()->create(['is_admin' => false]))
+        $this->actingAs(User::factory()->create())
             ->get(route('filament.panel.pages.dashboard'))->assertForbidden();
     }
 
     public function test_admin_can_open_dashboard(): void
     {
-        $this->actingAs(User::factory()->create(['is_admin' => true]))
+        $this->actingAs($this->createPanelAdministrator())
             ->get(route('filament.panel.pages.dashboard'))
             ->assertOk()->assertSee(route('filament.panel.resources.users.index'));
     }
@@ -43,13 +43,13 @@ class FilamentPanelAccessTest extends TestCase
 
     public function test_regular_user_cannot_open_users(): void
     {
-        $this->actingAs(User::factory()->create(['is_admin' => false]))
+        $this->actingAs(User::factory()->create())
             ->get(route('filament.panel.resources.users.index'))->assertForbidden();
     }
 
     public function test_admin_can_open_users(): void
     {
-        $user = User::factory()->create(['is_admin' => true]);
+        $user = $this->createPanelAdministrator();
 
         $this->actingAs($user)->get(route('filament.panel.resources.users.index'))
             ->assertOk()->assertSeeText($user->email);
@@ -63,7 +63,7 @@ class FilamentPanelAccessTest extends TestCase
 
     public function test_admin_can_log_in_with_valid_credentials(): void
     {
-        $user = User::factory()->create(['is_admin' => true]);
+        $user = $this->createPanelAdministrator();
         Filament::setCurrentPanel('panel');
 
         Livewire::test(Login::class)
@@ -78,7 +78,7 @@ class FilamentPanelAccessTest extends TestCase
 
     public function test_regular_user_cannot_log_in_with_valid_credentials(): void
     {
-        $user = User::factory()->create(['is_admin' => false]);
+        $user = User::factory()->create();
         Filament::setCurrentPanel('panel');
 
         Livewire::test(Login::class)
@@ -94,7 +94,7 @@ class FilamentPanelAccessTest extends TestCase
 
     public function test_admin_cannot_log_in_with_wrong_password(): void
     {
-        $user = User::factory()->create(['is_admin' => true]);
+        $user = $this->createPanelAdministrator();
         Filament::setCurrentPanel('panel');
 
         Livewire::test(Login::class)
@@ -110,7 +110,7 @@ class FilamentPanelAccessTest extends TestCase
 
     public function test_logout_ends_session_and_protects_dashboard_again(): void
     {
-        $user = User::factory()->create(['is_admin' => true]);
+        $user = $this->createPanelAdministrator();
 
         $this->actingAs($user)->post(route('filament.panel.auth.logout'))
             ->assertRedirect(route('filament.panel.auth.login'));

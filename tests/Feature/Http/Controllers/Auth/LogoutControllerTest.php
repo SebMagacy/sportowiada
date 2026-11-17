@@ -16,7 +16,7 @@ class LogoutControllerTest extends TestCase
      */
     public function test_logout_removes_authentication_and_invalidates_session(): void
     {
-        $user = User::factory()->create(['is_admin' => true]);
+        $user = $this->createPanelAdministrator();
         $this->actingAs($user)->withSession(['private_marker' => 'secret']);
         $oldSessionId = session()->getId();
         $oldToken = session()->token();
@@ -27,7 +27,7 @@ class LogoutControllerTest extends TestCase
         $this->assertGuest();
         $this->assertNotSame($oldSessionId, session()->getId());
         $this->assertNotSame($oldToken, session()->token());
-        $this->get(route('admin.dashboard'))->assertRedirect(route('login'));
+        $this->get(route('filament.panel.pages.dashboard'))->assertRedirect(route('filament.panel.auth.login'));
     }
 
     /**

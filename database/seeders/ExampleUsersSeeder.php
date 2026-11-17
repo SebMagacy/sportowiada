@@ -21,7 +21,6 @@ class ExampleUsersSeeder extends Seeder
 
             User::factory()->create([
                 'email' => $email,
-                'is_admin' => false,
             ]);
         }
     }

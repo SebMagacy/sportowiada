@@ -2,7 +2,7 @@
 
 Dokumentacja tworzenia i rozwoju aplikacji krok po kroku.
 
-Zacznij od [bieżącego kontekstu](00-kontekst-projektu.md). Starsze rozdziały zachowują historię nauki; opisane w nich adresy `/admin` dotyczą własnego panelu, obecnie pod `/legacy-admin`. Aktualny `/admin` obsługuje Filament. Status wykonania i weryfikacji sprawdzaj w treści rozdziału.
+Zacznij od [bieżącego kontekstu](00-kontekst-projektu.md). Starsze rozdziały zachowują historię nauki; opisany w nich własny panel (legacy-admin) został usunięty. Aktualny `/admin` obsługuje Filament z rolami i Policies. Status wykonania i weryfikacji sprawdzaj w treści rozdziału.
 
 [Słownik pojęć](slownik-pojec.md)
 
@@ -50,3 +50,6 @@ Zacznij od [bieżącego kontekstu](00-kontekst-projektu.md). Starsze rozdziały 
 
 - [32. Dyscypliny w Filamencie — migracja listy](32-dyscypliny-filament.md)
 - [33. Opcjonalny opis i grafika dyscypliny](33-opis-i-grafika-dyscypliny.md)
+- [39. Przypisywanie ról użytkownikom — mechanizm formularza](39-przypisywanie-rol-uzytkownikom.md)
+
+- [40. Usunięcie legacy-admin i przejście na role](40-usuniecie-legacy-admin.md)

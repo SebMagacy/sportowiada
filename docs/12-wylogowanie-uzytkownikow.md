@@ -1,3 +1,5 @@
+> **Aktualizacja 17.11.2026:** logowanie, rejestracja i wylogowanie pozostają aktywne. Fragmenty o `is_admin`, `access-admin` i własnym panelu są historyczne. Bieżący przepływ i wyniki testów opisuje [rozdział 40](40-usuniecie-legacy-admin.md).
+
 # Wylogowanie użytkowników
 
 Wylogowanie budujemy małymi krokami po logowaniu opisanym w [[10-logowanie-uzytkownikow]] i rejestracji opisanej w [[11-rejestracja-uzytkownikow]]. Dotychczas utworzono kontroler, dodano obsługę zakończenia sesji i zarejestrowano trasę POST. Użytkownik potwierdził obecność trasy wynikiem polecenia Artisan. Dodano formularz w panelu administratora i ręcznie potwierdzono przekierowanie po wylogowaniu oraz wymaganie ponownego logowania przy wejściu do panelu. Testy automatyczne są odłożone.

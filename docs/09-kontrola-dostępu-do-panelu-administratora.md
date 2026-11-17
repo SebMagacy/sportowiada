@@ -1,3 +1,5 @@
+> **Archiwum legacy-admin (17.11.2026).** Ten rozdział zachowuje historię nauki. Odwołania do własnego panelu, `is_admin`, jego komponentów i testów są historyczne: legacy-admin został usunięty. Zachowane funkcje publicznego logowania, rejestracji i seedery działają dalej; aktualny panel to Filament z rolami i Policies. Szczegóły: [[40-usuniecie-legacy-admin]].
+
 # Kontrola dostępu do panelu administratora
 
 Opis przygotowania migracji, modelu, Gate i ochrony trasy krok po kroku. Kontrolę dostępu sprawdzono ręcznie. Testy automatyczne pozostają odłożone zgodnie z ustaleniem użytkownika.

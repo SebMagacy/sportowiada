@@ -1,7 +1,5 @@
 <?php
 
-use App\Http\Controllers\Admin\DisciplineController;
-use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\RegistrationController;
@@ -23,37 +21,3 @@ Route::post('/register', [RegistrationController::class, 'store'])
 Route::post('/logout', [LogoutController::class, 'destroy'])
     ->middleware('auth')
     ->name('logout');
-
-// DASHBOARD
-
-Route::view('/legacy-admin', 'admin.dashboard')->name('admin.dashboard')->middleware(['auth', 'can:access-admin']);
-
-// USERS
-
-Route::get('/legacy-admin/users', [UserController::class, 'index'])
-    ->middleware(['auth', 'can:access-admin'])
-    ->name('admin.users.index');
-Route::get('/legacy-admin/users/create', [UserController::class, 'create'])
-    ->middleware(['auth', 'can:access-admin'])
-    ->name('admin.users.create');
-Route::post('/legacy-admin/users', [UserController::class, 'store'])
-    ->middleware(['auth', 'can:access-admin'])
-    ->name('admin.users.store');
-Route::get('/legacy-admin/users/{user}/edit', [UserController::class, 'edit'])
-    ->middleware(['auth', 'can:access-admin'])
-    ->name('admin.users.edit');
-Route::patch('/legacy-admin/users/{user}', [UserController::class, 'update'])
-    ->middleware(['auth', 'can:access-admin'])
-    ->name('admin.users.update');
-
-// DISCIPLINES
-
-Route::get('/legacy-admin/disciplines', [DisciplineController::class, 'index'])
-    ->middleware(['auth', 'can:access-admin'])
-    ->name('admin.disciplines.index');
-Route::get('/legacy-admin/disciplines/create', [DisciplineController::class, 'create'])
-    ->middleware(['auth', 'can:access-admin'])
-    ->name('admin.disciplines.create');
-Route::post('/legacy-admin/disciplines', [DisciplineController::class, 'store'])
-    ->middleware(['auth', 'can:access-admin'])
-    ->name('admin.disciplines.store');

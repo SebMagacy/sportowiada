@@ -23,19 +23,21 @@ class RegistrationControllerTest extends TestCase
 
     /**
      * Rejestracja zapisuje zwykłe konto z zahaszowanym hasłem i kieruje do logowania.
-     * Dodatkowe is_admin w żądaniu sprawdza, czy klient nie może sam nadać sobie uprawnień.
+     * Dodatkowe role i uprawnienia w żądaniu sprawdza, czy klient nie może sam nadać sobie uprawnień.
      */
     public function test_registration_creates_regular_account_with_hashed_password(): void
     {
         $payload = $this->validPayload();
-        $payload['is_admin'] = true;
+        $payload['roles'] = ['super_admin'];
+        $payload['permissions'] = ['Update:User'];
 
         $this->post(route('register.store'), $payload)->assertRedirect(route('login'))->assertSessionHasNoErrors();
 
         $this->assertDatabaseCount('users', 1);
         $user = User::where('email', $payload['email'])->sole();
         $this->assertSame($payload['name'], $user->name);
-        $this->assertFalse($user->is_admin);
+        $this->assertSame(0, $user->roles()->count());
+        $this->assertSame(0, $user->permissions()->count());
         $this->assertTrue(Hash::check($payload['password'], $user->password));
         $this->assertGuest();
     }

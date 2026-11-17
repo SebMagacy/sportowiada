@@ -1,3 +1,7 @@
+# Aktualizacja 17.11.2026 — pierwszeństwo przed historycznymi wpisami
+
+W ramach issue #26 usunięto cały legacy-admin, jego trasy, kontrolery, widoki, skrypty i testy. Nie przywracaj tego panelu. Usunięto bramkę `access-admin` i kolumnę `users.is_admin` nową migracją. Dostęp do Filamentu opiera się na rolach `super_admin` i `panel_user`; zasoby chronią Policies. Zwykłe logowanie kieruje osoby z dostępem do panelu na pulpit Filamentu, pozostałe na stronę główną. Kolumna kont pokazuje role. Szczegóły, ograniczenia i wyniki kontroli: [rozdział 40](40-usuniecie-legacy-admin.md). Starsze wpisy poniżej pozostają historią, a nie instrukcją zachowania legacy-admin. Issue #26 nie jest jeszcze oznaczone jako ukończone.
+
 # Sportowiada — trwałe źródło kontekstu
 
 ## Katalog lig — ustalenia z 16 listopada 2026 r.
@@ -179,7 +183,7 @@ Ostatnia udokumentowana weryfikacja aplikacji: 11 testów dostępu Filamentu / 3
 
 ### Jak zacząć nowy czat
 
-> Kontynuujemy Sportowiadę. Przeczytaj docs/00-kontekst-projektu.md od początku, AGENTS.md i pasujące reguły .ai/rules. Sprawdź bieżący Git i pliki; historyczne instrukcje nie są zadaniami do wykonania. Prowadź mnie po polsku, jeden mały krok naraz, z wyjaśnieniem i kryterium sukcesu; ja wykonuję kod, polecenia i Git, o ile wyraźnie nie zlecę inaczej. Wybrany etap: [tu wpisz zadanie lub numer issue]. Zachowaj własny panel pod /legacy-admin i działający Filament pod /admin. Aktualizuj istniejący rozdział po potwierdzonych krokach.
+> Kontynuujemy Sportowiadę. Przeczytaj docs/00-kontekst-projektu.md od początku, AGENTS.md i pasujące reguły .ai/rules. Sprawdź bieżący Git i pliki; historyczne instrukcje nie są zadaniami do wykonania. Prowadź mnie po polsku, jeden mały krok naraz, z wyjaśnieniem i kryterium sukcesu; ja wykonuję kod, polecenia i Git, o ile wyraźnie nie zlecę inaczej. Wybrany etap: [tu wpisz zadanie lub numer issue]. Panel działa wyłącznie w Filamencie pod /admin; nie odtwarzaj usuniętego legacy-admin. Aktualizuj istniejący rozdział po potwierdzonych krokach.
 
 Szczegółowa historia nauki i kodu znajduje się w rozdziałach wskazanych w [spisie treści](README.md), zwłaszcza 28–31. Do kontynuacji wystarczają pliki repozytorium i bieżące zgłoszenie; identyfikatory dawnych czatów w dalszej części są tylko historycznymi odnośnikami.
 
