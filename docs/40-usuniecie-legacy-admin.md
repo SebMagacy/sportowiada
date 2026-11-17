@@ -81,6 +81,17 @@ Wcześniejsze ręczne próby przypisywania ról opisuje rozdział 39. Nie powtar
 
 ## Dokumentacja i status
 
+### Ręczne sprawdzenie zmiany uprawnień roli
+
+Po publikacji dokumentacji użytkownik sprawdził pełny przebieg nadania i odebrania uprawnienia przez Filament:
+
+1. Jako `super_admin` nadał roli `panel_user` wyłącznie `ViewAny:Season` w sekcji sezonów i zapisał formularz roli.
+2. Odpowiedzią „ok. sukces” potwierdził, że po odświeżeniu panelu Ryśka pojawiły się „Sezony”, lista była dostępna, a przycisk tworzenia nie był dostępny.
+3. Następnie odznaczył to uprawnienie w roli `panel_user` i zapisał.
+4. Kolejną odpowiedzią „ok. sukces” potwierdził zniknięcie sezonów z menu Ryśka oraz ponowną odpowiedź 403 przy bezpośrednim wejściu na `/admin/seasons`.
+
+Sprawdzenie potwierdza zapis uprawnień roli w panelu oraz respektowanie zarówno ich nadania, jak i odebrania. Tymczasowe uprawnienie zostało odebrane; `panel_user` wróciło do podstawowego dostępu do pulpitu.
+
 Historyczne rozdziały zachowano z oznaczeniem archiwalnych odwołań do legacy-admin. Rozdział 31 otrzymał informację o zmianie, a na początku bieżącego kontekstu zapisano aktualny stan mający pierwszeństwo przed dawnymi wpisami. Usunięto z instrukcji kontynuacji wymóg zachowania starego panelu.
 
 Issue #26 pozostaje otwarte. Status commita i publikacji należy sprawdzać w historii Git; wyniki kontroli powyżej dotyczą lokalnej implementacji. Ta zmiana nie oznacza implementacji uprawnień przyszłych lig i projektów ani ukończenia wszystkich kryteriów całego etapu.
