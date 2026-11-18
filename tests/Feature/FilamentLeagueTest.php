@@ -44,6 +44,28 @@ class FilamentLeagueTest extends TestCase
             );
     }
 
+    public function test_english_empty_catalog_links_to_creation_and_changes_to_table_after_first_record(): void
+    {
+        $this->actingAs($this->createPanelAdministrator());
+        app()->setLocale('en');
+
+        $page = Livewire::test(ListLeagues::class)
+            ->assertOk()
+            ->assertActionHidden('create')
+            ->assertSeeText('No leagues have been created yet.')
+            ->assertSeeText('A league organizes competitions within a sport. Add it to the catalog to create editions for individual seasons later.')
+            ->assertSeeText('Add league')
+            ->assertSee('href="'.LeagueResource::getUrl('create').'"', false);
+
+        $record = League::factory()->create();
+
+        $page->refresh()
+            ->assertOk()
+            ->assertCanSeeTableRecords([$record])
+            ->assertActionVisible('create')
+            ->assertDontSeeText('No leagues have been created yet.');
+    }
+
     public function test_search_without_matches_does_not_display_empty_catalog_guidance(): void
     {
         $this->actingAs($this->createPanelAdministrator());

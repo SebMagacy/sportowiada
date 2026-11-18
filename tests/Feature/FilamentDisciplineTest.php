@@ -15,6 +15,8 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Livewire;
 use PHPUnit\Framework\Attributes\DataProvider;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 use Tests\TestCase;
 
 class FilamentDisciplineTest extends TestCase
@@ -40,6 +42,54 @@ class FilamentDisciplineTest extends TestCase
             ->assertSeeText(
                 'Dyscyplina określa rodzaj sportu, do którego należą ligi. Dodaj pierwszą dyscyplinę, aby rozpocząć tworzenie katalogu sportowego.',
             );
+    }
+
+    public function test_english_empty_catalog_links_to_creation_and_changes_to_table_after_first_record(): void
+    {
+        $this->actingAs($this->createPanelAdministrator());
+        app()->setLocale('en');
+
+        $page = Livewire::test(ListDisciplines::class)
+            ->assertOk()
+            ->assertActionHidden('create')
+            ->assertSeeText('No sports disciplines have been created yet.')
+            ->assertSeeText('A discipline identifies the sport to which leagues belong. Add your first discipline to start building the sports catalog.')
+            ->assertSeeText('Add discipline')
+            ->assertSee('href="'.DisciplineResource::getUrl('create').'"', false);
+
+        $record = Discipline::factory()->create();
+
+        $page->refresh()
+            ->assertOk()
+            ->assertCanSeeTableRecords([$record])
+            ->assertActionVisible('create')
+            ->assertDontSeeText('No sports disciplines have been created yet.');
+    }
+
+    public function test_read_only_user_has_no_create_link_in_empty_catalog_or_table(): void
+    {
+        $user = User::factory()->create();
+        $user->assignRole(Role::findOrCreate('panel_user', 'web'));
+        $user->givePermissionTo(Permission::findOrCreate('ViewAny:Discipline', 'web'));
+        $this->actingAs($user);
+        app()->setLocale('en');
+        $createUrl = DisciplineResource::getUrl('create');
+
+        Livewire::test(ListDisciplines::class)
+            ->assertOk()
+            ->assertSeeText('No sports disciplines have been created yet.')
+            ->assertActionHidden('create')
+            ->assertDontSee('href="'.$createUrl.'"', false);
+
+        $record = Discipline::factory()->create();
+
+        Livewire::test(ListDisciplines::class)
+            ->assertOk()
+            ->assertCanSeeTableRecords([$record])
+            ->assertActionHidden('create')
+            ->assertDontSee('href="'.$createUrl.'"', false);
+
+        $this->get($createUrl)->assertForbidden();
     }
 
     public function test_search_without_matches_does_not_display_empty_catalog_guidance(): void

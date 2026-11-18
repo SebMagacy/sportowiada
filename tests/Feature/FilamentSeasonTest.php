@@ -13,6 +13,8 @@ use Filament\Facades\Filament;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Livewire\Livewire;
 use PHPUnit\Framework\Attributes\DataProvider;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 use Tests\TestCase;
 
 class FilamentSeasonTest extends TestCase
@@ -39,6 +41,54 @@ class FilamentSeasonTest extends TestCase
             ->assertSeeText(
                 'Sezon określa edycję czasową rozgrywek, na przykład 2026/2027. Dodaj pierwszy sezon, aby przypisywać do niego projekty rozgrywek.',
             );
+    }
+
+    public function test_english_empty_catalog_links_to_creation_and_changes_to_table_after_first_record(): void
+    {
+        $this->actingAs($this->createPanelAdministrator());
+        app()->setLocale('en');
+
+        $page = Livewire::test(ListSeasons::class)
+            ->assertOk()
+            ->assertActionHidden('create')
+            ->assertSeeText('No seasons have been created yet.')
+            ->assertSeeText('A season identifies a competition period, such as 2026/2027. Add your first season to assign competition projects to it.')
+            ->assertSeeText('Add season')
+            ->assertSee('href="'.SeasonResource::getUrl('create').'"', false);
+
+        $record = Season::factory()->create();
+
+        $page->refresh()
+            ->assertOk()
+            ->assertCanSeeTableRecords([$record])
+            ->assertActionVisible('create')
+            ->assertDontSeeText('No seasons have been created yet.');
+    }
+
+    public function test_read_only_user_has_no_create_link_in_empty_catalog_or_table(): void
+    {
+        $user = User::factory()->create();
+        $user->assignRole(Role::findOrCreate('panel_user', 'web'));
+        $user->givePermissionTo(Permission::findOrCreate('ViewAny:Season', 'web'));
+        $this->actingAs($user);
+        app()->setLocale('en');
+        $createUrl = SeasonResource::getUrl('create');
+
+        Livewire::test(ListSeasons::class)
+            ->assertOk()
+            ->assertSeeText('No seasons have been created yet.')
+            ->assertActionHidden('create')
+            ->assertDontSee('href="'.$createUrl.'"', false);
+
+        $record = Season::factory()->create();
+
+        Livewire::test(ListSeasons::class)
+            ->assertOk()
+            ->assertCanSeeTableRecords([$record])
+            ->assertActionHidden('create')
+            ->assertDontSee('href="'.$createUrl.'"', false);
+
+        $this->get($createUrl)->assertForbidden();
     }
 
     public function test_search_without_matches_does_not_display_empty_catalog_guidance(): void
