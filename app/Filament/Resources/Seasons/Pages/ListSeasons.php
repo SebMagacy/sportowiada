@@ -36,7 +36,9 @@ class ListSeasons extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            CreateAction::make(),
+            CreateAction::make()
+                ->label(__('seasons.create_title'))
+                ->hidden(fn (): bool => $this->isCatalogEmpty()),
         ];
     }
 }

@@ -34,6 +34,8 @@ class FilamentDisciplineTest extends TestCase
 
         Livewire::test(ListDisciplines::class)
             ->assertOk()
+            ->assertActionHidden('create')
+            ->assertSeeText('Dodaj dyscyplinę')
             ->assertSeeText('Nie utworzono jeszcze żadnej dyscypliny.')
             ->assertSeeText(
                 'Dyscyplina określa rodzaj sportu, do którego należą ligi. Dodaj pierwszą dyscyplinę, aby rozpocząć tworzenie katalogu sportowego.',

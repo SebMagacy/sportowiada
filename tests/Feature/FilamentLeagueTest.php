@@ -36,6 +36,8 @@ class FilamentLeagueTest extends TestCase
 
         Livewire::test(ListLeagues::class)
             ->assertOk()
+            ->assertActionHidden('create')
+            ->assertSeeText('Dodaj ligę')
             ->assertSeeText('Nie utworzono jeszcze żadnej ligi.')
             ->assertSeeText(
                 'Liga porządkuje rozgrywki w wybranej dyscyplinie sportu. Dodaj ją do katalogu, aby później tworzyć jej edycje w kolejnych sezonach.',

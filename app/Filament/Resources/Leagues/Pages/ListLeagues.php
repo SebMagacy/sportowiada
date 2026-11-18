@@ -37,7 +37,8 @@ class ListLeagues extends ListRecords
     {
         return [
             CreateAction::make()
-                ->label(__('leagues.create')),
+                ->label(__('leagues.create'))
+                ->hidden(fn (): bool => $this->isCatalogEmpty()),
         ];
     }
 }

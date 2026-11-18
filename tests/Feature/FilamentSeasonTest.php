@@ -33,6 +33,8 @@ class FilamentSeasonTest extends TestCase
 
         Livewire::test(ListSeasons::class)
             ->assertOk()
+            ->assertActionHidden('create')
+            ->assertSeeText('Dodaj sezon')
             ->assertSeeText('Nie utworzono jeszcze żadnego sezonu.')
             ->assertSeeText(
                 'Sezon określa edycję czasową rozgrywek, na przykład 2026/2027. Dodaj pierwszy sezon, aby przypisywać do niego projekty rozgrywek.',
