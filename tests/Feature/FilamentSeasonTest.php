@@ -26,6 +26,39 @@ class FilamentSeasonTest extends TestCase
         Filament::setCurrentPanel('panel');
     }
 
+    public function test_empty_catalog_displays_guidance_for_creating_first_season(): void
+    {
+        $this->signInAdmin();
+        app()->setLocale('pl');
+
+        Livewire::test(ListSeasons::class)
+            ->assertOk()
+            ->assertSeeText('Nie utworzono jeszcze żadnego sezonu.')
+            ->assertSeeText(
+                'Sezon określa edycję czasową rozgrywek, na przykład 2026/2027. Dodaj pierwszy sezon, aby przypisywać do niego projekty rozgrywek.',
+            );
+    }
+
+    public function test_search_without_matches_does_not_display_empty_catalog_guidance(): void
+    {
+        $this->signInAdmin();
+        app()->setLocale('pl');
+        $season = Season::factory()->create(['name' => '2026/2027']);
+
+        Livewire::test(ListSeasons::class)
+            ->assertOk()
+            ->assertCanSeeTableRecords([$season])
+            ->assertDontSeeText('Nie utworzono jeszcze żadnego sezonu.')
+            ->searchTable('zzzzbrakdopasowania')
+            ->assertOk()
+            ->assertCanNotSeeTableRecords([$season])
+            ->assertDontSeeText('Nie utworzono jeszcze żadnego sezonu.')
+            ->searchTable('')
+            ->assertOk()
+            ->assertCanSeeTableRecords([$season])
+            ->assertDontSeeText('Nie utworzono jeszcze żadnego sezonu.');
+    }
+
     public function test_guest_cannot_open_any_season_page(): void
     {
         $season = Season::factory()->create();
