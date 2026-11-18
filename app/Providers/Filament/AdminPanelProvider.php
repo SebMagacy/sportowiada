@@ -30,13 +30,13 @@ class AdminPanelProvider extends PanelProvider
             ->path('admin')
             ->brandName('Sportowiada')
             ->login()
-            ->plugin(FilamentShieldPlugin::make())
             ->sidebarCollapsibleOnDesktop()
             ->sidebarWidth('15rem')
             ->colors([
                 'primary' => Color::Amber,
             ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\Filament\Resources')
+            ->plugin(FilamentShieldPlugin::make())
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\Filament\Pages')
             ->pages([
                 Dashboard::class,
