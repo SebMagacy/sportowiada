@@ -27,6 +27,39 @@ class FilamentDisciplineTest extends TestCase
         Filament::setCurrentPanel('panel');
     }
 
+    public function test_empty_catalog_displays_guidance_for_creating_first_discipline(): void
+    {
+        $this->signInAdmin();
+        app()->setLocale('pl');
+
+        Livewire::test(ListDisciplines::class)
+            ->assertOk()
+            ->assertSeeText('Nie utworzono jeszcze żadnej dyscypliny.')
+            ->assertSeeText(
+                'Dyscyplina określa rodzaj sportu, do którego należą ligi. Dodaj pierwszą dyscyplinę, aby rozpocząć tworzenie katalogu sportowego.',
+            );
+    }
+
+    public function test_search_without_matches_does_not_display_empty_catalog_guidance(): void
+    {
+        $this->signInAdmin();
+        app()->setLocale('pl');
+        $discipline = Discipline::factory()->create(['name' => 'Siatkówka']);
+
+        Livewire::test(ListDisciplines::class)
+            ->assertOk()
+            ->assertCanSeeTableRecords([$discipline])
+            ->assertDontSeeText('Nie utworzono jeszcze żadnej dyscypliny.')
+            ->searchTable('zzzzbrakdopasowania')
+            ->assertOk()
+            ->assertCanNotSeeTableRecords([$discipline])
+            ->assertDontSeeText('Nie utworzono jeszcze żadnej dyscypliny.')
+            ->searchTable('')
+            ->assertOk()
+            ->assertCanSeeTableRecords([$discipline])
+            ->assertDontSeeText('Nie utworzono jeszcze żadnej dyscypliny.');
+    }
+
     public function test_guest_cannot_open_any_discipline_page(): void
     {
         $discipline = Discipline::factory()->create();
@@ -90,8 +123,12 @@ class FilamentDisciplineTest extends TestCase
         $description = "Zażółć gęślą jaźń.\nDrugi wiersz.";
 
         Livewire::test(CreateDiscipline::class)
-            ->fillForm(['name' => 'Piłka nożna', 'alias' => 'pilka-nozna', 'description' => $description,
-                'icon' => [UploadedFile::fake()->image('football.png')]])
+            ->fillForm([
+                'name' => 'Piłka nożna',
+                'alias' => 'pilka-nozna',
+                'description' => $description,
+                'icon' => [UploadedFile::fake()->image('football.png')],
+            ])
             ->call('create')->assertHasNoFormErrors();
 
         $discipline = Discipline::query()->sole();
@@ -251,8 +288,11 @@ class FilamentDisciplineTest extends TestCase
         $this->signInAdmin();
 
         Livewire::test(CreateDiscipline::class)
-            ->fillForm(['name' => 'Tenis', 'alias' => 'tenis',
-                'icon' => [UploadedFile::fake()->create('document.pdf', 20, 'application/pdf')]])
+            ->fillForm([
+                'name' => 'Tenis',
+                'alias' => 'tenis',
+                'icon' => [UploadedFile::fake()->create('document.pdf', 20, 'application/pdf')],
+            ])
             ->call('create')->assertHasFormErrors();
 
         $this->assertDatabaseCount('disciplines', 0);
@@ -266,8 +306,11 @@ class FilamentDisciplineTest extends TestCase
         $this->signInAdmin();
 
         Livewire::test(CreateDiscipline::class)
-            ->fillForm(['name' => 'Tenis', 'alias' => 'tenis',
-                'icon' => [UploadedFile::fake()->image('large.png')->size(2049)]])
+            ->fillForm([
+                'name' => 'Tenis',
+                'alias' => 'tenis',
+                'icon' => [UploadedFile::fake()->image('large.png')->size(2049)],
+            ])
             ->call('create')->assertHasFormErrors();
 
         $this->assertDatabaseCount('disciplines', 0);
