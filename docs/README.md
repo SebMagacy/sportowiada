@@ -6,6 +6,10 @@ Zacznij od [bieżącego kontekstu](00-kontekst-projektu.md). Starsze rozdziały 
 
 [Słownik pojęć](slownik-pojec.md)
 
+## Kierunek produktu
+
+- [44. Sportowiada — koncepcja produktu i kierunek projektowania](44-koncepcja-produktu-sportowiada.md) — firma Rogacki, produkt Sportowiada, witryna Sportsztyn oraz docelowe moduły i zasady współpracy organizacji. Koncepcja do wykorzystania przy przyszłym projektowaniu, nie opis wdrożonych funkcji.
+
 ## Spis treści
 
 1. [Przygotowanie projektu](01-przygotowanie-projektu.md)
