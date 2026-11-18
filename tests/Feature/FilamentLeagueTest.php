@@ -29,6 +29,39 @@ class FilamentLeagueTest extends TestCase
         Filament::setCurrentPanel('panel');
     }
 
+    public function test_empty_catalog_displays_guidance_for_creating_first_league(): void
+    {
+        $this->actingAs($this->createPanelAdministrator());
+        app()->setLocale('pl');
+
+        Livewire::test(ListLeagues::class)
+            ->assertOk()
+            ->assertSeeText('Nie utworzono jeszcze żadnej ligi.')
+            ->assertSeeText(
+                'Liga porządkuje rozgrywki w wybranej dyscyplinie sportu. Dodaj ją do katalogu, aby później tworzyć jej edycje w kolejnych sezonach.',
+            );
+    }
+
+    public function test_search_without_matches_does_not_display_empty_catalog_guidance(): void
+    {
+        $this->actingAs($this->createPanelAdministrator());
+        app()->setLocale('pl');
+        $league = League::factory()->create(['name' => 'Liga halowa']);
+
+        Livewire::test(ListLeagues::class)
+            ->assertOk()
+            ->assertCanSeeTableRecords([$league])
+            ->assertDontSeeText('Nie utworzono jeszcze żadnej ligi.')
+            ->searchTable('zzzzbrakdopasowania')
+            ->assertOk()
+            ->assertCanNotSeeTableRecords([$league])
+            ->assertDontSeeText('Nie utworzono jeszcze żadnej ligi.')
+            ->searchTable('')
+            ->assertOk()
+            ->assertCanSeeTableRecords([$league])
+            ->assertDontSeeText('Nie utworzono jeszcze żadnej ligi.');
+    }
+
     public function test_super_admin_can_create_league_without_description(): void
     {
         $this->actingAs($this->createPanelAdministrator());
@@ -129,7 +162,6 @@ class FilamentLeagueTest extends TestCase
             'description' => 'Opis testowy ligi futsalowej',
         ]);
         $this->assertDatabaseCount('leagues', 1);
-
     }
 
     public function test_edit_rejects_duplicate_after_changing_discipline(): void
@@ -243,8 +275,12 @@ class FilamentLeagueTest extends TestCase
             ->call('save')
             ->assertHasFormErrors($errors);
 
-        $this->assertDatabaseHas('leagues', ['id' => $league->id, 'name' => 'Oryginalna liga',
-            'discipline_id' => $league->discipline_id, 'description' => 'Oryginalny opis']);
+        $this->assertDatabaseHas('leagues', [
+            'id' => $league->id,
+            'name' => 'Oryginalna liga',
+            'discipline_id' => $league->discipline_id,
+            'description' => 'Oryginalny opis',
+        ]);
         $this->assertDatabaseCount('leagues', 1);
     }
 
@@ -260,8 +296,12 @@ class FilamentLeagueTest extends TestCase
             ->call('save')
             ->assertHasNoFormErrors();
 
-        $this->assertDatabaseHas('leagues', ['id' => $league->id, 'name' => $name,
-            'discipline_id' => $discipline->id, 'description' => null]);
+        $this->assertDatabaseHas('leagues', [
+            'id' => $league->id,
+            'name' => $name,
+            'discipline_id' => $discipline->id,
+            'description' => null,
+        ]);
         $this->assertDatabaseCount('leagues', 1);
     }
 
