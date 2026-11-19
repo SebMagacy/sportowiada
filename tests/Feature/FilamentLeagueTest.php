@@ -9,6 +9,7 @@ use App\Filament\Resources\Leagues\Pages\ListLeagues;
 use App\Models\Discipline;
 use App\Models\League;
 use App\Models\User;
+use Filament\Actions\Testing\TestAction;
 use Filament\Facades\Filament;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Illuminate\Support\Facades\Gate;
@@ -483,5 +484,25 @@ class FilamentLeagueTest extends TestCase
         Livewire::test(EditLeague::class, ['record' => $league->getRouteKey()])->assertForbidden();
         $this->assertModelExists($league);
         $this->assertDatabaseCount('leagues', 1);
+    }
+
+    public function test_bulk_delete_removes_only_selected_records(): void
+    {
+        $this->actingAs($this->createPanelAdministrator());
+        Filament::setCurrentPanel('panel');
+        $selected = League::factory()->count(2)->create();
+        $remaining = League::factory()->create();
+
+        Livewire::test(ListLeagues::class)
+            ->assertActionVisible('create')
+            ->assertActionVisible(TestAction::make('delete')->table()->bulk())
+            ->selectTableRecords($selected->modelKeys())
+            ->callAction(TestAction::make('delete')->table()->bulk())
+            ->assertHasNoErrors();
+
+        foreach ($selected as $record) {
+            $this->assertModelMissing($record);
+        }
+        $this->assertModelExists($remaining);
     }
 }

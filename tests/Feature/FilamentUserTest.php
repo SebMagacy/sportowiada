@@ -86,6 +86,8 @@ class FilamentUserTest extends TestCase
 
         Livewire::test(ListUsers::class)
             ->assertOk()
-            ->assertActionDoesNotExist('create');
+            ->assertActionDoesNotExist('create')
+            ->assertTableBulkActionDoesNotExist('delete')
+            ->assertDontSeeText('Działania');
     }
 }

@@ -306,4 +306,68 @@ class FilamentSeasonTest extends TestCase
     {
         $this->actingAs($this->createPanelAdministrator());
     }
+
+    public function test_read_only_user_cannot_invoke_bulk_deletion(): void
+    {
+        $user = User::factory()->create();
+        $user->assignRole(Role::findOrCreate('panel_user', 'web'));
+        $user->givePermissionTo(Permission::findOrCreate('ViewAny:Season', 'web'));
+        $this->actingAs($user);
+        Filament::setCurrentPanel('panel');
+        $record = Season::factory()->create();
+        $action = TestAction::make('delete')->table()->bulk();
+
+        Livewire::test(ListSeasons::class)
+            ->assertOk()
+            ->assertActionHidden($action)
+            ->selectTableRecords([$record->getKey()])
+            ->mountAction($action)
+            ->assertActionNotMounted();
+
+        $this->assertModelExists($record);
+    }
+
+    public function test_cancelling_bulk_delete_preserves_records_and_allows_retry(): void
+    {
+        $this->actingAs($this->createPanelAdministrator());
+        $record = Season::factory()->create();
+        $action = TestAction::make('delete')->table()->bulk();
+
+        $page = Livewire::test(ListSeasons::class)
+            ->selectTableRecords([$record->getKey()])
+            ->mountAction($action)
+            ->assertActionMounted($action);
+
+        $this->assertModelExists($record);
+        $page->call('unmountAction')->assertActionNotMounted();
+        $this->assertModelExists($record);
+
+        $page->mountAction($action)
+            ->assertActionMounted($action)
+            ->callMountedAction()
+            ->assertHasNoErrors();
+
+        $this->assertModelMissing($record);
+    }
+
+    public function test_user_with_bulk_delete_permissions_can_delete_selected_record(): void
+    {
+        $user = User::factory()->create();
+        $user->assignRole(Role::findOrCreate('panel_user', 'web'));
+        foreach (['ViewAny', 'DeleteAny', 'Delete'] as $permission) {
+            $user->givePermissionTo(Permission::findOrCreate($permission.':Season', 'web'));
+        }
+        $this->actingAs($user);
+        Filament::setCurrentPanel('panel');
+        $record = Season::factory()->create();
+
+        Livewire::test(ListSeasons::class)
+            ->assertActionHidden('create')
+            ->assertActionVisible(TestAction::make('delete')->table()->bulk())
+            ->selectTableRecords([$record->getKey()])
+            ->callAction(TestAction::make('delete')->table()->bulk())
+            ->assertHasNoErrors();
+
+        $this->assertModelMissing($record);
+    }
 }

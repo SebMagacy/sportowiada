@@ -324,6 +324,33 @@ Po bieżących testach użytkownik wykonał `vendor/bin/pint --dirty --format ag
 
 Użytkownik wykonał `vendor/bin/phpstan analyse --memory-limit=512M`: **34/34 pliki, [OK] No errors**. Asystent sprawdził `git diff --check` bez zgłoszonych problemów i odczytał zakres lokalnych zmian. Kontrole nie oznaczają zakończenia #34: odłożono pełną kontrolę responsywności, a #37/#38 pozostają osobnymi problemami. Nowy commit i publikacja tego kroku nie są jeszcze potwierdzone.
 
+## Commit paska akcji list
+
+Użytkownik potwierdził utworzenie **`cefefff` — „Wydziel pasek akcji list i przenieś menu działań zbiorczych”**, z odwołaniem `Refs #34`. Commit obejmuje 11 plików, 275 dodanych i 11 usuniętych linii, w tym nowe `CatalogBulkActionGroup.php` i `catalog-toolbar.blade.php`. Kontrola PHPStan w GrumPHP przeszła. Push tego commita pozostaje do potwierdzenia. Ten wpis dodano po commicie i będzie wymagał zapisania w kolejnym commicie dokumentacji.
+
+Jest to częściowe wykonanie #34; zgłoszenie pozostaje otwarte. Poprawki responsywności odłożono, a #37 i #38 nie zostały naprawione. Po publikacji tego kroku planowane jest przejście do #36 zgodnie z ustaleniem użytkownika.
+
+Po poleceniu push asystent sprawdził lokalny Git: `main` i `origin/main` wskazują `cefefff`, bez oznaczenia wyprzedzenia lub opóźnienia. Pozostał lokalny dopisek do tego rozdziału. Nie wykonywano dodatkowego odczytu zdalnego repozytorium. Zgodnie z ustaloną kolejnością rozpoczęto odczyt zgłoszenia #36 i dokumentacji własnego motywu Filamentu przez Vite; nie oznacza to zamknięcia #34.
+
+## Ponowna kontrola automatyczna pięciu list — 19.11.2026
+
+Po pracach nad motywem #36 użytkownik wrócił do weryfikacji paska akcji #34. Uruchomił `php artisan test --compact` dla plików `FilamentDisciplineTest.php`, `FilamentSeasonTest.php`, `FilamentLeagueTest.php`, `FilamentRoleTest.php` i `FilamentUserTest.php` w `tests/Feature`. Przekazany wynik: **94 testy przeszły, 605 asercji, 23,86 s**. Jest to wynik istniejących testów, a nie nowych przypadków paska ani automatycznej kontroli teleportowania w przeglądarce. Trwa przegląd brakującego pokrycia.
+
+### Uzupełnienie testów na zlecenie użytkownika
+
+Na wyraźne polecenie użytkownika asystent zmodyfikował pięć istniejących plików testów list, bez zmian kodu aplikacji ani zależności. Dodał 9 przypadków:
+
+- Dyscypliny, Sezony i Role: użytkownik z samym prawem przeglądania nie widzi usuwania zbiorczego i nie może otworzyć tej akcji przez Livewire; rekord pozostaje w bazie.
+- Te same trzy listy: użytkownik z uprawnieniami `ViewAny`, `DeleteAny` i `Delete`, bez roli `super_admin`, może usunąć zaznaczony rekord, a tworzenie pozostaje ukryte.
+- Ligi i Role: administrator usuwa tylko zaznaczone rekordy; niezaznaczony pozostaje. Analogiczne istniejące testy Dyscyplin i Sezonów zachowano.
+- Sezony: otwarcie potwierdzenia i anulowanie nie usuwa rekordu; ponowne otwarcie oraz zatwierdzenie usuwa rekord.
+
+Istniejący test Użytkowników rozszerzono o brak akcji zbiorczego usuwania i brak tekstu „Działania”. Istniejące przypadki widoczności tworzenia, pustych katalogów i odmowy dostępu do Lig zachowano. Testy korzystają z testowej bazy SQLite w pamięci.
+
+Pierwsze uruchomienie wykazało błąd przygotowania kolekcji w nowym teście ról; asystent poprawił go na kolekcję modeli Eloquent. Końcowe uruchomienie pięciu plików: **103 testy przeszły, 677 asercji, 25,507 s**. `vendor/bin/pint --dirty --format agent` zakończył się poprawnie, podobnie jak `vendor/bin/phpstan analyse --no-progress` (0 błędów) i `git diff --check`. PHPStan zgodnie z konfiguracją analizuje `app`, nie pliki testów.
+
+Test anulowania obejmuje stan i wykonanie akcji w Livewire, nie rzeczywistą widoczność menu przenoszonego przez Alpine `x-teleport`. Nie dodawano narzędzi testów przeglądarkowych. Dotychczasowe ręczne kontrole menu pozostają osobną podstawą potwierdzenia. Nie wykonano commita ani push tych testów.
+
 ## Dalsze uzgodnienia i granice
 
 Zatwierdzono przycisk tworzenia i menu „Działania” z istniejącymi operacjami zbiorczymi, blokadą bez zaznaczenia i ukrywaniem bez uprawnień. W pustym katalogu przycisk tworzenia pozostaje tylko w karcie pustego widoku. Do zakończenia pozostają kontrole pozostałych katalogów, uprawnień, klawiatury i małych ekranów oraz testy obecnego kroku. Dalsze funkcje i zestawy narzędzi wymagają osobnego uzgodnienia.

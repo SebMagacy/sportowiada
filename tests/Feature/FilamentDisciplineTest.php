@@ -374,4 +374,45 @@ class FilamentDisciplineTest extends TestCase
     {
         $this->actingAs($this->createPanelAdministrator());
     }
+
+    public function test_read_only_user_cannot_invoke_bulk_deletion(): void
+    {
+        $user = User::factory()->create();
+        $user->assignRole(Role::findOrCreate('panel_user', 'web'));
+        $user->givePermissionTo(Permission::findOrCreate('ViewAny:Discipline', 'web'));
+        $this->actingAs($user);
+        Filament::setCurrentPanel('panel');
+        $record = Discipline::factory()->create();
+        $action = TestAction::make('delete')->table()->bulk();
+
+        Livewire::test(ListDisciplines::class)
+            ->assertOk()
+            ->assertActionHidden($action)
+            ->selectTableRecords([$record->getKey()])
+            ->mountAction($action)
+            ->assertActionNotMounted();
+
+        $this->assertModelExists($record);
+    }
+
+    public function test_user_with_bulk_delete_permissions_can_delete_selected_record(): void
+    {
+        $user = User::factory()->create();
+        $user->assignRole(Role::findOrCreate('panel_user', 'web'));
+        foreach (['ViewAny', 'DeleteAny', 'Delete'] as $permission) {
+            $user->givePermissionTo(Permission::findOrCreate($permission.':Discipline', 'web'));
+        }
+        $this->actingAs($user);
+        Filament::setCurrentPanel('panel');
+        $record = Discipline::factory()->create();
+
+        Livewire::test(ListDisciplines::class)
+            ->assertActionHidden('create')
+            ->assertActionVisible(TestAction::make('delete')->table()->bulk())
+            ->selectTableRecords([$record->getKey()])
+            ->callAction(TestAction::make('delete')->table()->bulk())
+            ->assertHasNoErrors();
+
+        $this->assertModelMissing($record);
+    }
 }

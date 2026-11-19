@@ -7,7 +7,9 @@ use App\Filament\Resources\Roles\RoleResource;
 use App\Models\User;
 use BezhanSalleh\FilamentShield\Resources\Roles\Pages\CreateRole;
 use BezhanSalleh\FilamentShield\Resources\Roles\Pages\EditRole;
+use Filament\Actions\Testing\TestAction;
 use Filament\Facades\Filament;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Livewire\Livewire;
 use Spatie\Permission\Models\Permission;
@@ -158,5 +160,66 @@ class FilamentRoleTest extends TestCase
             ->assertHasNoErrors();
 
         $this->assertModelMissing($role);
+    }
+
+    public function test_read_only_user_cannot_invoke_bulk_deletion(): void
+    {
+        $user = User::factory()->create();
+        $user->assignRole(Role::findOrCreate('panel_user', 'web'));
+        $user->givePermissionTo(Permission::findOrCreate('ViewAny:Role', 'web'));
+        $this->actingAs($user);
+        Filament::setCurrentPanel('panel');
+        $record = Role::findOrCreate('editor', 'web');
+        $action = TestAction::make('delete')->table()->bulk();
+
+        Livewire::test(ListRoles::class)
+            ->assertOk()
+            ->assertActionHidden($action)
+            ->selectTableRecords([$record->getKey()])
+            ->mountAction($action)
+            ->assertActionNotMounted();
+
+        $this->assertModelExists($record);
+    }
+
+    public function test_bulk_delete_removes_only_selected_records(): void
+    {
+        $this->actingAs($this->createPanelAdministrator());
+        Filament::setCurrentPanel('panel');
+        $selected = new Collection([Role::findOrCreate('editor', 'web'), Role::findOrCreate('organizer', 'web')]);
+        $remaining = Role::findOrCreate('viewer', 'web');
+
+        Livewire::test(ListRoles::class)
+            ->assertActionVisible('create')
+            ->assertActionVisible(TestAction::make('delete')->table()->bulk())
+            ->selectTableRecords($selected->modelKeys())
+            ->callAction(TestAction::make('delete')->table()->bulk())
+            ->assertHasNoErrors();
+
+        foreach ($selected as $record) {
+            $this->assertModelMissing($record);
+        }
+        $this->assertModelExists($remaining);
+    }
+
+    public function test_user_with_bulk_delete_permissions_can_delete_selected_record(): void
+    {
+        $user = User::factory()->create();
+        $user->assignRole(Role::findOrCreate('panel_user', 'web'));
+        foreach (['ViewAny', 'DeleteAny', 'Delete'] as $permission) {
+            $user->givePermissionTo(Permission::findOrCreate($permission.':Role', 'web'));
+        }
+        $this->actingAs($user);
+        Filament::setCurrentPanel('panel');
+        $record = Role::findOrCreate('editor', 'web');
+
+        Livewire::test(ListRoles::class)
+            ->assertActionHidden('create')
+            ->assertActionVisible(TestAction::make('delete')->table()->bulk())
+            ->selectTableRecords([$record->getKey()])
+            ->callAction(TestAction::make('delete')->table()->bulk())
+            ->assertHasNoErrors();
+
+        $this->assertModelMissing($record);
     }
 }
