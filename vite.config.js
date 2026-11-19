@@ -10,6 +10,7 @@ export default defineConfig({
             input: [
                 'resources/css/app.css',
                 'resources/js/app.js',
+                'resources/css/filament/panel/theme.css',
             ],
             refresh: true,
             fonts: [

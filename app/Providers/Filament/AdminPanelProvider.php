@@ -30,6 +30,7 @@ class AdminPanelProvider extends PanelProvider
             ->default()
             ->id('panel')
             ->path('admin')
+            ->viteTheme('resources/css/filament/panel/theme.css')
             ->brandName('Rogacki')
             ->brandLogo(fn () => view('filament.brand'))
             ->brandLogoHeight('2rem')
