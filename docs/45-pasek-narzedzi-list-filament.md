@@ -294,6 +294,10 @@ Asystent potwierdził prawa pliku logu `0644`, właściciela i grupę `sebastian
 
 Na polecenie użytkownika asystent utworzył dwa osobne zgłoszenia: [#37 — brak prawa zapisu do logu](https://github.com/SebMagacy/sportowiada/issues/37) i [#38 — obsługa odmowy usuwania dyscypliny używanej przez ligi](https://github.com/SebMagacy/sportowiada/issues/38). GitHub potwierdził ich utworzenie. Odnośniki i informację o niedokończonej kontroli klawiatury dopisano także w komentarzu do #34. Nie publikowano cookies ani pełnego raportu wyjątku. Naprawy nie zostały wykonane.
 
+### Późniejsza naprawa uprawnień logu — #37 (19.11.2026)
+
+Według wyjaśnienia użytkownika problem wynikał z błędnego nadania uprawnień podczas tworzenia projektu. W terminalu potwierdzono procesy PHP-FPM działające jako `www-data`: konto miało dostęp do katalogu logów, ale nie mogło dopisywać do pliku `0644 sebastian:sebastian`. Użytkownik nadał plikowi ACL `u:www-data:rw` oraz katalogowi `storage/logs` domyślne ACL dla `www-data` i `sebastian`. Potwierdził wpisy `ERROR` przez Laravel z CLI i żądania WWW oraz wspólny zapis do nowych plików tworzonych przez oba konta. Zachowano istniejący log; tymczasową trasę i pliki testowe usunięto. Korekta dotyczy lokalnych uprawnień systemowych, których Git nie przechowuje. Obsługa odmowy usuwania dyscypliny (#38) pozostaje osobnym zadaniem.
+
 ### Klawiatura — działanie potwierdzone, fokus do wzmocnienia
 
 Użytkownik potwierdził poprawne działanie klawiatury. Zgłosił jednak mało wyraźne oznaczenie przycisku „Działania” po przejściu klawiaturą; fokus „Dodaj…” ocenił jako wystarczający. Następna korekta obejmuje wyłącznie widoczny fokus przycisku grupy akcji, bez zmiany przycisku tworzenia. Problemy #37 i #38 pozostają odrębnymi, nienaprawionymi zgłoszeniami.
