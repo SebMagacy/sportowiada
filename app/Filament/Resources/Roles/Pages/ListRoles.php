@@ -7,6 +7,7 @@ use BezhanSalleh\FilamentShield\Resources\Roles\Pages\ListRoles as ShieldListRol
 use Filament\Actions\CreateAction;
 use Filament\Schemas\Components\View;
 use Filament\Schemas\Schema;
+use Illuminate\Contracts\View\View as BladeView;
 
 class ListRoles extends ShieldListRoles
 {
@@ -40,5 +41,10 @@ class ListRoles extends ShieldListRoles
                 ->label(__('roles.create_title'))
                 ->hidden(fn (): bool => $this->isCatalogEmpty()),
         ];
+    }
+
+    public function getHeader(): BladeView
+    {
+        return view('filament.catalog-header');
     }
 }

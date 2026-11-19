@@ -57,3 +57,4 @@ Zacznij od [bieżącego kontekstu](00-kontekst-projektu.md). Starsze rozdziały 
 - [39. Przypisywanie ról użytkownikom — mechanizm formularza](39-przypisywanie-rol-uzytkownikom.md)
 
 - [40. Usunięcie legacy-admin i przejście na role](40-usuniecie-legacy-admin.md)
+- [45. Pasek narzędzi i nagłówek list Filament — issue #34](45-pasek-narzedzi-list-filament.md)

@@ -1,3 +1,59 @@
 .discipline-icon-upload .filepond--image-preview {
     background: #f3f4f6;
 }
+
+@media (width < 64rem) {
+    .fi-topbar-open-sidebar-btn,
+    .fi-topbar-close-sidebar-btn {
+        order: -1;
+    }
+}
+
+.rogacki-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.125rem;
+    font-size: 1.5rem;
+    line-height: 1;
+    white-space: nowrap;
+}
+
+.rogacki-brand > img {
+    width: 2.5rem;
+    min-width: 2.5rem;
+    max-width: none;
+    height: 2.5rem;
+    object-fit: contain;
+    flex-shrink: 0;
+    margin-inline-end: -0.5rem;
+}
+
+@media (min-width: 64rem) {
+    .fi-topbar:has(#catalog-page-heading > h1) .fi-topbar-start {
+        order: -1;
+        flex: 0 0 calc(var(--sidebar-width) + 1rem);
+        margin-inline-end: 0;
+    }
+
+    .fi-body:has(.fi-sidebar:not(.fi-sidebar-open))
+        .fi-topbar:has(#catalog-page-heading > h1)
+        .fi-topbar-start {
+        flex-basis: calc(var(--sidebar-collapsed-width) + 1rem);
+    }
+}
+
+.fi-topbar .fi-topbar-start .fi-logo {
+    order: -1;
+    margin-inline-start: 0;
+}
+
+#catalog-page-heading > h1 {
+    font-size: 1.5rem;
+    line-height: 1.25;
+}
+
+@media (width < 64rem) {
+    #catalog-page-heading > h1 {
+        font-size: 1.25rem;
+    }
+}

@@ -7,6 +7,7 @@ use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
 use Filament\Schemas\Components\View;
 use Filament\Schemas\Schema;
+use Illuminate\Contracts\View\View as BladeView;
 
 class ListLeagues extends ListRecords
 {
@@ -40,5 +41,10 @@ class ListLeagues extends ListRecords
                 ->label(__('leagues.create'))
                 ->hidden(fn (): bool => $this->isCatalogEmpty()),
         ];
+    }
+
+    public function getHeader(): BladeView
+    {
+        return view('filament.catalog-header');
     }
 }

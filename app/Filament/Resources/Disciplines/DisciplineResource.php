@@ -26,7 +26,7 @@ class DisciplineResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = 'sportowiada-disciplines';
 
-    protected static string|UnitEnum|null $navigationGroup = 'Sport';
+    protected static string|UnitEnum|null $navigationGroup = 'Sportowiada';
 
     protected static ?string $recordTitleAttribute = 'name';
 

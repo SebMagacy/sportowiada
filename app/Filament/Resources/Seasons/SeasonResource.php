@@ -24,7 +24,7 @@ class SeasonResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedCalendarDays;
 
-    protected static string|UnitEnum|null $navigationGroup = 'Sport';
+    protected static string|UnitEnum|null $navigationGroup = 'Sportowiada';
 
     protected static ?string $recordTitleAttribute = 'name';
 

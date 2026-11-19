@@ -7,6 +7,7 @@ use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
 use Filament\Schemas\Components\View;
 use Filament\Schemas\Schema;
+use Illuminate\Contracts\View\View as BladeView;
 
 class ListDisciplines extends ListRecords
 {
@@ -40,5 +41,10 @@ class ListDisciplines extends ListRecords
                 ->label(__('disciplines.create_title'))
                 ->hidden(fn (): bool => $this->isCatalogEmpty()),
         ];
+    }
+
+    public function getHeader(): BladeView
+    {
+        return view('filament.catalog-header');
     }
 }
