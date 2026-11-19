@@ -2,12 +2,12 @@
 
 namespace App\Filament\Resources\Disciplines;
 
+use App\Filament\Actions\CatalogBulkActionGroup;
 use App\Filament\Resources\Disciplines\Pages\CreateDiscipline;
 use App\Filament\Resources\Disciplines\Pages\EditDiscipline;
 use App\Filament\Resources\Disciplines\Pages\ListDisciplines;
 use App\Models\Discipline;
 use BackedEnum;
-use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Forms\Components\RichEditor;
@@ -113,7 +113,7 @@ class DisciplineResource extends Resource
                 EditAction::make(),
             ])
             ->toolbarActions([
-                BulkActionGroup::make([
+                CatalogBulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),
             ]);

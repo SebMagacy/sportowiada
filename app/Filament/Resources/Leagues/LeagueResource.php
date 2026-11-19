@@ -2,12 +2,12 @@
 
 namespace App\Filament\Resources\Leagues;
 
+use App\Filament\Actions\CatalogBulkActionGroup;
 use App\Filament\Resources\Leagues\Pages\CreateLeague;
 use App\Filament\Resources\Leagues\Pages\EditLeague;
 use App\Filament\Resources\Leagues\Pages\ListLeagues;
 use App\Models\League;
 use BackedEnum;
-use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Forms\Components\Select;
@@ -86,7 +86,7 @@ class LeagueResource extends Resource
                 EditAction::make(),
             ])
             ->toolbarActions([
-                BulkActionGroup::make([
+                CatalogBulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),
             ]);

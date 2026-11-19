@@ -57,3 +57,40 @@
         font-size: 1.25rem;
     }
 }
+
+.catalog-page-header {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.fi-page:has(.catalog-page-header) > .fi-page-header-main-ctn {
+    padding-block-start: 1rem;
+    row-gap: 1rem;
+}
+
+.catalog-toolbar {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.catalog-toolbar:not(:has(.fi-ac, .fi-dropdown)) {
+    display: none;
+}
+
+.catalog-toolbar .fi-ac-btn-group:disabled {
+    opacity: 0.3;
+    filter: grayscale(1);
+    cursor: not-allowed;
+}
+
+.catalog-toolbar .fi-ac-btn-group:not(:disabled) {
+    opacity: 1;
+}
+
+.catalog-toolbar .fi-btn:focus-visible {
+    outline: none;
+    --tw-ring-color: var(--color-primary-600);
+}

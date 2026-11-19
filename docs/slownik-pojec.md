@@ -76,6 +76,26 @@ Przebieg tworzenia opisują [[06-trasa-i-widok-strony-glownej]] i [[07-javascrip
 >
 > Pulpit jest jedną ze stron panelu administratora. Lista użytkowników to osobna strona tego samego panelu, a strona główna witryny publicznej pod `/` należy do innej części aplikacji.
 
+## Definicje elementów widoku
+
+Poniższe nazwy uzgodniono z użytkownikiem do stosowania w rozmowach, dokumentacji i zgłoszeniach. Definiują elementy układu, a nie potwierdzają wdrożenia wszystkich opisanych funkcji.
+
+| Element | Znaczenie |
+| --- | --- |
+| **Pasek górny** | Marka Rogacki, tytuł strony, wyszukiwanie globalne i konto użytkownika. |
+| **Menu boczne** | Nawigacja do Panelu, Użytkowników, katalogów sportowych i Ról, zgodnie z uprawnieniami. |
+| **Tytuł strony** | Sam napis określający bieżącą stronę, np. „Role”, umieszczony w pasku górnym. |
+| **Okruszki** | Ścieżka bieżącej strony, np. „Role → Lista”. |
+| **Pasek akcji listy** | Osobny pasek pod okruszkami i nad listą: dostępny przycisk „Dodaj…” oraz menu „Działania” z istniejącymi operacjami zbiorczymi. Przeniesienie menu „Działania” jest uzgodnionym wymaganiem do realizacji w #34. |
+| **Pasek wyszukiwania i filtrów** | Wyszukiwanie w bieżącej liście, filtry i inne uzgodnione narzędzia właściwe dla tej listy. Jest odrębny od wyszukiwania globalnego w pasku górnym. |
+| **Tabela** | Nagłówki kolumn, zaznaczanie rekordów tam, gdzie dostępne, wiersze danych i akcje przy rekordach. |
+| **Stopka listy** | Informacja o liczbie wyników, wybór liczby rekordów na stronę i paginacja, stosownie do uzgodnionego zakresu listy. |
+| **Widok pustego katalogu** | Zastępuje listę, gdy katalog nie ma rekordów; zawiera opis i dostępny przycisk dodawania. Brak dopasowań po wyszukiwaniu lub filtrowaniu pozostaje stanem tabeli, a nie pustym katalogiem. |
+
+Unikamy ogólnego określenia „nagłówek”, gdy mogłoby oznaczać pasek górny, tytuł strony albo nagłówki kolumn. Wskazujemy konkretny element. Nazwa „pasek narzędzi” lub „toolbar” w dotychczasowych zapisach tego etapu oznacza pasek akcji listy, jeśli kontekst dotyczy przycisku tworzenia i menu „Działania”.
+
+Definicje nie wymagają identycznych funkcji we wszystkich katalogach. W szczególności lista użytkowników nie otrzymuje tworzenia kont ani nowych operacji zbiorczych. W pustym katalogu przycisk dodawania pozostaje wyłącznie w karcie pustego widoku.
+
 ## Rekordy i ich widoki
 
 ### Lista rekordów

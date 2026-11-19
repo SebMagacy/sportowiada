@@ -2,12 +2,12 @@
 
 namespace App\Filament\Resources\Seasons;
 
+use App\Filament\Actions\CatalogBulkActionGroup;
 use App\Filament\Resources\Seasons\Pages\CreateSeason;
 use App\Filament\Resources\Seasons\Pages\EditSeason;
 use App\Filament\Resources\Seasons\Pages\ListSeasons;
 use App\Models\Season;
 use BackedEnum;
-use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Forms\Components\TextInput;
@@ -68,7 +68,7 @@ class SeasonResource extends Resource
                 EditAction::make(),
             ])
             ->toolbarActions([
-                BulkActionGroup::make([
+                CatalogBulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),
             ]);
