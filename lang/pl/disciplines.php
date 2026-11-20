@@ -15,4 +15,8 @@ return [
         'heading' => 'Nie utworzono jeszcze żadnej dyscypliny.',
         'description' => 'Dyscyplina określa rodzaj sportu, do którego należą ligi. Dodaj pierwszą dyscyplinę, aby rozpocząć tworzenie katalogu sportowego.',
     ],
+    'delete_blocked_title' => 'Nie można usunąć dyscypliny',
+    'delete_blocked_body' => 'Dyscyplina jest używana przez ligi.',
+    'bulk_delete_blocked_title' => 'Nie można usunąć zaznaczonych dyscyplin',
+    'bulk_delete_blocked_body' => 'Co najmniej jedna zaznaczona dyscyplina jest używana przez ligi. Nie usunięto żadnej dyscypliny.',
 ];

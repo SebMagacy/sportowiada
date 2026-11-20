@@ -2,6 +2,8 @@
 
 namespace App\Filament\Resources\Disciplines;
 
+use App\Actions\DeleteDisciplines;
+use App\Exceptions\DisciplineHasLeaguesException;
 use App\Filament\Actions\CatalogBulkActionGroup;
 use App\Filament\Resources\Disciplines\Pages\CreateDiscipline;
 use App\Filament\Resources\Disciplines\Pages\EditDiscipline;
@@ -13,11 +15,13 @@ use Filament\Actions\EditAction;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Filament\Forms\Components\TextInput;
+use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Tables\Columns\SpatieMediaLibraryImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Collection;
 use UnitEnum;
 
 class DisciplineResource extends Resource
@@ -114,7 +118,30 @@ class DisciplineResource extends Resource
             ])
             ->toolbarActions([
                 CatalogBulkActionGroup::make([
-                    DeleteBulkAction::make(),
+                    DeleteBulkAction::make()
+                        ->using(function (
+                            DeleteBulkAction $action,
+                            Collection $records,
+                            DeleteDisciplines $deleteDisciplines,
+                        ): void {
+                            try {
+                                $deletedCount = $deleteDisciplines->handle(
+                                    $records->modelKeys(),
+                                );
+
+                                $action->reportBulkProcessingSuccessfulRecordsCount(
+                                    $deletedCount,
+                                );
+                            } catch (DisciplineHasLeaguesException) {
+                                Notification::make()
+                                    ->title(__('disciplines.bulk_delete_blocked_title'))
+                                    ->body(__('disciplines.bulk_delete_blocked_body'))
+                                    ->danger()
+                                    ->send();
+
+                                $action->halt();
+                            }
+                        }),
                 ]),
             ]);
     }

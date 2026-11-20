@@ -7,13 +7,18 @@ use App\Filament\Resources\Disciplines\Pages\CreateDiscipline;
 use App\Filament\Resources\Disciplines\Pages\EditDiscipline;
 use App\Filament\Resources\Disciplines\Pages\ListDisciplines;
 use App\Models\Discipline;
+use App\Models\League;
 use App\Models\User;
 use Filament\Actions\Testing\TestAction;
 use Filament\Facades\Filament;
+use Filament\Notifications\Notification;
+use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Livewire;
+use PDOException;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
@@ -414,5 +419,183 @@ class FilamentDisciplineTest extends TestCase
             ->assertHasNoErrors();
 
         $this->assertModelMissing($record);
+    }
+
+    public function test_delete_preserves_discipline_with_league_and_media(): void
+    {
+        $disk = Storage::fake('public');
+        $this->signInAdmin();
+        app()->setLocale('pl');
+
+        $discipline = Discipline::factory()->create();
+        $league = League::factory()->for($discipline)->create();
+        $media = $discipline
+            ->addMedia(UploadedFile::fake()->image('icon.png'))
+            ->toMediaCollection('icon', 'public');
+        $path = $media->getPathRelativeToRoot();
+
+        Livewire::test(EditDiscipline::class, [
+            'record' => $discipline->getRouteKey(),
+        ])
+            ->callAction('delete')
+            ->assertHasNoErrors()
+            ->assertNotified(
+                Notification::make()
+                    ->title('Nie można usunąć dyscypliny')
+                    ->body('Dyscyplina jest używana przez ligi.')
+                    ->danger(),
+            );
+
+        $this->assertModelExists($discipline);
+        $this->assertModelExists($league);
+        $this->assertModelExists($media);
+        $disk->assertExists($path);
+    }
+
+    /** @return array<string, array{string, string, string}> */
+    public static function deletionMessages(): array
+    {
+        return [
+            'Polish' => ['pl', 'Nie można usunąć zaznaczonych dyscyplin', 'Co najmniej jedna zaznaczona dyscyplina jest używana przez ligi. Nie usunięto żadnej dyscypliny.'],
+            'English' => ['en', 'Cannot delete selected disciplines', 'At least one selected discipline is used by leagues. No disciplines were deleted.'],
+        ];
+    }
+
+    #[DataProvider('deletionMessages')]
+    public function test_bulk_delete_preserves_mixed_selection_and_media(
+        string $locale,
+        string $bulkTitle,
+        string $bulkBody,
+    ): void {
+        $disk = Storage::fake('public');
+        $this->signInAdmin();
+        app()->setLocale($locale);
+        $unlinked = Discipline::factory()->create();
+        $linked = Discipline::factory()->create();
+        $league = League::factory()->for($linked)->create();
+        $unlinkedMedia = $unlinked->addMedia(UploadedFile::fake()->image('unlinked.png'))->toMediaCollection('icon', 'public');
+        $linkedMedia = $linked->addMedia(UploadedFile::fake()->image('linked.png'))->toMediaCollection('icon', 'public');
+
+        Livewire::test(ListDisciplines::class)
+            ->selectTableRecords([$unlinked->id, $linked->id])
+            ->callAction(TestAction::make('delete')->table()->bulk())
+            ->assertHasNoErrors()
+            ->assertNotified(Notification::make()->title($bulkTitle)->body($bulkBody)->danger())
+            ->assertNotNotified(__('filament-actions::delete.multiple.notifications.deleted.title'));
+
+        $this->assertModelExists($unlinked);
+        $this->assertModelExists($linked);
+        $this->assertModelExists($league);
+        $this->assertModelExists($unlinkedMedia);
+        $this->assertModelExists($linkedMedia);
+        $disk->assertExists($unlinkedMedia->getPathRelativeToRoot());
+        $disk->assertExists($linkedMedia->getPathRelativeToRoot());
+    }
+
+    public function test_single_delete_displays_english_refusal_without_success_notification(): void
+    {
+        $this->signInAdmin();
+        app()->setLocale('en');
+        $discipline = Discipline::factory()->create();
+        $league = League::factory()->for($discipline)->create();
+
+        Livewire::test(EditDiscipline::class, ['record' => $discipline->getRouteKey()])
+            ->callAction('delete')
+            ->assertHasNoErrors()
+            ->assertNotified(Notification::make()->title('Cannot delete discipline')->body('The discipline is used by leagues.')->danger())
+            ->assertNotNotified(__('filament-actions::delete.single.notifications.deleted.title'));
+
+        $this->assertModelExists($discipline);
+        $this->assertModelExists($league);
+    }
+
+    public function test_user_with_edit_permission_cannot_invoke_single_deletion_without_delete_permission(): void
+    {
+        $user = User::factory()->create();
+        $user->assignRole(Role::findOrCreate('panel_user', 'web'));
+        foreach (['ViewAny', 'Update'] as $permission) {
+            $user->givePermissionTo(Permission::findOrCreate($permission.':Discipline', 'web'));
+        }
+        $this->actingAs($user);
+        $discipline = Discipline::factory()->create();
+
+        Livewire::test(EditDiscipline::class, ['record' => $discipline->getRouteKey()])
+            ->assertOk()
+            ->assertActionHidden('delete')
+            ->mountAction('delete')
+            ->assertActionNotMounted();
+
+        $this->assertModelExists($discipline);
+    }
+
+    public function test_bulk_delete_requires_individual_delete_permission_before_removing_any_record(): void
+    {
+        $user = User::factory()->create();
+        $user->assignRole(Role::findOrCreate('panel_user', 'web'));
+        foreach (['ViewAny', 'DeleteAny'] as $permission) {
+            $user->givePermissionTo(Permission::findOrCreate($permission.':Discipline', 'web'));
+        }
+        $this->actingAs($user);
+        $disciplines = Discipline::factory()->count(2)->create();
+
+        Livewire::test(ListDisciplines::class)
+            ->selectTableRecords($disciplines->modelKeys())
+            ->callAction(TestAction::make('delete')->table()->bulk())
+            ->assertForbidden();
+
+        foreach ($disciplines as $discipline) {
+            $this->assertModelExists($discipline);
+        }
+    }
+
+    public function test_bulk_delete_removes_unlinked_media_and_reports_success(): void
+    {
+        $disk = Storage::fake('public');
+        $this->signInAdmin();
+        $discipline = Discipline::factory()->create();
+        $media = $discipline->addMedia(UploadedFile::fake()->image('icon.png'))->toMediaCollection('icon', 'public');
+        $path = $media->getPathRelativeToRoot();
+
+        Livewire::test(ListDisciplines::class)
+            ->selectTableRecords([$discipline->id])
+            ->callAction(TestAction::make('delete')->table()->bulk())
+            ->assertHasNoErrors()
+            ->assertNotified(__('filament-actions::delete.multiple.notifications.deleted.title'));
+
+        $this->assertModelMissing($discipline);
+        $this->assertModelMissing($media);
+        $disk->assertMissing($path);
+    }
+
+    /** @return array<string, array{bool}> */
+    public static function deletionPaths(): array
+    {
+        return ['single' => [false], 'bulk' => [true]];
+    }
+
+    #[DataProvider('deletionPaths')]
+    public function test_unrelated_database_failure_is_not_replaced_with_league_refusal(bool $bulk): void
+    {
+        $this->signInAdmin();
+        $discipline = Discipline::factory()->create();
+        $page = $bulk
+            ? Livewire::test(ListDisciplines::class)->selectTableRecords([$discipline->id])
+            : Livewire::test(EditDiscipline::class, ['record' => $discipline->getRouteKey()]);
+        $failure = new QueryException('sqlite', 'delete from disciplines', [], new PDOException('Unrelated database failure'));
+        DB::connection()->beforeExecuting(function (string $query) use ($failure): void {
+            if (str_starts_with($query, 'delete from "disciplines"')) {
+                throw $failure;
+            }
+        });
+
+        try {
+            $page->callAction($bulk ? TestAction::make('delete')->table()->bulk() : 'delete');
+            $this->fail('The database failure must propagate.');
+        } catch (QueryException $exception) {
+            $this->assertSame($failure, $exception);
+        }
+
+        $this->assertModelExists($discipline);
+        Notification::assertNotNotified();
     }
 }
