@@ -60,3 +60,4 @@ Zacznij od [bieżącego kontekstu](00-kontekst-projektu.md). Starsze rozdziały 
 - [45. Pasek narzędzi i nagłówek list Filament — issue #34](45-pasek-narzedzi-list-filament.md)
 - [46. Motyw panelu Filament przez Vite — issue #36](46-motyw-panelu-filament-przez-vite.md)
 - [47. Ochrona usuwania dyscyplin powiązanych z ligami — issue #38](47-ochrona-usuwania-dyscyplin.md)
+- [48. Logowanie do panelu Filament — issue #47](48-logowanie-do-panelu-filament.md)
