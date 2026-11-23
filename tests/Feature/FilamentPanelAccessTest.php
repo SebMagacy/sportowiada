@@ -58,7 +58,9 @@ class FilamentPanelAccessTest extends TestCase
     public function test_guest_can_open_login_form(): void
     {
         $this->get(route('filament.panel.auth.login'))
-            ->assertOk()->assertSeeLivewire(Login::class);
+            ->assertOk()->assertSeeLivewire(Login::class)
+            ->assertSee('href="'.route('register').'"', false)
+            ->assertSeeText('Zarejestruj się');
     }
 
     public function test_admin_can_log_in_with_valid_credentials(): void
