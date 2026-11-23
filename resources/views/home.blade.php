@@ -8,6 +8,6 @@
 </head>
 <body>
     <div id="app"></div>
-    <a href="{{ route('login') }}">Zaloguj się</a>
+    <a href="{{ route('filament.panel.auth.login') }}">Zaloguj się</a>
 </body>
 </html>

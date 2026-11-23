@@ -2,8 +2,8 @@
 
 namespace Tests\Feature;
 
+use App\Filament\Pages\Login;
 use App\Models\User;
-use Filament\Auth\Pages\Login;
 use Filament\Facades\Filament;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Livewire\Livewire;
@@ -78,7 +78,7 @@ class FilamentPanelAccessTest extends TestCase
         $this->assertAuthenticatedAs($user);
     }
 
-    public function test_regular_user_cannot_log_in_with_valid_credentials(): void
+    public function test_regular_user_can_log_in_and_is_redirected_to_home(): void
     {
         $user = User::factory()->create();
         Filament::setCurrentPanel('panel');
@@ -87,11 +87,10 @@ class FilamentPanelAccessTest extends TestCase
             ->set('data.email', $user->email)
             ->set('data.password', 'password')
             ->call('authenticate')
-            ->assertHasErrors(['data.email'])
-            ->assertSeeText(__('filament-panels::auth/pages/login.messages.failed'))
-            ->assertNoRedirect();
+            ->assertHasNoErrors()
+            ->assertRedirect('/');
 
-        $this->assertGuest();
+        $this->assertAuthenticatedAs($user);
     }
 
     public function test_admin_cannot_log_in_with_wrong_password(): void

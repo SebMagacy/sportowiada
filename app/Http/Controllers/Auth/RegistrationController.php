@@ -19,6 +19,6 @@ class RegistrationController extends Controller
 
         User::create($validated);
 
-        return redirect()->route('login');
+        return redirect()->route('filament.panel.auth.login');
     }
 }

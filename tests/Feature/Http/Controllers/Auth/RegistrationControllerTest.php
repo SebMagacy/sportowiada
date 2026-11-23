@@ -31,7 +31,7 @@ class RegistrationControllerTest extends TestCase
         $payload['roles'] = ['super_admin'];
         $payload['permissions'] = ['Update:User'];
 
-        $this->post(route('register.store'), $payload)->assertRedirect(route('login'))->assertSessionHasNoErrors();
+        $this->post(route('register.store'), $payload)->assertRedirect(route('filament.panel.auth.login'))->assertSessionHasNoErrors();
 
         $this->assertDatabaseCount('users', 1);
         $user = User::where('email', $payload['email'])->sole();
@@ -109,7 +109,7 @@ class RegistrationControllerTest extends TestCase
         $payload['name'] = str_repeat('a', 255);
         $payload['password'] = $payload['password_confirmation'] = '12345678';
 
-        $this->post(route('register.store'), $payload)->assertRedirect(route('login'))->assertSessionHasNoErrors();
+        $this->post(route('register.store'), $payload)->assertRedirect(route('filament.panel.auth.login'))->assertSessionHasNoErrors();
 
         $this->assertDatabaseHas('users', ['name' => $payload['name'], 'email' => $payload['email']]);
     }

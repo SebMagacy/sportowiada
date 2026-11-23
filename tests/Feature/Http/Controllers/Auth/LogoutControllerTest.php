@@ -35,7 +35,7 @@ class LogoutControllerTest extends TestCase
      */
     public function test_guest_cannot_execute_logout(): void
     {
-        $this->post(route('logout'))->assertRedirect(route('login'));
+        $this->post(route('logout'))->assertRedirect(route('filament.panel.auth.login'));
         $this->assertGuest();
     }
 
