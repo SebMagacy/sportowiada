@@ -177,7 +177,7 @@ class FilamentDisciplineTest extends TestCase
     {
         $disk = Storage::fake('public');
         $this->signInAdmin();
-        $description = "Zażółć gęślą jaźń.\nDrugi wiersz.";
+        $description = '<p>Zażółć gęślą jaźń.</p><p>Drugi wiersz.</p>';
 
         Livewire::test(CreateDiscipline::class)
             ->fillForm([
