@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Pages;
 use App\Filament\Pages\Dashboard;
 use App\Filament\Pages\Login;
 use App\Filament\Pages\Register;
@@ -44,7 +45,7 @@ class AdminPanelProvider extends PanelProvider
             )
             ->login(Login::class)
             ->registration(Register::class)
-            ->passwordReset()
+            ->passwordReset(Pages\RequestPasswordReset::class, Pages\ResetPassword::class)
             ->sidebarCollapsibleOnDesktop()
             ->sidebarWidth('15rem')
             ->colors([

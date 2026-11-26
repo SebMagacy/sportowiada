@@ -61,3 +61,4 @@ Zacznij od [bieżącego kontekstu](00-kontekst-projektu.md). Starsze rozdziały 
 - [46. Motyw panelu Filament przez Vite — issue #36](46-motyw-panelu-filament-przez-vite.md)
 - [47. Ochrona usuwania dyscyplin powiązanych z ligami — issue #38](47-ochrona-usuwania-dyscyplin.md)
 - [48. Logowanie do panelu Filament — issue #47](48-logowanie-do-panelu-filament.md)
+- [49. Reset hasła użytkownika witryny — issue #49](49-reset-hasla-uzytkownika-witryny.md)
