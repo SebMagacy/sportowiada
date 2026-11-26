@@ -394,3 +394,9 @@ Odczyt lokalnego Git wykazał commit `d933a33` — „Popraw wyrównanie nagłó
 ### Miganie sidebara przy odświeżeniu — diagnostyka
 
 Użytkownik zgłosił, że zapamiętany zwinięty sidebar przy odświeżeniu chwilowo się rozwija i ponownie zwija. Na przesłanym zrzucie Local Storage asystent odczytał `false` zarówno dla `filament:sidebar:open`, jak i `filament:sidebar:desktop_open`. Stan zapisany w przeglądarce jest więc spójny; odczyt po załadowaniu nie ustala kolejności renderowania podczas startu. Zainstalowany Filament odtwarza te ustawienia przez Alpine Persist i stosuje `x-cloak` na sidebarze. Przyczyna błysku nie została jeszcze potwierdzona i nie zapisano poprawki. Próba samodzielnej obserwacji Firefoksa przez asystenta została zablokowana przez narzędzie obsługi przeglądarki; podstawą opisu objawu jest relacja użytkownika.
+
+### Ukrycie napisu logo do inicjalizacji Alpine
+
+Użytkownik doprecyzował, że przy odświeżeniu na chwilę pojawia się napis „ogacki”. W `resources/views/filament/brand.blade.php` dodał `x-cloak` do elementu `span` z tym napisem i istniejącym `x-show="$store.sidebar?.isOpen ?? true"`. Asystent potwierdził zapis. Styl `x-cloak` dostarczany przez Filament ukrywa napis do inicjalizacji Alpine, po której widoczność kontroluje stan sidebara. Nie dodano własnego skryptu ani nowych reguł CSS.
+
+Po zmianie użytkownik ocenił, że problem wygląda na rozwiązany. Jest to wstępne potwierdzenie ręczne dotyczące błysku napisu logo, bez niezależnej obserwacji przeglądarkowej asystenta i bez pełnej kontroli wszystkich stanów menu. Nie jest to dowód osobnej usterki ani naprawy szerokości samego sidebara. Nie dodawano testów automatycznych dla tej korekty wizualnej.

@@ -9,6 +9,7 @@
     @unless (\Livewire\Livewire::current() instanceof \Filament\Pages\SimplePage)
         <span
             aria-hidden="true"
+            x-cloak
             x-show="$store.sidebar?.isOpen ?? true"
         >ogacki</span>
     @endunless

@@ -1,7 +1,9 @@
+/* Jasne tło podglądu zapewnia czytelność przezroczystych ikon dyscyplin. */
 .discipline-icon-upload .filepond--image-preview {
     background: #f3f4f6;
 }
 
+/* Na mniejszych ekranach przycisk menu poprzedza tytuł strony. */
 @media (width < 64rem) {
 
     .fi-topbar-open-sidebar-btn,
@@ -10,6 +12,7 @@
     }
 }
 
+/* Monogram i napis tworzą jedną linię; widocznością napisu steruje Alpine. */
 .rogacki-brand {
     display: inline-flex;
     align-items: center;
@@ -19,6 +22,7 @@
     white-space: nowrap;
 }
 
+/* Stały rozmiar monogramu i zbliżenie napisu do grafiki. */
 .rogacki-brand>img {
     width: 2.5rem;
     min-width: 2.5rem;
@@ -30,23 +34,32 @@
 }
 
 @media (min-width: 64rem) {
+    /* Rezerwacja miejsca na markę przed tytułem przeniesionym do topbara.
+       Dla rozwiniętego menu nie uwzględnia centrowania treści na szerokich oknach. */
     .fi-topbar:has(#catalog-page-heading > h1) .fi-topbar-start {
         order: -1;
         flex: 0 0 calc(var(--sidebar-width) + 1rem);
         margin-inline-end: 0;
     }
 
+    /* Przy zwiniętym menu tytuł uwzględnia wyśrodkowanie głównej treści.
+       80rem to obecna maksymalna szerokość treści Filamentu: po jej zmianie
+       trzeba dostosować tę wartość. 100% obejmuje wnętrze topbara, więc 2rem
+       przywraca jego boczne odstępy do obliczenia szerokości całego układu.
+       max(0px, ...) usuwa dodatkowy odstęp, gdy treść wypełnia dostępne miejsce. */
     .fi-body:has(.fi-sidebar:not(.fi-sidebar-open)) .fi-topbar:has(#catalog-page-heading > h1) .fi-topbar-start {
         flex-basis: calc(var(--sidebar-collapsed-width) + 1rem + max(0px,
                     (100% + 2rem - var(--sidebar-collapsed-width) - 80rem) / 2));
     }
 }
 
+/* Logo poprzedza przycisk zwijania bez domyślnego odsunięcia Filamentu. */
 .fi-topbar .fi-topbar-start .fi-logo {
     order: -1;
     margin-inline-start: 0;
 }
 
+/* Rozmiar tytułu w topbarze, z mniejszym wariantem poniżej progu desktopowego. */
 #catalog-page-heading>h1 {
     font-size: 1.5rem;
     line-height: 1.25;
@@ -58,17 +71,20 @@
     }
 }
 
+/* Okruszki i akcje pozostają w treści po przeniesieniu tytułu do topbara. */
 .catalog-page-header {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
 }
 
+/* Mniejsze odstępy tylko na stronach korzystających ze wspólnego nagłówka. */
 .fi-page:has(.catalog-page-header)>.fi-page-header-main-ctn {
     padding-block-start: 1rem;
     row-gap: 1rem;
 }
 
+/* Akcje mogą przejść do kolejnego wiersza, gdy brakuje szerokości. */
 .catalog-toolbar {
     display: flex;
     align-items: center;
@@ -76,10 +92,12 @@
     gap: 0.5rem;
 }
 
+/* Pusty pasek nie pozostawia dodatkowej przestrzeni nad listą. */
 .catalog-toolbar:not(:has(.fi-ac, .fi-dropdown)) {
     display: none;
 }
 
+/* Wyraźne rozróżnienie dostępnych i zablokowanych operacji zbiorczych. */
 .catalog-toolbar .fi-ac-btn-group:disabled {
     opacity: 0.3;
     filter: grayscale(1);
@@ -90,6 +108,7 @@
     opacity: 1;
 }
 
+/* Fokus klawiatury korzysta z pierścienia Filamentu w kolorze motywu. */
 .catalog-toolbar .fi-btn:focus-visible {
     outline: none;
     --tw-ring-color: var(--color-primary-600);
