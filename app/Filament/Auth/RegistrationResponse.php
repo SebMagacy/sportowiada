@@ -2,13 +2,13 @@
 
 namespace App\Filament\Auth;
 
-class RegistrationResponse
+use Filament\Auth\Http\Responses\RegistrationResponse as BaseRegistrationResponse;
+use Illuminate\Http\RedirectResponse;
+
+class RegistrationResponse extends BaseRegistrationResponse
 {
-    /**
-     * Create a new class instance.
-     */
-    public function __construct()
+    public function toResponse($request): RedirectResponse
     {
-        //
+        return redirect()->route('home');
     }
 }

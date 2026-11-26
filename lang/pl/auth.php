@@ -15,5 +15,6 @@ return [
     'failed' => 'Podane dane logowania są nieprawidłowe.',
     'password' => 'Podane hasło jest nieprawidłowe.',
     'throttle' => 'Zbyt wiele prób logowania. Spróbuj ponownie za :seconds sekund.',
+    'password_hint' => 'Hasło musi mieć co najmniej :min znaków.',
 
 ];

@@ -168,6 +168,14 @@ DB_CONNECTION=mysql DB_DATABASE=sportowiada_test_a1b2 php artisan test --compact
 
 Przekazany wynik: **2 testy zaliczone, 13 asercji, 3,40 s**, bez pominięć. Potwierdza to oba opisane scenariusze na MySQL: blokadę przypisania ligi podczas usuwania i wykrycie ligi zatwierdzonej po wcześniejszym odczycie w transakcji, z zachowaniem grafiki przy odmowie. Nie jest to pełny zestaw aplikacji na MySQL; pełny zestaw był uruchomiony na SQLite, zgodnie z domyślną konfiguracją testów.
 
+26 listopada 2026 r. użytkownik ponowił uruchomienie obu testów w lokalnym Windows/Wamp. Wynik: 2 błędy, 0 asercji, kod MySQL 1044 — brak dostępu użytkownika `sportowiada` przy połączeniu z `127.0.0.1` do `sportowiada_test_a1b2`. Użytkownik wskazał, że wcześniej przygotowana baza prawdopodobnie należała do środowiska Ubuntu. Wcześniejsze zaliczenie testów nie potwierdza konfiguracji obecnego Windowsa; istnienie bazy testowej i właściwe uprawnienia konta wymagają sprawdzenia w tym środowisku.
+
+Użytkownik sprawdził lokalny MySQL jako administrator: `SHOW DATABASES LIKE 'sportowiada_test_a1b2'` zwróciło pusty wynik, a zapytanie do `mysql.user` potwierdziło konto `sportowiada` z hostem `127.0.0.1`. Baza testowa wymaga utworzenia; uprawnienia należy nadać temu istniejącemu kontu, a nie wariantowi z hostem `localhost` użytemu wcześniej na Ubuntu.
+
+Użytkownik utworzył w Windows/Wamp bazę `sportowiada_test_a1b2` z kodowaniem `utf8mb4` i porównywaniem `utf8mb4_unicode_ci` oraz nadał `ALL PRIVILEGES` wyłącznie na `sportowiada_test_a1b2.*` istniejącemu kontu `sportowiada`@`127.0.0.1`. Oba polecenia zwróciły `Query OK`. Ponowne uruchomienie testów w tym środowisku pozostaje do potwierdzenia.
+
+Użytkownik ponownie uruchomił `DeleteDisciplinesConcurrencyTest.php` z jednorazowymi ustawieniami `DB_CONNECTION=mysql` i `DB_DATABASE=sportowiada_test_a1b2` przez `cmd /c`. Wynik w Windows/Wamp: 2 testy zaliczone, 13 asercji, 24,50 s, bez pominięć. Potwierdza to konfigurację wydzielonej bazy i oba scenariusze współbieżności w obecnym środowisku. Zwykły zestaw testów nadal używa SQLite i świadomie pomija te dwa przypadki.
+
 ## Publikacja etapu
 
 Użytkownik zlecił wykonanie commita, push i zakończenie #38 po zaliczeniu weryfikacji. Zakres publikacji obejmuje kod operacji i obu akcji, wyjątek, tłumaczenia, testy oraz ten rozdział ze spisem treści. Lokalne reguły rozpoczynania czatu pozostają osobnym zakresem.

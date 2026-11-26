@@ -6,8 +6,10 @@
         height="40"
     >
 
-    <span
-        aria-hidden="true"
-        x-show="$store.sidebar?.isOpen ?? true"
-    >ogacki</span>
+    @unless (\Livewire\Livewire::current() instanceof \Filament\Pages\SimplePage)
+        <span
+            aria-hidden="true"
+            x-show="$store.sidebar?.isOpen ?? true"
+        >ogacki</span>
+    @endunless
 </span>
