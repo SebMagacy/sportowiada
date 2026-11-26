@@ -3,6 +3,7 @@
 }
 
 @media (width < 64rem) {
+
     .fi-topbar-open-sidebar-btn,
     .fi-topbar-close-sidebar-btn {
         order: -1;
@@ -18,7 +19,7 @@
     white-space: nowrap;
 }
 
-.rogacki-brand > img {
+.rogacki-brand>img {
     width: 2.5rem;
     min-width: 2.5rem;
     max-width: none;
@@ -35,10 +36,9 @@
         margin-inline-end: 0;
     }
 
-    .fi-body:has(.fi-sidebar:not(.fi-sidebar-open))
-        .fi-topbar:has(#catalog-page-heading > h1)
-        .fi-topbar-start {
-        flex-basis: calc(var(--sidebar-collapsed-width) + 1rem);
+    .fi-body:has(.fi-sidebar:not(.fi-sidebar-open)) .fi-topbar:has(#catalog-page-heading > h1) .fi-topbar-start {
+        flex-basis: calc(var(--sidebar-collapsed-width) + 1rem + max(0px,
+                    (100% + 2rem - var(--sidebar-collapsed-width) - 80rem) / 2));
     }
 }
 
@@ -47,13 +47,13 @@
     margin-inline-start: 0;
 }
 
-#catalog-page-heading > h1 {
+#catalog-page-heading>h1 {
     font-size: 1.5rem;
     line-height: 1.25;
 }
 
 @media (width < 64rem) {
-    #catalog-page-heading > h1 {
+    #catalog-page-heading>h1 {
         font-size: 1.25rem;
     }
 }
@@ -64,7 +64,7 @@
     gap: 0.5rem;
 }
 
-.fi-page:has(.catalog-page-header) > .fi-page-header-main-ctn {
+.fi-page:has(.catalog-page-header)>.fi-page-header-main-ctn {
     padding-block-start: 1rem;
     row-gap: 1rem;
 }
