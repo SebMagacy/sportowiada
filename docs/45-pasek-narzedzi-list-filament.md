@@ -362,3 +362,35 @@ Zatwierdzono przycisk tworzenia i menu „Działania” z istniejącymi operacja
 Zachowujemy Policies/Shield i autoryzację po stronie serwera. Nie dodajemy funkcji tylko dla spójności wyglądu, nie zmieniamy zależności i nie edytujemy `vendor`. Toolbar formularzy, samouczki i kolejność menu należą do osobnych zgłoszeń.
 
 Użytkownik wykonuje edycje aplikacji, polecenia i Git, chyba że wyraźnie deleguje je asystentowi. Asystent uzupełnia ten rozdział po potwierdzonych krokach, oddzielając uzgodnienia, wykonanie i wyniki sprawdzeń.
+
+## Wyrównanie nagłówka po zwinięciu sidebara — 26.11.2026
+
+### Cel i wykonana zmiana
+
+Użytkownik zgłosił, że po zwinięciu sidebara nagłówek przesuwa się za daleko w lewo względem dolnej karty zalogowanego użytkownika „Witaj”. Celem było wyrównanie lewej krawędzi nagłówka do lewej krawędzi karty, z zachowaniem nagłówka w górnym pasku.
+
+W `resources/css/filament.css`, w regule desktopowej od `64rem` dla zwiniętego sidebara, użytkownik zastąpił samo `calc(var(--sidebar-collapsed-width) + 1rem)` następującym obliczeniem `flex-basis` obszaru `.fi-topbar-start`:
+
+```css
+flex-basis: calc(
+    var(--sidebar-collapsed-width) + 1rem
+    + max(
+        0px,
+        (100% + 2rem - var(--sidebar-collapsed-width) - 80rem) / 2
+    )
+);
+```
+
+Obliczenie uwzględnia szerokość zwiniętego sidebara oraz dodatkowy odstęp wynikający z wyśrodkowania głównej treści o maksymalnej szerokości `80rem`. `max(0px, ...)` zeruje ten dodatkowy odstęp, gdy okno nie pozostawia przestrzeni na wyśrodkowanie. Wartość `80rem` odpowiada obecnej domyślnej maksymalnej szerokości treści Filamentu; po zmianie tej konfiguracji trzeba dostosować również wzór. Asystent potwierdził zapis w kodzie. Nie zmieniano klas PHP, widoków ani plików `vendor`.
+
+### Potwierdzony wynik i ograniczenia
+
+Użytkownik potwierdził poprawne wyrównanie na swoim laptopie i w mniejszych oknach. Nie podał dokładnych szerokości, dlatego nie jest to potwierdzenie pełnej macierzy rozdzielczości ani osobnych testów mobilnych. Asystent nie wykonywał niezależnej kontroli w przeglądarce. Dla tej korekty CSS nie dodawano ani nie uruchamiano testów automatycznych; wcześniejsze wyniki testów resetu hasła nie weryfikują wyrównania nagłówka.
+
+Poprawka obejmuje stan zwinięty. Istniejąca reguła dla rozwiniętego sidebara pozostała bez zmian i nie uwzględnia dodatkowego wyśrodkowania na bardzo szerokich oknach; tego wariantu nie sprawdzono. Użytkownik zaakceptował pozostawienie obecnego rozwiązania w potwierdzonym zakresie.
+
+Odczyt lokalnego Git wykazał commit `d933a33` — „Popraw wyrównanie nagłówka po zwinięciu sidebara”. Publikacji tego commita nie potwierdzono. Niniejszy opis dopisano po jego utworzeniu i wymaga osobnego zapisania w Git.
+
+### Miganie sidebara przy odświeżeniu — diagnostyka
+
+Użytkownik zgłosił, że zapamiętany zwinięty sidebar przy odświeżeniu chwilowo się rozwija i ponownie zwija. Na przesłanym zrzucie Local Storage asystent odczytał `false` zarówno dla `filament:sidebar:open`, jak i `filament:sidebar:desktop_open`. Stan zapisany w przeglądarce jest więc spójny; odczyt po załadowaniu nie ustala kolejności renderowania podczas startu. Zainstalowany Filament odtwarza te ustawienia przez Alpine Persist i stosuje `x-cloak` na sidebarze. Przyczyna błysku nie została jeszcze potwierdzona i nie zapisano poprawki. Próba samodzielnej obserwacji Firefoksa przez asystenta została zablokowana przez narzędzie obsługi przeglądarki; podstawą opisu objawu jest relacja użytkownika.
