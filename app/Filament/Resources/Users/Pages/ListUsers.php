@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Users\Pages;
 
 use App\Filament\Resources\Users\UserResource;
+use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
 use Filament\Schemas\Components\View;
 use Filament\Schemas\Schema;
@@ -32,5 +33,14 @@ class ListUsers extends ListRecords
     public function getHeader(): BladeView
     {
         return view('filament.catalog-header');
+    }
+
+    protected function getHeaderActions(): array
+    {
+        return [
+            CreateAction::make()
+                ->label(__('users.create_title')),
+
+        ];
     }
 }

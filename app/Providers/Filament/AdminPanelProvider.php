@@ -6,6 +6,7 @@ use App\Filament\Pages;
 use App\Filament\Pages\Dashboard;
 use App\Filament\Pages\Login;
 use App\Filament\Pages\Register;
+use App\Filament\Resources\Users\Pages\CreateUser;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
@@ -24,6 +25,8 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Support\HtmlString;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+
+use function Filament\Support\original_request;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -46,7 +49,12 @@ class AdminPanelProvider extends PanelProvider
             ->login(Login::class)
             ->registration(Register::class)
             ->passwordReset(Pages\RequestPasswordReset::class, Pages\ResetPassword::class)
-            ->sidebarCollapsibleOnDesktop()
+            ->sidebarCollapsibleOnDesktop(
+                fn (): bool => ! original_request()->routeIs(CreateUser::getRouteName()),
+            )
+            ->navigation(
+                fn (): bool => ! original_request()->routeIs(CreateUser::getRouteName()),
+            )
             ->sidebarWidth('15rem')
             ->colors([
                 'primary' => Color::Amber,

@@ -6,7 +6,10 @@
         height="40"
     >
 
-    @unless (\Livewire\Livewire::current() instanceof \Filament\Pages\SimplePage)
+    @unless (
+        \Livewire\Livewire::current() instanceof \Filament\Pages\SimplePage
+        || ! filament()->hasNavigation()
+    )
         <span
             aria-hidden="true"
             x-cloak

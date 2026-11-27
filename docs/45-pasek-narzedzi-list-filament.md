@@ -400,3 +400,15 @@ Użytkownik zgłosił, że zapamiętany zwinięty sidebar przy odświeżeniu chw
 Użytkownik doprecyzował, że przy odświeżeniu na chwilę pojawia się napis „ogacki”. W `resources/views/filament/brand.blade.php` dodał `x-cloak` do elementu `span` z tym napisem i istniejącym `x-show="$store.sidebar?.isOpen ?? true"`. Asystent potwierdził zapis. Styl `x-cloak` dostarczany przez Filament ukrywa napis do inicjalizacji Alpine, po której widoczność kontroluje stan sidebara. Nie dodano własnego skryptu ani nowych reguł CSS.
 
 Po zmianie użytkownik ocenił, że problem wygląda na rozwiązany. Jest to wstępne potwierdzenie ręczne dotyczące błysku napisu logo, bez niezależnej obserwacji przeglądarkowej asystenta i bez pełnej kontroli wszystkich stanów menu. Nie jest to dowód osobnej usterki ani naprawy szerokości samego sidebara. Nie dodawano testów automatycznych dla tej korekty wizualnej.
+
+## Przeniesienie pozostałej weryfikacji mobilnej do #51 — 26.11.2026
+
+Na wyraźną prośbę użytkownika asystent zaktualizował opisy [#34](https://github.com/SebMagacy/sportowiada/issues/34) i [#51](https://github.com/SebMagacy/sportowiada/issues/51). Pozostałe sprawdzenia mobilne paska akcji list przeniesiono do #51: listy Użytkownicy, Dyscypliny, Sezony, Ligi i Role przy 320/375 px, dostępność przycisków, menu „Działania” i jego stan zaznaczenia, anulowanie, wyszukiwanie, puste katalogi oraz nagłówek przy otwartym i zamkniętym sidebarze. Obowiązuje także ogólny zakres #51 obejmujący 390 px i rzeczywisty telefon.
+
+GitHub potwierdził aktualizację obu zgłoszeń. Weryfikacja mobilna nie jest już kryterium ukończenia #34; nie oznacza to jej wykonania ani zamknięcia któregokolwiek zgłoszenia. Desktop, klawiatura, uprawnienia i testy zachowania pozostają w zakresie #34. Wcześniejsze zapisy rozdziału o oczekujących testach mobilnych opisują historyczny zakres; dalsze wyniki tych prób należy wiązać z #51.
+
+## Zamknięcie #34 — 26.11.2026
+
+Na wyraźne polecenie użytkownika asystent porównał aktualne kryteria z kodem i zapisanymi wynikami, zaznaczył checklistę oraz zamknął #34 jako ukończone. GitHub potwierdził stan `closed` z powodem `completed`. Podstawą były wcześniejsze ręczne sprawdzenia paska, klawiatury, wyszukiwania i anulowania, testy pięciu list (103 przypadki, 677 asercji) oraz ostatni pełny zestaw użytkownika (200 zaliczonych, 1207 asercji, 2 pominięte przypadki MySQL). W tym kroku testów nie uruchamiano ponownie.
+
+Podsumowanie zgłoszenia wskazuje commity `cefefff`, `f9dbb0a` i `0eea1d5`. Przekazany przez użytkownika push do `0eea1d5` potwierdza publikację ostatnich poprawek. Weryfikacja mobilna pozostaje w #51, a pełny audyt klawiatury wszystkich widoków w #52. Zachowano opis ograniczeń niestandardowego `x-teleport` oraz niepotwierdzonego wyrównania nagłówka we wszystkich szerokich rozmiarach okna. Zamknięcie nie oznacza ukończenia #29 ani powiązanych zgłoszeń. Ten wpis i wcześniejsze przeniesienie zakresu do #51 pozostają lokalnymi zmianami dokumentacji do zapisania w Git.
